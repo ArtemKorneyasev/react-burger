@@ -1,0 +1,27 @@
+.header,
+.headerContent,
+.itemsWrapper,
+.menuItem,
+.logoItem {
+    display: flex;
+}
+
+.header {
+    justify-content: center;
+    background: #1C1C21;
+}
+
+.headerContent {
+    width: 1280px;
+    align-items: center;
+}
+
+.menuItem:nth-child(3) {
+    flex-grow: 1;
+    justify-content: flex-end;
+}
+
+.logoItem {
+    flex-grow: 1;
+    justify-content: center;
+}

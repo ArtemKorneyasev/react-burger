@@ -7,6 +7,7 @@
 
 # testing
 /coverage
+setupTests.ts
 
 # production
 /build
@@ -25,3 +26,6 @@ yarn-error.log*
 # lock files
 package-lock.json
 yarn.lock
+
+# utils files
+react-app-env.d.ts
