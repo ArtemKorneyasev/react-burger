@@ -1,13 +1,16 @@
 .section {
-    /* margin-right: 40px; */
+    width: 600px;
+    margin-right: 40px;
 }
 
 .title {
+    height: 40px;
     margin-top: 40px;
     margin-bottom: 20px;
 }
 
 .subtitle {
+    height: 30px;
     margin-top: 40px;
     margin-bottom: 24px;
 }
@@ -17,8 +20,8 @@
 }
 
 .ingredientsWrapper {
-    max-height: 912px;
-    overflow-y: auto;
+    max-height: 756px;
+    overflow: auto;
 }
 
 .ingredientsWrapper::-webkit-scrollbar {
@@ -36,35 +39,11 @@
 }
 
 .ingredientsBlock {
-    width: 600px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: space-between;
     flex-flow: row wrap;
-}
-
-.ingredientCard {
-    width: 272px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 0 14px;
-}
-
-.ingredientImg {
-    margin: 0 16px;
-}
-
-.ingredientPrice {
-    display: flex;
-    margin: 4px 0;
-}
-
-.ingredientName {
-    width: 100%;
-    height: 48px;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-wrap: wrap;
+    row-gap: 32px;
 }

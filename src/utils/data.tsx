@@ -211,4 +211,115 @@ export const ingredients = [
     },
 ];
 
-export default ingredients;
+export const constructorData: Array<{
+   id: number,
+   type: 'top' | 'bottom' | undefined,
+   is_locked: boolean,
+   text: string,
+   price: number,
+   thumbnail: string,
+}> = [
+   {
+      "id": 1,
+      "type": "top",
+      "is_locked": true,
+      "text": "Краторная булка N-200i (верх)",
+      "price": 1255,
+      "thumbnail": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+   },
+   {
+      "id": 2,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Соус традиционный галактический",
+      "price": 15,
+      "thumbnail": "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
+   },
+   {
+      "id": 3,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Мясо бессмертных моллюсков Protostomia",
+      "price": 1337,
+      "thumbnail": "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
+   },
+   {
+      "id": 4,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Плоды Фалленианского дерева",
+      "price": 874,
+      "thumbnail": "https://code.s3.yandex.net/react/code/sp_1-mobile.png",
+   },
+   {
+      "id": 5,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Хрустящие минеральные кольца",
+      "price": 300,
+      "thumbnail": "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png",
+   },
+   {
+      "id": 6,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Хрустящие минеральные кольца",
+      "price": 300,
+      "thumbnail": "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png",
+   },
+   {
+      "id": 7,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Соус традиционный галактический",
+      "price": 15,
+      "thumbnail": "https://code.s3.yandex.net/react/code/sauce-03-mobile.png",
+   },
+   {
+      "id": 8,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Мясо бессмертных моллюсков Protostomia",
+      "price": 1337,
+      "thumbnail": "https://code.s3.yandex.net/react/code/meat-02-mobile.png",
+   },
+   {
+      "id": 9,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Плоды Фалленианского дерева",
+      "price": 874,
+      "thumbnail": "https://code.s3.yandex.net/react/code/sp_1-mobile.png",
+   },
+   {
+      "id": 10,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Хрустящие минеральные кольца",
+      "price": 300,
+      "thumbnail": "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png",
+   },
+   {
+      "id": 11,
+      "type": undefined,
+      "is_locked": false,
+      "text": "Хрустящие минеральные кольца",
+      "price": 300,
+      "thumbnail": "https://code.s3.yandex.net/react/code/mineral_rings-mobile.png",
+   },
+   {
+      "id": 12,
+      "type": "bottom",
+      "is_locked": true,
+      "text": "Краторная булка N-200i (низ)",
+      "price": 1255,
+      "thumbnail": "https://code.s3.yandex.net/react/code/bun-02-mobile.png",
+   },
+];
+
+const dataModule = {
+   ingredients,
+   constructorData,
+};
+
+export default dataModule;
