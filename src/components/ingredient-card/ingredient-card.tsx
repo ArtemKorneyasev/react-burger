@@ -24,10 +24,7 @@ type Props = {
 const IngredientCard = (props: Props) => {
     const { data } = props;
     return (
-        <li
-            key={data._id}
-            className={styles.ingredientCard}
-        >
+        <li className={styles.ingredientCard}>
             <img
                 className={styles.ingredientImg}
                 src={data.image}

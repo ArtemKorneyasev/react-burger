@@ -28,7 +28,7 @@ const BurgerIngredients = () => (
                     ingredients.filter(ingredient =>
                         ingredient.type === 'bun'
                     ).map(bunItem =>
-                        <IngredientCard data={bunItem} />
+                        <IngredientCard key={bunItem._id} data={bunItem} />
                     )
                 }
             </ul>
@@ -40,7 +40,7 @@ const BurgerIngredients = () => (
                     ingredients.filter(ingredient =>
                         ingredient.type === 'sauce'
                     ).map(sauceItem =>
-                        <IngredientCard data={sauceItem} />
+                        <IngredientCard key={sauceItem._id} data={sauceItem} />
                     )
                 }
             </ul>
@@ -52,7 +52,7 @@ const BurgerIngredients = () => (
                     ingredients.filter(ingredient => 
                         ingredient.type === 'main'
                     ).map(mainItem =>
-                        <IngredientCard data={mainItem} />
+                        <IngredientCard key={mainItem._id} data={mainItem} />
                     )
                 }
             </ul>
