@@ -1,0 +1,53 @@
+.ingredientsWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 100px 16px 0 16px;
+}
+
+.toppings::-webkit-scrollbar {
+	width: 12px;
+}
+
+.toppings::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.toppings::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+
+.toppings {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    max-height: 560px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.toppings > li > svg {
+    margin-right: 8px;
+}
+
+.submitBlock {
+    display: flex;
+    justify-content: flex-end;
+    margin: 40px 16px 0 16px;
+}
+
+.totalPrice {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.totalPrice > svg {
+    width: 33px;
+    height: 33px;
+}

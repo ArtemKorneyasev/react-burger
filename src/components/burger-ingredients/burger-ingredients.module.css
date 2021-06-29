@@ -1,0 +1,49 @@
+.section {
+    width: 600px;
+    margin-right: 40px;
+}
+
+.title {
+    height: 40px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.subtitle {
+    height: 30px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.ingredientsWrapper {
+    max-height: 756px;
+    overflow: auto;
+}
+
+.ingredientsWrapper::-webkit-scrollbar {
+	width: 12px;
+}
+
+.ingredientsWrapper::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.ingredientsWrapper::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}
+
+.ingredientsBlock {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    flex-flow: row wrap;
+    row-gap: 32px;
+}
