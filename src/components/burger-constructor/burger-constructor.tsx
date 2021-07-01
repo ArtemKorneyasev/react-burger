@@ -1,27 +1,53 @@
+import { useMemo } from 'react';
 import {
     Button,
     ConstructorElement,
     CurrencyIcon,
     DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ingredients } from '../../utils/data';
+import type { Ingredients } from '../../types/types';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = () => {
+type Props = {
+    ingredients: Ingredients,
+    hasError: boolean,
+};
+
+const BurgerConstructor = (props: Props) => {
+    const { ingredients, hasError } = props;
     let totalPrice = 2510;
-    const modIngredients = ingredients.slice(1, ingredients.length - 1);
-    const randToppings = [];
 
-    for (let i = 0; i <= 10; i++) {
-        const randIndex = Math.floor(
-            Math.random() * modIngredients.length,
+    const randomToppings = useMemo(() => {
+        const randToppings = [];
+        if (ingredients.length) {
+            const modIngredients = ingredients.filter(
+                ingredient => ingredient.type !== 'bun',
+            );
+
+            for (let i = 1; i <= 10; i++) {
+                const randIndex = Math.floor(
+                    Math.random() * modIngredients.length,
+                );
+                randToppings.push(modIngredients[randIndex]);
+            }
+
+            totalPrice += randToppings.reduce((total, current) => {
+                return total + current.price;
+            }, 0);
+        }
+
+        return randToppings;
+    }, [ingredients]);
+
+    if (hasError) {
+        return (
+            <section style={{ width: 600 }}>
+                <h1 className={`text text_type_main-large ${styles.title}`}>
+                    Ошибка получения данных...
+                </h1>
+            </section>
         );
-        randToppings.push(modIngredients[randIndex]);
     }
-
-    totalPrice += randToppings.reduce((total, current) => {
-        return total + current.price;
-    }, 0);
 
     return (
         <section style={{ width: 600 }}>
@@ -35,7 +61,7 @@ const BurgerConstructor = () => {
                 />
                 <ul className={styles.toppings}>
                     {
-                        randToppings.map(topping => (
+                        randomToppings.map(topping => (
                             <li
                                 key={topping._id}
                                 style={{ width: 568, marginRight: 18 }}
