@@ -1,3 +1,7 @@
+.ingredientWrapper {
+    overflow: hidden;
+}
+
 .ingredientCard {
     width: 272px;
     position: relative;

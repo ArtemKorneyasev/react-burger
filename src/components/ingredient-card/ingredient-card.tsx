@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import {
-    Counter,
+    // temporary disabled
+    // Counter,
     CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
+import IngredientDetails from '../ingredients-details/ingredient-details';
 import type { Ingredient } from '../../types/types';
 import styles from './ingredient-card.module.css';
 
@@ -16,15 +17,7 @@ const IngredientCard = (props: Props) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     return (
-        <>
-            <Modal
-                header="Внимание!"
-                isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
-            >
-                <p>Спасибо за внимание!</p>
-                <p>Открывай меня, если станет скучно</p>
-            </Modal>
+        <div className={styles.ingredientWrapper}>
             <li
                 className={styles.ingredientCard}
                 onClick={() => setModalIsOpen(true)}
@@ -41,9 +34,17 @@ const IngredientCard = (props: Props) => {
                 <small className={`${styles.ingredientName} text text_type_main-default`}>
                     {data.name}
                 </small>
-                <Counter count={1} size="default" />
+                {/* <Counter count={1} size="default" /> */}
             </li>
-        </>
+            {
+                modalIsOpen ? (
+                    <IngredientDetails
+                        data={data}
+                        onClose={() => setModalIsOpen(false)}
+                    />
+                ) : null
+            }
+        </div>
     );
 };
 

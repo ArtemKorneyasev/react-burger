@@ -1,10 +1,11 @@
-import { useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
     Button,
     ConstructorElement,
     CurrencyIcon,
     DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import OrderDetails from '../order-details/order-details';
 import type { Ingredients } from '../../types/types';
 import styles from './burger-constructor.module.css';
 
@@ -15,6 +16,7 @@ type Props = {
 
 const BurgerConstructor = (props: Props) => {
     const { ingredients, hasError } = props;
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     let totalPrice = 2510;
 
     const randomToppings = useMemo(() => {
@@ -50,7 +52,7 @@ const BurgerConstructor = (props: Props) => {
     }
 
     return (
-        <section style={{ width: 600 }}>
+        <section style={{ width: 600, overflow: 'hidden' }}>
             <div className={styles.ingredientsWrapper}>
                 <ConstructorElement
                     type="top"
@@ -90,10 +92,21 @@ const BurgerConstructor = (props: Props) => {
                     {totalPrice}&nbsp;
                     <CurrencyIcon type="primary" />
                 </small>
-                <Button type="primary" size="large">
+                <Button
+                    type="primary"
+                    size="large"
+                    onClick={() => setModalIsOpen(true)}
+                >
                     Оформить заказ
                 </Button>
             </div>
+            {
+                modalIsOpen ? (
+                    <OrderDetails
+                        onClose={() => setModalIsOpen(false)}
+                    />
+                ) : null
+            }
         </section>
     );
 }

@@ -1,4 +1,42 @@
-.header {
+.overlay {
+    background: rgba(0, 0, 0, 60%);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
     display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal {
+    background: #1C1C21;
+    padding: 40px 40px 60px 40px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.withTitle,
+.withoutTitle {
+    width: 640px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+}
+
+.withTitle {
     justify-content: space-between;
+}
+
+.withoutTitle {
+    justify-content: flex-end;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
