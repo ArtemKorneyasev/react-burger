@@ -1,20 +1,15 @@
-import Modal from '../modal/modal';
 import type { Ingredient } from '../../types/types';
 import styles from './ingredient-details.module.css';
 
 type Props = {
     data: Ingredient,
-    onClose: () => void,
 };
 
 const IngredientDetails = (props: Props) => {
-    const { data, onClose } = props;
+    const { data } = props;
 
     return (
-        <Modal
-            title="Детали ингредиента"
-            onClose={onClose}
-        >
+        <>
             <img style={{ height: 240 }} src={data.image_large} alt={data.name} />
             <span
                 style={{ marginTop: 16, marginBottom: 32 }}
@@ -56,7 +51,7 @@ const IngredientDetails = (props: Props) => {
                     </span>
                 </div>
             </div>
-        </Modal>
+        </>
     );
 };
 

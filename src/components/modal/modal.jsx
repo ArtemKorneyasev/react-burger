@@ -1,6 +1,7 @@
-import React, { useCallback, useEffect } from "react";
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../modal-overlay/modal-overlay';
 import styles from './modal.module.css';
 
 type Props = {
@@ -10,30 +11,12 @@ type Props = {
 };
 
 const Modal = (props: Props) => {
-    const {
-        children,
-        title,
-        onClose,
-    } = props;
-    const modalRoot = document.getElementById('modal-root')!;
-
-    const escape = useCallback(event => {
-        if (event.keyCode === 27) {
-            onClose();
-        }
-    }, []);
-
-    useEffect(() => {
-        document.addEventListener("keydown", escape);
-
-        return () => {
-            document.removeEventListener("keydown", escape);
-        }
-    });
+    const { children, title, onClose } = props;
+    const modalRoot = document.getElementById('modal-root');
 
     return ReactDOM.createPortal(
         (
-            <div className={styles.overlay}>
+            <ModalOverlay onClose={onClose}>
                 <div className={styles.modal}>
                     <div
                         className={
@@ -48,7 +31,7 @@ const Modal = (props: Props) => {
                         {children}
                     </div>
                 </div>
-            </div>
+            </ModalOverlay>
         ),
         modalRoot
     );

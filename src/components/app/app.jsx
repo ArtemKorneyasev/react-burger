@@ -13,11 +13,13 @@ const App = () => {
 	useEffect(() => {
 		const url = 'https://norma.nomoreparties.space/api/ingredients';
         const getIngredientsData = async () => {
-			const response = await fetch(url);
-
 			try {
-				const { data } = await response.json();
-				setState({ ...state, data });
+				const response = await fetch(url);
+
+				if (response && response.ok) {
+					const { data } = await response.json();
+					setState({ ...state, data });
+				}
 			} catch (error) {
 				setState({ ...state, hasError: true });
 			}

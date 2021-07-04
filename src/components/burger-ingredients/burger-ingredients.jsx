@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
+import IngredientDetails from '../ingredients-details/ingredient-details';
+import Modal from '../modal/modal';
 import type { Ingredients } from '../../types/types';
 import styles from './burger-ingredients.module.css';
 
@@ -10,6 +13,17 @@ type Props = {
 
 const BurgerIngredients = (props: Props) => {
     const { ingredients, hasError } = props;
+    const [state, setState] = useState({
+        modalIsOpen: false,
+        ingredientData: {},
+    });
+
+    const onIngredientCardClick = data => (
+        setState({
+            modalIsOpen: true,
+            ingredientData: data,
+        })
+    );
 
     if (hasError) {
         return (
@@ -46,7 +60,11 @@ const BurgerIngredients = (props: Props) => {
                         ingredients.filter(ingredient =>
                             ingredient.type === 'bun'
                         ).map(bunItem =>
-                            <IngredientCard key={bunItem._id} data={bunItem} />
+                            <IngredientCard
+                                key={bunItem._id}
+                                data={bunItem}
+                                onClick={onIngredientCardClick}
+                            />
                         )
                     }
                 </ul>
@@ -58,7 +76,11 @@ const BurgerIngredients = (props: Props) => {
                         ingredients.filter(ingredient =>
                             ingredient.type === 'sauce'
                         ).map(sauceItem =>
-                            <IngredientCard key={sauceItem._id} data={sauceItem} />
+                            <IngredientCard
+                                key={sauceItem._id}
+                                data={sauceItem}
+                                onClick={onIngredientCardClick}
+                            />
                         )
                     }
                 </ul>
@@ -70,11 +92,25 @@ const BurgerIngredients = (props: Props) => {
                         ingredients.filter(ingredient =>
                             ingredient.type === 'main'
                         ).map(mainItem =>
-                            <IngredientCard key={mainItem._id} data={mainItem} />
+                            <IngredientCard
+                                key={mainItem._id}
+                                data={mainItem}
+                                onClick={onIngredientCardClick}
+                            />
                         )
                     }
                 </ul>
             </div>
+            {
+                state.modalIsOpen ? (
+                    <Modal
+                        title="Детали ингредиента"
+                        onClose={() => setState({ ...state, modalIsOpen: false })}
+                    >
+                        <IngredientDetails data={state.ingredientData} />
+                    </Modal>
+                ) : null
+            }
         </section>
     );
 };

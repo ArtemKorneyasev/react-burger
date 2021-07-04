@@ -6,6 +6,7 @@ import {
     DragIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
+import Modal from '../modal/modal';
 import type { Ingredients } from '../../types/types';
 import styles from './burger-constructor.module.css';
 
@@ -88,10 +89,10 @@ const BurgerConstructor = (props: Props) => {
                 />
             </div>
             <div className={styles.submitBlock}>
-                <small className={`${styles.totalPrice} text text_type_digits-medium`}>
+                <span className={`${styles.totalPrice} text text_type_digits-medium`}>
                     {totalPrice}&nbsp;
                     <CurrencyIcon type="primary" />
-                </small>
+                </span>
                 <Button
                     type="primary"
                     size="large"
@@ -102,9 +103,9 @@ const BurgerConstructor = (props: Props) => {
             </div>
             {
                 modalIsOpen ? (
-                    <OrderDetails
-                        onClose={() => setModalIsOpen(false)}
-                    />
+                    <Modal onClose={() => setModalIsOpen(false)}>
+                        <OrderDetails />
+                    </Modal>
                 ) : null
             }
         </section>
