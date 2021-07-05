@@ -1,17 +1,12 @@
 import { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import IngredientDetails from '../ingredients-details/ingredient-details';
 import Modal from '../modal/modal';
-import type { Ingredients } from '../../types/types';
 import styles from './burger-ingredients.module.css';
 
-type Props = {
-    ingredients: Ingredients,
-    hasError: boolean,
-};
-
-const BurgerIngredients = (props: Props) => {
+const BurgerIngredients = (props) => {
     const { ingredients, hasError } = props;
     const [state, setState] = useState({
         modalIsOpen: false,
@@ -113,6 +108,26 @@ const BurgerIngredients = (props: Props) => {
             }
         </section>
     );
+};
+
+BurgerIngredients.propTypes = {
+    ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            type: PropTypes.string,
+            proteins: PropTypes.number,
+            fat: PropTypes.number,
+            carbohydrates: PropTypes.number,
+            calories: PropTypes.number,
+            price: PropTypes.number,
+            image: PropTypes.string,
+            image_mobile: PropTypes.string,
+            image_large: PropTypes.string,
+            __v: PropTypes.number,
+        }).isRequired,
+    ),
+    hasError: PropTypes.bool,
 };
 
 export default BurgerIngredients;

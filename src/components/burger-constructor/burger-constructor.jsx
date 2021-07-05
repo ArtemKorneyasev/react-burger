@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import {
     Button,
     ConstructorElement,
@@ -7,15 +8,9 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import type { Ingredients } from '../../types/types';
 import styles from './burger-constructor.module.css';
 
-type Props = {
-    ingredients: Ingredients,
-    hasError: boolean,
-};
-
-const BurgerConstructor = (props: Props) => {
+const BurgerConstructor = (props) => {
     const { ingredients, hasError } = props;
     const [modalIsOpen, setModalIsOpen] = useState(false);
     let totalPrice = 2510;
@@ -111,5 +106,25 @@ const BurgerConstructor = (props: Props) => {
         </section>
     );
 }
+
+BurgerConstructor.propTypes = {
+    ingredients: PropTypes.arrayOf(
+        PropTypes.shape({
+            _id: PropTypes.string,
+            name: PropTypes.string,
+            type: PropTypes.string,
+            proteins: PropTypes.number,
+            fat: PropTypes.number,
+            carbohydrates: PropTypes.number,
+            calories: PropTypes.number,
+            price: PropTypes.number,
+            image: PropTypes.string,
+            image_mobile: PropTypes.string,
+            image_large: PropTypes.string,
+            __v: PropTypes.number,
+        }).isRequired,
+    ),
+    hasError: PropTypes.bool,
+};
 
 export default BurgerConstructor;

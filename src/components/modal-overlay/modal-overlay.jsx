@@ -1,17 +1,14 @@
 import React, { useRef, useCallback, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import styles from './modal-overlay.module.css';
 
-type Props = {
-    children: React.ReactNode,
-    onClose: () => void,
-};
-
-const ModalOverlay = (props: Props) => {
+const ModalOverlay = (props) => {
     const { children, onClose } = props;
     const modalOverlayRef = useRef(document.createElement('div'));
 
     const onEscapeClose = useCallback(event => {
-        if (event.keyCode === 27) {
+        const escapeKeyCode = 27;
+        if (event.keyCode === escapeKeyCode) {
             onClose();
         }
     }, [onClose]);
@@ -40,6 +37,11 @@ const ModalOverlay = (props: Props) => {
             {children}
         </div>
     );
+};
+
+ModalOverlay.propTypes = {
+    children: PropTypes.node.isRequired,
+    onClose: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;
