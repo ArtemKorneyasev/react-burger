@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
     // temporary disabled
@@ -51,4 +52,4 @@ IngredientCard.propTypes = {
     onClick: PropTypes.func.isRequired,
 };
 
-export default IngredientCard;
+export default React.memo(IngredientCard);

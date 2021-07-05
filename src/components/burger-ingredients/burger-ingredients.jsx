@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCard from '../ingredient-card/ingredient-card';
@@ -13,12 +13,12 @@ const BurgerIngredients = (props) => {
         ingredientData: {},
     });
 
-    const onIngredientCardClick = data => (
+    const onIngredientCardClick = useCallback(data => {
         setState({
             modalIsOpen: true,
             ingredientData: data,
         })
-    );
+    }, []);
 
     if (hasError) {
         return (
