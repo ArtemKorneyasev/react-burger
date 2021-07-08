@@ -6,6 +6,10 @@
     margin: 100px 16px 0 16px;
 }
 
+.title {
+    composes: title from '../burger-ingredients/burger-ingredients.module.css';
+}
+
 .toppings::-webkit-scrollbar {
 	width: 12px;
 }

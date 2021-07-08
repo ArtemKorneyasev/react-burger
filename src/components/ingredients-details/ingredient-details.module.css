@@ -1,0 +1,14 @@
+.calorificСapacity {
+    display: flex;
+    gap: 20px;
+}
+
+.capacity {
+    min-width: 112px;
+    height: 56px;
+    color: #8585AD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
