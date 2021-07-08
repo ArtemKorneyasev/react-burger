@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { AppContext } from '../services/appContext';
 import styles from './app.module.css';
 
 const App = () => {
@@ -23,7 +24,7 @@ const App = () => {
 			} catch (error) {
 				setState({ ...state, hasError: true });
 			}
-        }
+        };
 
         getIngredientsData();
     }, [])
@@ -32,14 +33,16 @@ const App = () => {
 		<>
 			<AppHeader />
 			<main className={styles.main}>
-				<BurgerIngredients
-					ingredients={state.data}
-					hasError={state.hasError}
-				/>
-				<BurgerConstructor
-					ingredients={state.data}
-					hasError={state.hasError}
-				/>
+				<AppContext.Provider value={{
+					ingredients: state.data,
+					ingredientsError: state.hasError,
+				}}>
+					<BurgerIngredients
+						ingredients={state.data}
+						hasError={state.hasError}
+					/>
+					<BurgerConstructor />
+				</AppContext.Provider>
 			</main>
 		</>
 	);

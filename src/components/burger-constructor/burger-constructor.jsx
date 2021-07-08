@@ -1,43 +1,84 @@
-import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import {
-    Button,
-    ConstructorElement,
-    CurrencyIcon,
-    DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import React, { useState, useMemo, useEffect, useContext, useCallback } from 'react';
+import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { AppContext } from '../services/appContext';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = (props) => {
-    const { ingredients, hasError } = props;
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    let totalPrice = 2510;
+const BurgerConstructor = () => {
+    const [state, setState] = useState({
+        modalIsOpen: false,
+        totalPrice: 0,
+        orderDetails: null,
+        orderError: false,
+    });
+    const { ingredients, ingredientsError } = useContext(AppContext);
 
-    const randomToppings = useMemo(() => {
+    const randomIngredients = useMemo(() => {
+        const randBun = [];
         const randToppings = [];
-        if (ingredients.length) {
-            const modIngredients = ingredients.filter(
-                ingredient => ingredient.type !== 'bun',
-            );
+        const randIndex = arr => Math.floor(Math.random() * arr.length);
 
+        if (ingredients.length) {
+            const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
+            const toppings = ingredients.filter(ingredient => ingredient.type !== 'bun');
+
+            randBun.push(buns[randIndex(buns)]);
             for (let i = 1; i <= 10; i++) {
-                const randIndex = Math.floor(
-                    Math.random() * modIngredients.length,
-                );
-                randToppings.push(modIngredients[randIndex]);
+                randToppings.push(toppings[randIndex(toppings)]);
             }
 
-            totalPrice += randToppings.reduce((total, current) => {
+            const toppingsPrice = randToppings.reduce((total, current) => {
                 return total + current.price;
             }, 0);
+            const bunsPrice = randBun[0].price * 2;
+
+            setState({
+                ...state,
+                totalPrice: (toppingsPrice + bunsPrice),
+            });
         }
 
-        return randToppings;
+        return { randToppings, randBun };
     }, [ingredients]);
 
-    if (hasError) {
+    const onSubmit = () => {
+        const url = 'https://norma.nomoreparties.space/api/orders';
+        const requestData = {
+            ingredients: Object.keys(randomIngredients).flatMap(ingredientType =>
+                randomIngredients[ingredientType].map(
+                    ingredient => ingredient._id,
+                ),
+            ),
+        };
+
+        (async () => {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData),
+                });
+
+                if (response && response.ok) {
+					const data = await response.json();
+                    setState({
+                        ...state,
+                        modalIsOpen: true,
+                        orderDetails: data,
+                    });
+				}
+            } catch (error) {
+                setState({
+                    ...state,
+                    modalIsOpen: true,
+                    orderError: true,
+                });
+            }
+        })();
+    };
+
+    if (ingredientsError) {
         return (
             <section style={{ width: 600 }}>
                 <h1 className={`text text_type_main-large ${styles.title}`}>
@@ -50,16 +91,22 @@ const BurgerConstructor = (props) => {
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div className={styles.ingredientsWrapper}>
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={1255}
-                    thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
-                />
+                {
+                    randomIngredients.randBun.map(bun => (
+                        <React.Fragment key={bun._id}>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={bun.name}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}
+                            />
+                        </React.Fragment>
+                    ))
+                }
                 <ul className={styles.toppings}>
                     {
-                        randomToppings.map(topping => (
+                        randomIngredients.randToppings.map(topping => (
                             <li
                                 key={topping._id}
                                 style={{ width: 568, marginRight: 18 }}
@@ -75,56 +122,41 @@ const BurgerConstructor = (props) => {
                         ))
                     }
                 </ul>
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={1255}
-                    thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
-                />
+                {
+                    randomIngredients.randBun.map(bun => (
+                        <React.Fragment key={bun._id}>
+                            <ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={bun.name}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}
+                            />
+                        </React.Fragment>
+                    ))
+                }
             </div>
             <div className={styles.submitBlock}>
                 <span className={`${styles.totalPrice} text text_type_digits-medium`}>
-                    {totalPrice}&nbsp;
+                    {state.totalPrice}&nbsp;
                     <CurrencyIcon type="primary" />
                 </span>
-                <Button
-                    type="primary"
-                    size="large"
-                    onClick={() => setModalIsOpen(true)}
-                >
+                <Button type="primary" size="large" onClick={onSubmit}>
                     Оформить заказ
                 </Button>
             </div>
             {
-                modalIsOpen ? (
-                    <Modal onClose={() => setModalIsOpen(false)}>
-                        <OrderDetails />
+                state.modalIsOpen ? (
+                    <Modal onClose={() => setState({ ...state, modalIsOpen: false })}>
+                        <OrderDetails
+                            orderDetails={state.orderDetails}
+                            orderError={state.error}
+                        />
                     </Modal>
                 ) : null
             }
         </section>
     );
 }
-
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            proteins: PropTypes.number,
-            fat: PropTypes.number,
-            carbohydrates: PropTypes.number,
-            calories: PropTypes.number,
-            price: PropTypes.number,
-            image: PropTypes.string,
-            image_mobile: PropTypes.string,
-            image_large: PropTypes.string,
-            __v: PropTypes.number,
-        }).isRequired,
-    ),
-    hasError: PropTypes.bool,
-};
 
 export default BurgerConstructor;
