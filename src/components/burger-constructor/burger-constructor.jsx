@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useContext, useCallback } from 'react';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { AppContext } from '../services/appContext';
+import { AppContext } from '../../services/appContext';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import styles from './burger-constructor.module.css';
@@ -43,7 +43,6 @@ const BurgerConstructor = () => {
     }, [ingredients]);
 
     const onSubmit = () => {
-        const url = 'https://norma.nomoreparties.space/api/orders';
         const requestData = {
             ingredients: Object.keys(randomIngredients).flatMap(ingredientType =>
                 randomIngredients[ingredientType].map(
@@ -51,23 +50,29 @@ const BurgerConstructor = () => {
                 ),
             ),
         };
+        const request = new Request(
+            'https://norma.nomoreparties.space/api/orders',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData),
+            },
+        );
 
         (async () => {
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(requestData),
-                });
+                const response = await fetch(request);
 
-                if (response && response.ok) {
-					const data = await response.json();
-                    setState({
-                        ...state,
-                        modalIsOpen: true,
-                        orderDetails: data,
-                    });
-				}
+                if (!response.ok) {
+                    throw new Error(`Произошла ошибка, cтатус: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setState({
+                    ...state,
+                    modalIsOpen: true,
+                    orderDetails: data,
+                });
             } catch (error) {
                 setState({
                     ...state,

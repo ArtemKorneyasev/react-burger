@@ -1,13 +1,13 @@
-import { useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useCallback, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { AppContext } from '../../services/appContext';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import IngredientDetails from '../ingredients-details/ingredient-details';
 import Modal from '../modal/modal';
 import styles from './burger-ingredients.module.css';
 
-const BurgerIngredients = (props) => {
-    const { ingredients, hasError } = props;
+const BurgerIngredients = () => {
+    const { ingredients, ingredientsError } = useContext(AppContext);
     const [state, setState] = useState({
         modalIsOpen: false,
         ingredientData: {},
@@ -20,7 +20,7 @@ const BurgerIngredients = (props) => {
         })
     }, []);
 
-    if (hasError) {
+    if (ingredientsError) {
         return (
             <section className={styles.section}>
                 <h1 className={`text text_type_main-large ${styles.title}`}>
@@ -108,26 +108,6 @@ const BurgerIngredients = (props) => {
             }
         </section>
     );
-};
-
-BurgerIngredients.propTypes = {
-    ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            proteins: PropTypes.number,
-            fat: PropTypes.number,
-            carbohydrates: PropTypes.number,
-            calories: PropTypes.number,
-            price: PropTypes.number,
-            image: PropTypes.string,
-            image_mobile: PropTypes.string,
-            image_large: PropTypes.string,
-            __v: PropTypes.number,
-        }).isRequired,
-    ),
-    hasError: PropTypes.bool,
 };
 
 export default BurgerIngredients;
