@@ -1,4 +1,4 @@
-import { useState, useCallback, useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppContext } from '../../services/appContext';
 import IngredientCard from '../ingredient-card/ingredient-card';
@@ -7,18 +7,17 @@ import Modal from '../modal/modal';
 import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = () => {
-    const { ingredients, ingredientsError } = useContext(AppContext);
-    const [state, setState] = useState({
-        modalIsOpen: false,
-        ingredientData: {},
-    });
+    const {
+        ingredients,
+        ingredientsError,
+        modalIsOpen,
+        ingredientsInfo,
+        dispatch,
+    } = useContext(AppContext);
 
     const onIngredientCardClick = useCallback(data => {
-        setState({
-            modalIsOpen: true,
-            ingredientData: data,
-        })
-    }, []);
+        dispatch({ type: 'addIngredient', payload: data });
+    }, [dispatch]);
 
     if (ingredientsError) {
         return (
@@ -97,12 +96,12 @@ const BurgerIngredients = () => {
                 </ul>
             </div>
             {
-                state.modalIsOpen ? (
+                modalIsOpen ? (
                     <Modal
                         title="Детали ингредиента"
-                        onClose={() => setState({ ...state, modalIsOpen: false })}
+                        onClose={() => dispatch({ type: 'closeModal' })}
                     >
-                        <IngredientDetails data={state.ingredientData} />
+                        <IngredientDetails data={ingredientsInfo} />
                     </Modal>
                 ) : null
             }
