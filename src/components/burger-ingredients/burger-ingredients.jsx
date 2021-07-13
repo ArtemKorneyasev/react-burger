@@ -29,7 +29,7 @@ const BurgerIngredients = () => {
         return (
             <section className={styles.section}>
                 <h1 className={`text text_type_main-large ${styles.title}`}>
-                    Ошибка получения данных...
+                    {ingredientsError}
                 </h1>
             </section>
         );

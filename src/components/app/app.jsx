@@ -11,7 +11,7 @@ import styles from './app.module.css';
 
 const initialState = {
 	ingredients: [],
-	ingredientsError: false,
+	ingredientsError: '',
 	ingredientInfo: {},
 	burgerData: {
 		bun: {},
@@ -42,7 +42,10 @@ const App = () => {
 				const { data } = await response.json();
 				dispatch({ type: 'ingredientsFetch', payload: data });
 			} catch (error) {
-				dispatch({ type: 'ingredientsError' });
+				dispatch({
+					type: 'ingredientsError',
+					payload: 'Ошибка получения данных...',
+				});
 			}
         };
 
