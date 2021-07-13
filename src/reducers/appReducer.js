@@ -3,7 +3,7 @@ export const appReducer = (state, action) => {
 		case 'ingredientsFetch':
 			return { ...state, ingredients: action.payload };
 		case 'ingredientsError':
-			return { ...state, ingredientsError: true };
+			return { ...state, ingredientsError: action.payload };
 		case 'addBun':
 			return {
 				...state,
