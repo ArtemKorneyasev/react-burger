@@ -1,66 +1,31 @@
 import { useReducer, useEffect } from 'react';
 import { AppContext } from '../../services/appContext';
+import { appReducer } from '../../reducers/appReducer';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import IngredientDetails from '../ingredients-details/ingredient-details';
+import OrderDetails from '../order-details/order-details';
+import Modal from '../modal/modal';
 import styles from './app.module.css';
 
 const initialState = {
 	ingredients: [],
 	ingredientsError: false,
+	ingredientInfo: {},
 	burgerData: {
 		bun: {},
 		toppings: [],
 	},
+	orderDetails: null,
+	orderError: '',
+	modalMode: '',
 	modalIsOpen: false,
-	ingredientInfo: {},
-};
-
-const reducer = (state, action) => {
-	switch (action.type) {
-		case 'ingredientsFetch':
-			return { ...state, ingredients: action.payload };
-		case 'ingredientsError':
-			return { ...state, ingredientsError: true };
-		case 'addIngredient':
-			if (action.payload.type === 'bun') {
-				return prevState => ({
-					...prevState,
-					burgerData: {
-						...prevState.burgerData,
-						bun: Object.assign(state.burgerData.bun, action.payload),
-					},
-					modalIsOpen: true,
-					ingredientInfo: Object.assign(state.ingredientInfo, action.payload),
-				});
-			}
-
-			return prevState => ({
-				...prevState,
-				burgerData: {
-					...prevState.burgerData,
-					toppings: state.burgerData.toppings.push(action.payload),
-				},
-				modalIsOpen: true,
-				ingredientInfo: Object.assign(state.ingredientInfo, action.payload),
-			});
-		case 'removeTopping':
-			return prevState => ({
-				...prevState,
-				burgerData: {
-					...prevState.burgerData,
-					toppings: state.burgerData.toppings.splice(action.index, 1),
-				}
-			});
-		case 'closeModal':
-			return { ...state, modalIsOpen: false };
-		default:
-			throw new Error(`Unknown action type: ${action.type}`);
-	}
+	totalPrice: 0,
 };
 
 const App = () => {
-	const [state, dispatch] = useReducer(reducer, initialState, undefined);
+	const [state, dispatch] = useReducer(appReducer, initialState, undefined);
 
 	useEffect(() => {
 		const request = new Request(
@@ -71,7 +36,7 @@ const App = () => {
 				const response = await fetch(request);
 
 				if (!response.ok) {
-					throw new Error(`Произошла ошибка, cтатус: ${response.status}`);
+					throw new Error(`Response error, status: ${response.status}`);
 				}
 
 				const { data } = await response.json();
@@ -82,7 +47,7 @@ const App = () => {
         };
 
         getIngredientsData();
-    }, [])
+    }, [dispatch])
 
 	return (
 		<>
@@ -94,14 +59,36 @@ const App = () => {
 						ingredientsError: state.ingredientsError,
 						burgerData: state.burgerData,
 						modalIsOpen: state.modalIsOpen,
-						ingredientInfo: state.ingredientInfo,
+						totalPrice: state.totalPrice,
 						dispatch,
 					}}
 				>
 					<BurgerIngredients />
-					{/* <BurgerConstructor /> */}
+					<BurgerConstructor />
 				</AppContext.Provider>
 			</main>
+			{
+				state.modalIsOpen &&
+				state.modalMode === 'ingredient-details' ? (
+					<Modal
+						title="Детали ингредиента"
+						onClose={() => dispatch({ type: 'closeModal' })}
+					>
+						<IngredientDetails data={state.ingredientInfo} />
+					</Modal>
+				) : null
+			}
+			{
+				state.modalIsOpen &&
+				state.modalMode === 'order-details' ? (
+					<Modal onClose={() => dispatch({ type: 'closeModal' })}>
+						<OrderDetails
+							orderDetails={state.orderDetails}
+							orderError={state.orderError}
+						/>
+					</Modal>
+				) : null
+			}
 		</>
 	);
 };

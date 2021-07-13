@@ -1,86 +1,79 @@
-import React, { useState, useMemo, useEffect, useContext, useCallback } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppContext } from '../../services/appContext';
-import OrderDetails from '../order-details/order-details';
-import Modal from '../modal/modal';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
-    const [state, setState] = useState({
-        modalIsOpen: false,
-        totalPrice: 0,
-        orderDetails: null,
-        orderError: false,
-    });
-    const { ingredients, ingredientsError } = useContext(AppContext);
+    const {
+        ingredientsError,
+        burgerData,
+        totalPrice,
+        dispatch,
+    } = useContext(AppContext);
+    const { bun, toppings } = burgerData;
 
-    const randomIngredients = useMemo(() => {
-        const randBun = [];
-        const randToppings = [];
-        const randIndex = arr => Math.floor(Math.random() * arr.length);
+    useEffect(() => {
+        const bunsPrice = bun.price * 2 || 0;
+        const toppingsPrice = toppings.reduce((total, current) => {
+            return total + current.price;
+        }, 0);
 
-        if (ingredients.length) {
-            const buns = ingredients.filter(ingredient => ingredient.type === 'bun');
-            const toppings = ingredients.filter(ingredient => ingredient.type !== 'bun');
-
-            randBun.push(buns[randIndex(buns)]);
-            for (let i = 1; i <= 10; i++) {
-                randToppings.push(toppings[randIndex(toppings)]);
-            }
-
-            const toppingsPrice = randToppings.reduce((total, current) => {
-                return total + current.price;
-            }, 0);
-            const bunsPrice = randBun[0].price * 2;
-
-            setState({
-                ...state,
-                totalPrice: (toppingsPrice + bunsPrice),
-            });
-        }
-
-        return { randToppings, randBun };
-    }, [ingredients]);
+        dispatch({
+            type: 'calcTotalPrice',
+            payload: (bunsPrice + toppingsPrice),
+        });
+    }, [bun, toppings, dispatch]);
 
     const onSubmit = () => {
-        const requestData = {
-            ingredients: Object.keys(randomIngredients).flatMap(ingredientType =>
-                randomIngredients[ingredientType].map(
-                    ingredient => ingredient._id,
-                ),
-            ),
-        };
-        const request = new Request(
-            'https://norma.nomoreparties.space/api/orders',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData),
-            },
-        );
+        const { bun } = burgerData;
 
-        (async () => {
-            try {
-                const response = await fetch(request);
-
-                if (!response.ok) {
-                    throw new Error(`Произошла ошибка, cтатус: ${response.status}`);
+        if (bun._id) {
+            const requestData = {
+                ingredients: Object.keys(burgerData).flatMap(ingredientType => {
+                    switch (ingredientType) {
+                        case 'bun':
+                            return burgerData.bun._id;
+                        case 'toppings':
+                            return burgerData[ingredientType].map(
+                                ingredient => ingredient._id,
+                            );
+                        default:
+                            return [];
+                    }
+                }),
+            };
+            const request = new Request(
+                'https://norma.nomoreparties.space/api/orders',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData),
+                },
+            );
+    
+            (async () => {
+                try {
+                    const response = await fetch(request);
+    
+                    if (!response.ok) {
+                        throw new Error(`Response error, status: ${response.status}`);
+                    }
+    
+                    const data = await response.json();
+                    dispatch({ type: 'makeOrder', payload: data });
+                } catch (error) {
+                    dispatch({
+                        type: 'orderError',
+                        payload: 'Ошибка получения данных...',
+                    });
                 }
-
-                const data = await response.json();
-                setState({
-                    ...state,
-                    modalIsOpen: true,
-                    orderDetails: data,
-                });
-            } catch (error) {
-                setState({
-                    ...state,
-                    modalIsOpen: true,
-                    orderError: true,
-                });
-            }
-        })();
+            })();
+        } else {
+            dispatch({
+                type: 'orderError',
+                payload: 'Должна быть выбрана булка для бургера!',
+            });
+        }
     };
 
     if (ingredientsError) {
@@ -97,23 +90,21 @@ const BurgerConstructor = () => {
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div className={styles.ingredientsWrapper}>
                 {
-                    randomIngredients.randBun.map(bun => (
-                        <React.Fragment key={bun._id}>
-                            <ConstructorElement
-                                type="top"
-                                isLocked={true}
-                                text={bun.name}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}
-                            />
-                        </React.Fragment>
-                    ))
+                    bun._id && (
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={bun.name}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                        />
+                    )
                 }
                 <ul className={styles.toppings}>
                     {
-                        randomIngredients.randToppings.map(topping => (
+                        toppings.map((topping, index) => (
                             <li
-                                key={topping._id}
+                                key={`${topping._id}-${index}`}
                                 style={{ width: 568, marginRight: 18 }}
                             >
                                 <DragIcon type="primary" />
@@ -122,14 +113,18 @@ const BurgerConstructor = () => {
                                     text={topping.name}
                                     price={topping.price}
                                     thumbnail={topping.image_mobile}
+                                    handleClose={() => dispatch({
+                                        type: 'removeTopping',
+                                        payload: index,   
+                                    })}
                                 />
                             </li>
                         ))
                     }
                 </ul>
                 {
-                    randomIngredients.randBun.map(bun => (
-                        <React.Fragment key={bun._id}>
+                    bun._id && (
+                        <div className={styles.bottomBunWrapper}>
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
@@ -137,29 +132,19 @@ const BurgerConstructor = () => {
                                 price={bun.price}
                                 thumbnail={bun.image_mobile}
                             />
-                        </React.Fragment>
-                    ))
+                        </div>
+                    )
                 }
             </div>
             <div className={styles.submitBlock}>
                 <span className={`${styles.totalPrice} text text_type_digits-medium`}>
-                    {state.totalPrice}&nbsp;
+                    {totalPrice}&nbsp;
                     <CurrencyIcon type="primary" />
                 </span>
                 <Button type="primary" size="large" onClick={onSubmit}>
                     Оформить заказ
                 </Button>
             </div>
-            {
-                state.modalIsOpen ? (
-                    <Modal onClose={() => setState({ ...state, modalIsOpen: false })}>
-                        <OrderDetails
-                            orderDetails={state.orderDetails}
-                            orderError={state.error}
-                        />
-                    </Modal>
-                ) : null
-            }
         </section>
     );
 }

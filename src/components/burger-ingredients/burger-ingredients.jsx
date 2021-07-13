@@ -2,21 +2,27 @@ import { useCallback, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppContext } from '../../services/appContext';
 import IngredientCard from '../ingredient-card/ingredient-card';
-import IngredientDetails from '../ingredients-details/ingredient-details';
-import Modal from '../modal/modal';
 import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = () => {
     const {
         ingredients,
         ingredientsError,
-        modalIsOpen,
-        ingredientsInfo,
         dispatch,
     } = useContext(AppContext);
 
     const onIngredientCardClick = useCallback(data => {
-        dispatch({ type: 'addIngredient', payload: data });
+        switch (data.type) {
+            case 'bun':
+                dispatch({ type: 'addBun', payload: data });
+                break;
+            case 'sauce':
+            case 'main':
+                dispatch({ type: 'addTopping', payload: data });
+                break;
+            default:
+                break
+        }
     }, [dispatch]);
 
     if (ingredientsError) {
@@ -95,16 +101,6 @@ const BurgerIngredients = () => {
                     }
                 </ul>
             </div>
-            {
-                modalIsOpen ? (
-                    <Modal
-                        title="Детали ингредиента"
-                        onClose={() => dispatch({ type: 'closeModal' })}
-                    >
-                        <IngredientDetails data={ingredientsInfo} />
-                    </Modal>
-                ) : null
-            }
         </section>
     );
 };

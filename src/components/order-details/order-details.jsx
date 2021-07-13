@@ -7,8 +7,8 @@ const OrderDetails = (props) => {
 
     if (orderError) {
         return (
-            <span>
-                Ошибка получения данных...
+            <span className="text text_type_main-medium">
+                {orderError}
             </span>
         );
     }
@@ -47,7 +47,7 @@ OrderDetails.propTypes = {
         }).isRequired,
         success: PropTypes.bool.isRequired,
     }),
-    orderError: PropTypes.bool,
+    orderError: PropTypes.string,
 };
 
 export default OrderDetails;

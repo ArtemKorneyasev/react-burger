@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    // temporary disabled
-    // Counter,
-    CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 
 const IngredientCard = (props) => {
@@ -28,7 +24,10 @@ const IngredientCard = (props) => {
                 <span className={`${styles.ingredientName} text text_type_main-default`}>
                     {data.name}
                 </span>
-                {/* <Counter count={1} size="default" /> */}
+                {
+                    // // @TODO(2021-07-12) - need to implement counter
+                    // count > 0 && <Counter count={count} size="default" />
+                }
             </li>
         </div>
     );
