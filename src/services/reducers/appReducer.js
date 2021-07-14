@@ -1,10 +1,22 @@
+import {
+	INGREDIENTS_FETCH,
+	INGREDIENTS_ERROR,
+	ADD_BUN,
+	ADD_TOPPING,
+	DELETE_TOPPING,
+	MAKE_ORDER,
+	ORDER_ERROR,
+	CLOSE_MODAL,
+	CALC_TOTAL_PRICE,
+} from '../actions/appActions';
+
 export const appReducer = (state, action) => {
     switch (action.type) {
-		case 'ingredientsFetch':
+		case INGREDIENTS_FETCH:
 			return { ...state, ingredients: action.payload };
-		case 'ingredientsError':
+		case INGREDIENTS_ERROR:
 			return { ...state, ingredientsError: action.payload };
-		case 'addBun':
+		case ADD_BUN:
 			return {
 				...state,
 				burgerData: {
@@ -15,7 +27,7 @@ export const appReducer = (state, action) => {
 				modalIsOpen: true,
 				ingredientInfo: action.payload,
 			};
-		case 'addTopping':
+		case ADD_TOPPING:
 			return {
 				...state,
 				burgerData: {
@@ -26,7 +38,7 @@ export const appReducer = (state, action) => {
 				modalIsOpen: true,
 				ingredientInfo: action.payload,
 			};
-		case 'removeTopping':
+		case DELETE_TOPPING:
 			return {
 				...state,
 				burgerData: {
@@ -36,26 +48,25 @@ export const appReducer = (state, action) => {
 					),
 				},
 			};
-		case 'makeOrder':
+		case MAKE_ORDER:
 			return {
 				...state,
 				modalMode: 'order-details',
-				modalIsOpen: true,
-				
+				modalIsOpen: true,			
 				orderDetails: action.payload,
 			};
-		case 'orderError':
+		case ORDER_ERROR:
 			return {
 				...state,
 				modalMode: 'order-details',
 				modalIsOpen: true,
 				orderError: action.payload,
 			};
-		case 'closeModal':
+		case CLOSE_MODAL:
 			return { ...state, modalIsOpen: false };
-		case 'calcTotalPrice':
+		case CALC_TOTAL_PRICE:
 			return { ...state, totalPrice: action.payload };
 		default:
-			throw new Error(`Unknown action type: ${action.type}`);
+			return state;
 	}
 };

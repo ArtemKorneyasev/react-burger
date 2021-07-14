@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppContext } from '../../services/appContext';
+import { ADD_BUN, ADD_TOPPING } from '../../services/actions/appActions';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './burger-ingredients.module.css';
 
@@ -14,11 +15,11 @@ const BurgerIngredients = () => {
     const onIngredientCardClick = useCallback(data => {
         switch (data.type) {
             case 'bun':
-                dispatch({ type: 'addBun', payload: data });
+                dispatch({ type: ADD_BUN, payload: data });
                 break;
             case 'sauce':
             case 'main':
-                dispatch({ type: 'addTopping', payload: data });
+                dispatch({ type: ADD_TOPPING, payload: data });
                 break;
             default:
                 break

@@ -1,6 +1,11 @@
 import { useReducer, useEffect } from 'react';
 import { AppContext } from '../../services/appContext';
-import { appReducer } from '../../reducers/appReducer';
+import {
+	INGREDIENTS_FETCH,
+	INGREDIENTS_ERROR,
+	CLOSE_MODAL,
+ } from '../../services/actions/appActions';
+import { appReducer } from '../../services/reducers/appReducer';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
@@ -40,10 +45,10 @@ const App = () => {
 				}
 
 				const { data } = await response.json();
-				dispatch({ type: 'ingredientsFetch', payload: data });
+				dispatch({ type: INGREDIENTS_FETCH, payload: data });
 			} catch (error) {
 				dispatch({
-					type: 'ingredientsError',
+					type: INGREDIENTS_ERROR,
 					payload: 'Ошибка получения данных...',
 				});
 			}
@@ -75,7 +80,7 @@ const App = () => {
 				state.modalMode === 'ingredient-details' ? (
 					<Modal
 						title="Детали ингредиента"
-						onClose={() => dispatch({ type: 'closeModal' })}
+						onClose={() => dispatch({ type: CLOSE_MODAL })}
 					>
 						<IngredientDetails data={state.ingredientInfo} />
 					</Modal>
@@ -84,7 +89,7 @@ const App = () => {
 			{
 				state.modalIsOpen &&
 				state.modalMode === 'order-details' ? (
-					<Modal onClose={() => dispatch({ type: 'closeModal' })}>
+					<Modal onClose={() => dispatch({ type: CLOSE_MODAL })}>
 						<OrderDetails
 							orderDetails={state.orderDetails}
 							orderError={state.orderError}

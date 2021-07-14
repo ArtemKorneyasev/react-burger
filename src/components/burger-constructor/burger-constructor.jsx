@@ -1,6 +1,12 @@
 import React, { useContext, useEffect } from 'react';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppContext } from '../../services/appContext';
+import {
+    CALC_TOTAL_PRICE,
+    MAKE_ORDER,
+    ORDER_ERROR,
+    DELETE_TOPPING,
+} from '../../services/actions/appActions';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = () => {
@@ -19,7 +25,7 @@ const BurgerConstructor = () => {
         }, 0);
 
         dispatch({
-            type: 'calcTotalPrice',
+            type: CALC_TOTAL_PRICE,
             payload: (bunsPrice + toppingsPrice),
         });
     }, [bun, toppings, dispatch]);
@@ -60,17 +66,17 @@ const BurgerConstructor = () => {
                     }
     
                     const data = await response.json();
-                    dispatch({ type: 'makeOrder', payload: data });
+                    dispatch({ type: MAKE_ORDER, payload: data });
                 } catch (error) {
                     dispatch({
-                        type: 'orderError',
+                        type: ORDER_ERROR,
                         payload: 'Ошибка получения данных...',
                     });
                 }
             })();
         } else {
             dispatch({
-                type: 'orderError',
+                type: ORDER_ERROR,
                 payload: 'Должна быть выбрана булка для бургера!',
             });
         }
@@ -114,7 +120,7 @@ const BurgerConstructor = () => {
                                     price={topping.price}
                                     thumbnail={topping.image_mobile}
                                     handleClose={() => dispatch({
-                                        type: 'removeTopping',
+                                        type: DELETE_TOPPING,
                                         payload: index,   
                                     })}
                                 />
