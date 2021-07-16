@@ -70,7 +70,6 @@ const appReducer = (state = initialState, action) => {
 				modalMode: 'order-details',
 				modalIsOpen: true,			
 				orderDetails: action.payload,
-				orderError: '',
 			};
 		case ORDER_ERROR:
 			return {
@@ -80,7 +79,13 @@ const appReducer = (state = initialState, action) => {
 				orderError: action.payload,
 			};
 		case CLOSE_MODAL:
-			return { ...state, modalIsOpen: false };
+			return {
+				...state,
+				ingredientInfo: {},
+				modalIsOpen: false,
+				modalMode: '',
+				orderError: '',
+			};
 		case CALC_TOTAL_PRICE:
 			return { ...state, totalPrice: action.payload };
 		default:

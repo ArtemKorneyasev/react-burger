@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 
 const IngredientCard = (props) => {
     const { data, onClick } = props;
+    const [count, setCount] = useState(0);
+    const burgerData = useSelector(state => state.app.burgerData);
+
+    useEffect(() => {
+        const { bun, toppings } = burgerData;
+
+        if (data.type === 'bun') {
+            setCount(
+                Object.values(bun).filter(
+                    value => value === data._id,
+                ).length
+            );
+        } else {
+            setCount(
+                toppings.filter(
+                    topping => topping._id === data._id,
+                ).length
+            );
+        }
+    }, [burgerData, data]);
 
     return (
         <div
@@ -25,8 +46,7 @@ const IngredientCard = (props) => {
                     {data.name}
                 </span>
                 {
-                    // // @TODO(2021-07-12) - need to implement counter
-                    // count > 0 && <Counter count={count} size="default" />
+                    count > 0 && <Counter count={count} size="default" />
                 }
             </li>
         </div>
