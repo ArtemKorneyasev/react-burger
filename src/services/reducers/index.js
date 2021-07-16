@@ -1,3 +1,4 @@
+import { combineReducers } from 'redux';
 import {
 	INGREDIENTS_FETCH,
 	INGREDIENTS_ERROR,
@@ -8,9 +9,24 @@ import {
 	ORDER_ERROR,
 	CLOSE_MODAL,
 	CALC_TOTAL_PRICE,
-} from '../actions/appActions';
+} from '../actions';
 
-export const appReducer = (state, action) => {
+const initialState = {
+	ingredients: [],
+	ingredientsError: '',
+	ingredientInfo: {},
+	burgerData: {
+		bun: {},
+		toppings: [],
+	},
+	orderDetails: {},
+	orderError: '',
+	modalMode: '',
+	modalIsOpen: false,
+	totalPrice: 0,
+};
+
+const appReducer = (state = initialState, action) => {
     switch (action.type) {
 		case INGREDIENTS_FETCH:
 			return { ...state, ingredients: action.payload };
@@ -71,3 +87,5 @@ export const appReducer = (state, action) => {
 			return state;
 	}
 };
+
+export const rootReducer = combineReducers({ app: appReducer });
