@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useDrag } from "react-dnd";
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
@@ -8,6 +9,10 @@ const IngredientCard = (props) => {
     const { data, onClick } = props;
     const [count, setCount] = useState(0);
     const burgerData = useSelector(state => state.app.burgerData);
+    const [, dragRef] = useDrag({
+        type: "ingredient-card",
+        item: { id: data._id },
+    });
 
     useEffect(() => {
         const { bun, toppings } = burgerData;
@@ -29,6 +34,7 @@ const IngredientCard = (props) => {
 
     return (
         <div
+            ref={dragRef}
             className={styles.ingredientWrapper}
             onClick={() => onClick(data)}
         >

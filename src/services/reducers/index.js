@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {
 	INGREDIENTS_FETCH,
 	INGREDIENTS_ERROR,
+	SHOW_INGREDIENT_INFO,
 	ADD_BUN,
 	ADD_TOPPING,
 	DELETE_TOPPING,
@@ -32,6 +33,13 @@ const appReducer = (state = initialState, action) => {
 			return { ...state, ingredients: action.payload };
 		case INGREDIENTS_ERROR:
 			return { ...state, ingredientsError: action.payload };
+		case SHOW_INGREDIENT_INFO:
+			return {
+				...state,
+				modalMode: 'ingredient-details',
+				modalIsOpen: true,
+				ingredientInfo: action.payload,
+			};
 		case ADD_BUN:
 			return {
 				...state,
@@ -39,9 +47,6 @@ const appReducer = (state = initialState, action) => {
 					...state.burgerData,
 					bun: action.payload,
 				},
-				modalMode: 'ingredient-details',
-				modalIsOpen: true,
-				ingredientInfo: action.payload,
 			};
 		case ADD_TOPPING:
 			return {
@@ -50,9 +55,6 @@ const appReducer = (state = initialState, action) => {
 					...state.burgerData,
 					toppings: [...state.burgerData.toppings, action.payload],
 				},
-				modalMode: 'ingredient-details',
-				modalIsOpen: true,
-				ingredientInfo: action.payload,
 			};
 		case DELETE_TOPPING:
 			return {

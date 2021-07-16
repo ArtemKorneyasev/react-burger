@@ -2,6 +2,7 @@ import { getIngredientsRequest, getOrderDetailsRequest } from '../api';
 
 export const INGREDIENTS_FETCH = 'INGREDIENTS_FETCH';
 export const INGREDIENTS_ERROR = 'INGREDIENTS_ERROR';
+export const SHOW_INGREDIENT_INFO = 'SHOW_INGREDIENT_INFO';
 export const ADD_BUN = 'ADD_BUN';
 export const ADD_TOPPING = 'ADD_TOPPING';
 export const DELETE_TOPPING = 'DELETE_TOPPING';
@@ -24,6 +25,15 @@ export const getIngredients = () => {
                     payload: 'Ошибка получения данных...',
                 });
             }
+        });
+    };
+};
+
+export const showIngredientInfo = data => {
+    return dispatch => {
+        dispatch({
+            type: SHOW_INGREDIENT_INFO,
+            payload: data,
         });
     };
 };

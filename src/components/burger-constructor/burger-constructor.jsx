@@ -1,15 +1,27 @@
 import { useEffect } from 'react';
+import PropsTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
+import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getTotalPrice, getOrderDetails, deleteTopping } from '../../services/actions';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = () => {
+const BurgerConstructor = (props) => {
+    const { onDropHandler } = props;
     const dispatch = useDispatch();
     const { burgerData, totalPrice } = useSelector(state => ({
         burgerData: state.app.burgerData,
         totalPrice: state.app.totalPrice,
     }));
+    const [{isHover}, dropTarget] = useDrop({
+        accept: "ingredient-card",
+        drop(itemId) {
+            onDropHandler(itemId);
+        },
+        collect: monitor => ({
+            isHover: monitor.isOver(),
+        }),
+    });
     const { bun, toppings } = burgerData;
 
     useEffect(() => {
@@ -22,7 +34,15 @@ const BurgerConstructor = () => {
 
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
-            <div className={styles.ingredientsWrapper}>
+            <div
+                ref={dropTarget}
+                style={{
+                    border: '1px dashed',
+                    borderRadius: 40,
+                    borderColor: isHover ? '#8585AD' : 'transparent',
+                }}
+                className={styles.ingredientsWrapper}
+            >
                 {
                     bun._id && (
                         <ConstructorElement
@@ -79,5 +99,9 @@ const BurgerConstructor = () => {
         </section>
     );
 }
+
+BurgerConstructor.propsTypes = {
+    onDropHandler: PropsTypes.func,
+};
 
 export default BurgerConstructor;

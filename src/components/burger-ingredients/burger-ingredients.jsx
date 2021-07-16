@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { addIngredient } from '../../services/actions';
+import { showIngredientInfo } from '../../services/actions';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './burger-ingredients.module.css';
 
@@ -13,7 +13,7 @@ const BurgerIngredients = () => {
     }));
 
     const onIngredientCardClick = useCallback(data => {
-        dispatch(addIngredient(data));
+        dispatch(showIngredientInfo(data));
     }, [dispatch]);
 
     if (ingredientsError) {
