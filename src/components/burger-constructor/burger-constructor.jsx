@@ -1,43 +1,88 @@
-import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect } from 'react';
+import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { AppContext } from '../../services/appContext';
 import {
-    Button,
-    ConstructorElement,
-    CurrencyIcon,
-    DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import OrderDetails from '../order-details/order-details';
-import Modal from '../modal/modal';
+    CALC_TOTAL_PRICE,
+    MAKE_ORDER,
+    ORDER_ERROR,
+    DELETE_TOPPING,
+} from '../../services/actions/appActions';
 import styles from './burger-constructor.module.css';
 
-const BurgerConstructor = (props) => {
-    const { ingredients, hasError } = props;
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-    let totalPrice = 2510;
+const BurgerConstructor = () => {
+    const {
+        ingredientsError,
+        burgerData,
+        totalPrice,
+        dispatch,
+    } = useContext(AppContext);
+    const { bun, toppings } = burgerData;
 
-    const randomToppings = useMemo(() => {
-        const randToppings = [];
-        if (ingredients.length) {
-            const modIngredients = ingredients.filter(
-                ingredient => ingredient.type !== 'bun',
+    useEffect(() => {
+        const bunsPrice = bun.price * 2 || 0;
+        const toppingsPrice = toppings.reduce((total, current) => {
+            return total + current.price;
+        }, 0);
+
+        dispatch({
+            type: CALC_TOTAL_PRICE,
+            payload: (bunsPrice + toppingsPrice),
+        });
+    }, [bun, toppings, dispatch]);
+
+    const onSubmit = () => {
+        const { bun } = burgerData;
+
+        if (bun._id) {
+            const requestData = {
+                ingredients: Object.keys(burgerData).flatMap(ingredientType => {
+                    switch (ingredientType) {
+                        case 'bun':
+                            return burgerData.bun._id;
+                        case 'toppings':
+                            return burgerData[ingredientType].map(
+                                ingredient => ingredient._id,
+                            );
+                        default:
+                            return [];
+                    }
+                }),
+            };
+            const request = new Request(
+                'https://norma.nomoreparties.space/api/orders',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(requestData),
+                },
             );
-
-            for (let i = 1; i <= 10; i++) {
-                const randIndex = Math.floor(
-                    Math.random() * modIngredients.length,
-                );
-                randToppings.push(modIngredients[randIndex]);
-            }
-
-            totalPrice += randToppings.reduce((total, current) => {
-                return total + current.price;
-            }, 0);
+    
+            (async () => {
+                try {
+                    const response = await fetch(request);
+    
+                    if (!response.ok) {
+                        throw new Error(`Response error, status: ${response.status}`);
+                    }
+    
+                    const data = await response.json();
+                    dispatch({ type: MAKE_ORDER, payload: data });
+                } catch (error) {
+                    dispatch({
+                        type: ORDER_ERROR,
+                        payload: 'Ошибка получения данных...',
+                    });
+                }
+            })();
+        } else {
+            dispatch({
+                type: ORDER_ERROR,
+                payload: 'Должна быть выбрана булка для бургера!',
+            });
         }
+    };
 
-        return randToppings;
-    }, [ingredients]);
-
-    if (hasError) {
+    if (ingredientsError) {
         return (
             <section style={{ width: 600 }}>
                 <h1 className={`text text_type_main-large ${styles.title}`}>
@@ -50,18 +95,22 @@ const BurgerConstructor = (props) => {
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div className={styles.ingredientsWrapper}>
-                <ConstructorElement
-                    type="top"
-                    isLocked={true}
-                    text="Краторная булка N-200i (верх)"
-                    price={1255}
-                    thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
-                />
+                {
+                    bun._id && (
+                        <ConstructorElement
+                            type="top"
+                            isLocked={true}
+                            text={bun.name}
+                            price={bun.price}
+                            thumbnail={bun.image_mobile}
+                        />
+                    )
+                }
                 <ul className={styles.toppings}>
                     {
-                        randomToppings.map(topping => (
+                        toppings.map((topping, index) => (
                             <li
-                                key={topping._id}
+                                key={`${topping._id}-${index}`}
                                 style={{ width: 568, marginRight: 18 }}
                             >
                                 <DragIcon type="primary" />
@@ -70,61 +119,40 @@ const BurgerConstructor = (props) => {
                                     text={topping.name}
                                     price={topping.price}
                                     thumbnail={topping.image_mobile}
+                                    handleClose={() => dispatch({
+                                        type: DELETE_TOPPING,
+                                        payload: index,   
+                                    })}
                                 />
                             </li>
                         ))
                     }
                 </ul>
-                <ConstructorElement
-                    type="bottom"
-                    isLocked={true}
-                    text="Краторная булка N-200i (низ)"
-                    price={1255}
-                    thumbnail="https://code.s3.yandex.net/react/code/bun-02-mobile.png"
-                />
+                {
+                    bun._id && (
+                        <div className={styles.bottomBunWrapper}>
+                            <ConstructorElement
+                                type="bottom"
+                                isLocked={true}
+                                text={bun.name}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}
+                            />
+                        </div>
+                    )
+                }
             </div>
             <div className={styles.submitBlock}>
                 <span className={`${styles.totalPrice} text text_type_digits-medium`}>
                     {totalPrice}&nbsp;
                     <CurrencyIcon type="primary" />
                 </span>
-                <Button
-                    type="primary"
-                    size="large"
-                    onClick={() => setModalIsOpen(true)}
-                >
+                <Button type="primary" size="large" onClick={onSubmit}>
                     Оформить заказ
                 </Button>
             </div>
-            {
-                modalIsOpen ? (
-                    <Modal onClose={() => setModalIsOpen(false)}>
-                        <OrderDetails />
-                    </Modal>
-                ) : null
-            }
         </section>
     );
 }
-
-BurgerConstructor.propTypes = {
-    ingredients: PropTypes.arrayOf(
-        PropTypes.shape({
-            _id: PropTypes.string,
-            name: PropTypes.string,
-            type: PropTypes.string,
-            proteins: PropTypes.number,
-            fat: PropTypes.number,
-            carbohydrates: PropTypes.number,
-            calories: PropTypes.number,
-            price: PropTypes.number,
-            image: PropTypes.string,
-            image_mobile: PropTypes.string,
-            image_large: PropTypes.string,
-            __v: PropTypes.number,
-        }).isRequired,
-    ),
-    hasError: PropTypes.bool,
-};
 
 export default BurgerConstructor;

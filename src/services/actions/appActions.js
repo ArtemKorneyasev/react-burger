@@ -1,0 +1,9 @@
+export const INGREDIENTS_FETCH = 'INGREDIENTS_FETCH';
+export const INGREDIENTS_ERROR = 'INGREDIENTS_ERROR';
+export const ADD_BUN = 'ADD_BUN';
+export const ADD_TOPPING = 'ADD_TOPPING';
+export const DELETE_TOPPING = 'DELETE_TOPPING';
+export const MAKE_ORDER = 'MAKE_ORDER';
+export const ORDER_ERROR = 'ORDER_ERROR';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const CALC_TOTAL_PRICE = 'CALC_TOTAL_PRICE';

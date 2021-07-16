@@ -1,4 +1,5 @@
-React Burger App
+A space burger shop app develop on React.
 
-### Start
-npm start
+
+### To start project use:
+npm install && npm start
