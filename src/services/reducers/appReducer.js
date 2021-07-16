@@ -54,6 +54,7 @@ export const appReducer = (state, action) => {
 				modalMode: 'order-details',
 				modalIsOpen: true,			
 				orderDetails: action.payload,
+				orderError: '',
 			};
 		case ORDER_ERROR:
 			return {
