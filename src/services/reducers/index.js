@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { moveInArray } from '../helpers';
 import {
 	INGREDIENTS_FETCH,
 	INGREDIENTS_ERROR,
@@ -6,6 +7,7 @@ import {
 	ADD_BUN,
 	ADD_TOPPING,
 	DELETE_TOPPING,
+	SORT_TOPPINGS,
 	MAKE_ORDER,
 	ORDER_ERROR,
 	CLOSE_MODAL,
@@ -63,6 +65,19 @@ const appReducer = (state = initialState, action) => {
 					...state.burgerData,
 					toppings: state.burgerData.toppings.filter((topping, index) =>
 						index !== action.payload,
+					),
+				},
+			};
+		case SORT_TOPPINGS:
+			const { index, atIndex } = action.payload;
+			return {
+				...state,
+				burgerData: {
+					...state.burgerData,
+					toppings: moveInArray(
+						[...state.burgerData.toppings],
+						index,
+						atIndex,
 					),
 				},
 			};

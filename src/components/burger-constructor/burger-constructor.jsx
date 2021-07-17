@@ -1,9 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import PropsTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getTotalPrice, getOrderDetails, deleteTopping } from '../../services/actions';
+import { getTotalPrice, getOrderDetails, deleteTopping, sortToppings } from '../../services/actions';
+import MovableTopping from '../movable-topping/movable-topping';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = (props) => {
@@ -13,8 +14,10 @@ const BurgerConstructor = (props) => {
         burgerData: state.app.burgerData,
         totalPrice: state.app.totalPrice,
     }));
-    const [{isHover}, dropTarget] = useDrop({
-        accept: "ingredient-card",
+    const { bun, toppings } = burgerData;
+
+    const [{isHover}, dropIngredientCard] = useDrop({
+        accept: 'ingredient-card',
         drop(itemId) {
             onDropHandler(itemId);
         },
@@ -22,11 +25,26 @@ const BurgerConstructor = (props) => {
             isHover: monitor.isOver(),
         }),
     });
-    const { bun, toppings } = burgerData;
+    const [, dropTopping] = useDrop({ accept: 'sort-toppings' });
 
     useEffect(() => {
         dispatch(getTotalPrice(burgerData));
     }, [dispatch, burgerData]);
+
+    const findTopping = useCallback((id) => {
+        const topping = toppings.filter(
+            topping => topping._id === id,
+        )[0];
+
+        return {
+            topping,
+            index: toppings.indexOf(topping),
+        };
+    }, [toppings]);
+
+    const moveTopping = useCallback((index, atIndex) => {
+        dispatch(sortToppings(index, atIndex));
+    }, [dispatch]);
 
     const onSubmit = () => {
         dispatch(getOrderDetails(burgerData));
@@ -35,7 +53,7 @@ const BurgerConstructor = (props) => {
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div
-                ref={dropTarget}
+                ref={dropIngredientCard}
                 style={{
                     border: '1px dashed',
                     borderRadius: 40,
@@ -54,21 +72,31 @@ const BurgerConstructor = (props) => {
                         />
                     )
                 }
-                <ul className={styles.toppings}>
+                <ul
+                    ref={dropTopping}
+                    className={styles.toppings}
+                >
                     {
                         toppings.map((topping, index) => (
                             <li
                                 key={`${topping._id}-${index}`}
                                 style={{ width: 568, marginRight: 18 }}
                             >
-                                <DragIcon type="primary" />
-                                <ConstructorElement
-                                    isLocked={false}
-                                    text={topping.name}
-                                    price={topping.price}
-                                    thumbnail={topping.image_mobile}
-                                    handleClose={() => dispatch(deleteTopping(index))}
-                                />
+                                <MovableTopping 
+                                    toppingId={topping._id}
+                                    toppingIndex={index}
+                                    findTopping={findTopping}
+                                    moveTopping={moveTopping}
+                                >
+                                    <DragIcon type="primary" />
+                                    <ConstructorElement
+                                        isLocked={false}
+                                        text={topping.name}
+                                        price={topping.price}
+                                        thumbnail={topping.image_mobile}
+                                        handleClose={() => dispatch(deleteTopping(index))}
+                                    />
+                                </MovableTopping>
                             </li>
                         ))
                     }

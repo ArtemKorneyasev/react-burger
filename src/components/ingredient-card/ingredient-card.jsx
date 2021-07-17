@@ -9,7 +9,8 @@ const IngredientCard = (props) => {
     const { data, onClick } = props;
     const [count, setCount] = useState(0);
     const burgerData = useSelector(state => state.app.burgerData);
-    const [, dragRef] = useDrag({
+
+    const [, dragIngredientCard] = useDrag({
         type: "ingredient-card",
         item: { id: data._id },
     });
@@ -34,7 +35,7 @@ const IngredientCard = (props) => {
 
     return (
         <div
-            ref={dragRef}
+            ref={dragIngredientCard}
             className={styles.ingredientWrapper}
             onClick={() => onClick(data)}
         >

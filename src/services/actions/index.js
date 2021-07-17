@@ -6,6 +6,7 @@ export const SHOW_INGREDIENT_INFO = 'SHOW_INGREDIENT_INFO';
 export const ADD_BUN = 'ADD_BUN';
 export const ADD_TOPPING = 'ADD_TOPPING';
 export const DELETE_TOPPING = 'DELETE_TOPPING';
+export const SORT_TOPPINGS = 'SORT_TOPPINGS';
 export const MAKE_ORDER = 'MAKE_ORDER';
 export const ORDER_ERROR = 'ORDER_ERROR';
 export const CALC_TOTAL_PRICE = 'CALC_TOTAL_PRICE';
@@ -57,6 +58,15 @@ export const addIngredient = data => {
 export const deleteTopping = index => {
     return dispatch => {
         dispatch({ type: DELETE_TOPPING, payload: index });
+    };
+};
+
+export const sortToppings = (index, atIndex) => {
+    return dispatch => {
+        dispatch({
+            type: SORT_TOPPINGS,
+            payload: { index, atIndex },
+        });
     };
 };
 
