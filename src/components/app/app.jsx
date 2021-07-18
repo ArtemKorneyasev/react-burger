@@ -20,14 +20,7 @@ const App = () => {
 		modalMode,
 		orderDetails,
 		orderError,
-	} = useSelector(state => ({
-		ingredients: state.app.ingredients,
-		ingredientInfo: state.app.ingredientInfo,
-		modalIsOpen: state.app.modalIsOpen,
-		modalMode: state.app.modalMode,
-		orderDetails: state.app.orderDetails,
-		orderError: state.app.orderError,
-	}));
+	} = useSelector(state => state.app);
 
 	useEffect(() => {
 		dispatch(getIngredients());

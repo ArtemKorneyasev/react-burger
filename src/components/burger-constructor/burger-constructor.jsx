@@ -16,14 +16,11 @@ const BurgerConstructor = (props) => {
     }));
     const { bun, toppings } = burgerData;
 
-    const [{isHover}, dropIngredientCard] = useDrop({
+    const [, dropIngredientCard] = useDrop({
         accept: 'ingredient-card',
         drop(itemId) {
             onDropHandler(itemId);
         },
-        collect: monitor => ({
-            isHover: monitor.isOver(),
-        }),
     });
     const [, dropTopping] = useDrop({ accept: 'sort-toppings' });
 
@@ -54,11 +51,6 @@ const BurgerConstructor = (props) => {
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div
                 ref={dropIngredientCard}
-                style={{
-                    border: '1px dashed',
-                    borderRadius: 40,
-                    borderColor: isHover ? '#8585AD' : 'transparent',
-                }}
                 className={styles.ingredientsWrapper}
             >
                 {
@@ -66,7 +58,7 @@ const BurgerConstructor = (props) => {
                         <ConstructorElement
                             type="top"
                             isLocked={true}
-                            text={bun.name}
+                            text={`${bun.name} (верх)`}
                             price={bun.price}
                             thumbnail={bun.image_mobile}
                         />
@@ -107,7 +99,7 @@ const BurgerConstructor = (props) => {
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text={bun.name}
+                                text={`${bun.name} (низ)`}
                                 price={bun.price}
                                 thumbnail={bun.image_mobile}
                             />

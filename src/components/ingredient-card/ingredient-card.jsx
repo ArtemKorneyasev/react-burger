@@ -22,7 +22,7 @@ const IngredientCard = (props) => {
             setCount(
                 Object.values(bun).filter(
                     value => value === data._id,
-                ).length
+                ).length * 2
             );
         } else {
             setCount(

@@ -84,6 +84,10 @@ const appReducer = (state = initialState, action) => {
 		case MAKE_ORDER:
 			return {
 				...state,
+				burgerData: {
+					bun: {},
+					toppings: [],
+				},
 				modalMode: 'order-details',
 				modalIsOpen: true,			
 				orderDetails: action.payload,

@@ -15,12 +15,14 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const getIngredients = () => {
     return dispatch => {
         getIngredientsRequest().then(response => {
-            if (response && response.success) {
-                dispatch({
-                    type: INGREDIENTS_FETCH,
-                    payload: response.data,
-                });
-            } else {
+            try {
+                if (response && response.success) {
+                    dispatch({
+                        type: INGREDIENTS_FETCH,
+                        payload: response.data,
+                    });
+                }
+            } catch (error) {
                 dispatch({
                     type: INGREDIENTS_ERROR,
                     payload: 'Ошибка получения данных...',
@@ -91,12 +93,11 @@ export const getOrderDetails = burgerData => {
             };
 
             getOrderDetailsRequest(requestData).then(response => {
-                if (response && response.success) {
-                    dispatch({
-                        type: MAKE_ORDER,
-                        payload: response,
-                    });
-                } else {
+                try {
+                    if (response && response.success) {
+                        dispatch({ type: MAKE_ORDER, payload: response });
+                    }
+                } catch (error) {
                     dispatch({
                         type: ORDER_ERROR,
                         payload: 'Ошибка получения данных...',
