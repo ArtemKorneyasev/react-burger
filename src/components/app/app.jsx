@@ -13,14 +13,8 @@ import styles from './app.module.css';
 
 const App = () => {
 	const dispatch = useDispatch();
-	const {
-		ingredients,
-		ingredientInfo,
-		modalIsOpen,
-		modalMode,
-		orderDetails,
-		orderError,
-	} = useSelector(state => state.app);
+	const { ingredients } = useSelector(state => state.ingredients);
+	const { modalIsOpen, modalMode } = useSelector (state => state.modal);
 
 	useEffect(() => {
 		dispatch(getIngredients());
@@ -50,7 +44,7 @@ const App = () => {
 						title="Детали ингредиента"
 						onClose={() => dispatch(closeModal())}
 					>
-						<IngredientDetails data={ingredientInfo} />
+						<IngredientDetails />
 					</Modal>
 				) : null
 			}
@@ -58,10 +52,7 @@ const App = () => {
 				modalIsOpen &&
 				modalMode === 'order-details' ? (
 					<Modal onClose={() => dispatch(closeModal())}>
-						<OrderDetails
-							orderDetails={orderDetails}
-							orderError={orderError}
-						/>
+						<OrderDetails />
 					</Modal>
 				) : null
 			}

@@ -8,7 +8,7 @@ import styles from './ingredient-card.module.css';
 const IngredientCard = (props) => {
     const { data, onClick } = props;
     const [count, setCount] = useState(0);
-    const burgerData = useSelector(state => state.app.burgerData);
+    const { burgerData } = useSelector(state => state.burger);
 
     const [, dragIngredientCard] = useDrag({
         type: "ingredient-card",

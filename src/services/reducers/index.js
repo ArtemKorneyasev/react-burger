@@ -10,27 +10,19 @@ import {
 	SORT_TOPPINGS,
 	MAKE_ORDER,
 	ORDER_ERROR,
+	CLEAR_ORDER_ERROR,
+	OPEN_INGREDIENT_MODAL,
+	OPEN_ORDER_MODAL,
 	CLOSE_MODAL,
 	CALC_TOTAL_PRICE,
 } from '../actions';
 
-const initialState = {
+const ingredientsReducer = (state = {
 	ingredients: [],
 	ingredientsError: '',
 	ingredientInfo: {},
-	burgerData: {
-		bun: {},
-		toppings: [],
-	},
-	orderDetails: {},
-	orderError: '',
-	modalMode: '',
-	modalIsOpen: false,
-	totalPrice: 0,
-};
-
-const appReducer = (state = initialState, action) => {
-    switch (action.type) {
+}, action) => {
+	switch (action.type) {
 		case INGREDIENTS_FETCH:
 			return { ...state, ingredients: action.payload };
 		case INGREDIENTS_ERROR:
@@ -38,10 +30,21 @@ const appReducer = (state = initialState, action) => {
 		case SHOW_INGREDIENT_INFO:
 			return {
 				...state,
-				modalMode: 'ingredient-details',
-				modalIsOpen: true,
 				ingredientInfo: action.payload,
 			};
+		default:
+			return state;
+	}
+};
+
+const constructorReducer = (state = {
+	burgerData: {
+		bun: {},
+		toppings: [],
+	},
+	totalPrice: 0,
+}, action) => {
+	switch (action.type) {
 		case ADD_BUN:
 			return {
 				...state,
@@ -81,37 +84,69 @@ const appReducer = (state = initialState, action) => {
 					),
 				},
 			};
+		case CALC_TOTAL_PRICE:
+				return { ...state, totalPrice: action.payload };
+		default:
+			return state;
+	}
+}
+
+const orderReducer = (state = {
+	orderDetails: {},
+	orderError: '',
+}, action) => {
+	switch (action.type) {
 		case MAKE_ORDER:
 			return {
 				...state,
-				burgerData: {
-					bun: {},
-					toppings: [],
-				},
-				modalMode: 'order-details',
-				modalIsOpen: true,			
 				orderDetails: action.payload,
 			};
 		case ORDER_ERROR:
 			return {
 				...state,
-				modalMode: 'order-details',
-				modalIsOpen: true,
 				orderError: action.payload,
 			};
+		case CLEAR_ORDER_ERROR:
+			return {
+				...state,
+				orderError: '',
+			}
+		default:
+			return state;
+	}
+}
+
+const modalReducer = (state = {
+	modalMode: '',
+	modalIsOpen: false,
+}, action) => {
+	switch (action.type) {
+		case OPEN_INGREDIENT_MODAL:
+			return {
+				...state,
+				modalMode: 'ingredient-details',
+				modalIsOpen: true,
+			}
+		case OPEN_ORDER_MODAL:
+			return {
+				...state,
+				modalMode: 'order-details',
+				modalIsOpen: true,
+			}
 		case CLOSE_MODAL:
 			return {
 				...state,
-				ingredientInfo: {},
-				modalIsOpen: false,
 				modalMode: '',
-				orderError: '',
+				modalIsOpen: false,
 			};
-		case CALC_TOTAL_PRICE:
-			return { ...state, totalPrice: action.payload };
 		default:
 			return state;
 	}
 };
 
-export const rootReducer = combineReducers({ app: appReducer });
+export const rootReducer = combineReducers({
+	ingredients: ingredientsReducer,
+	burger: constructorReducer,
+	order: orderReducer,
+	modal: modalReducer,
+});

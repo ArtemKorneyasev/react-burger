@@ -9,7 +9,10 @@ export const DELETE_TOPPING = 'DELETE_TOPPING';
 export const SORT_TOPPINGS = 'SORT_TOPPINGS';
 export const MAKE_ORDER = 'MAKE_ORDER';
 export const ORDER_ERROR = 'ORDER_ERROR';
+export const CLEAR_ORDER_ERROR = 'CLEAR_ORDER_ERROR';
 export const CALC_TOTAL_PRICE = 'CALC_TOTAL_PRICE';
+export const OPEN_INGREDIENT_MODAL = 'OPEN_INGREDIENT_MODAL';
+export const OPEN_ORDER_MODAL = 'OPEN_ORDER_MODAL';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 export const getIngredients = () => {
@@ -76,6 +79,8 @@ export const getOrderDetails = burgerData => {
     const { bun } = burgerData;
 
     return dispatch => {
+        dispatch({ type: CLEAR_ORDER_ERROR });
+
         if (bun._id) {
             const requestData = {
                 ingredients: Object.keys(burgerData).flatMap(ingredientType => {
@@ -124,6 +129,14 @@ export const getTotalPrice = burgerData => {
         type: CALC_TOTAL_PRICE,
         payload: (bunsPrice + toppingsPrice),
     });
+};
+
+export const openIngredientModal = () => {
+    return dispatch => dispatch({ type: OPEN_INGREDIENT_MODAL });
+}
+
+export const openOrderModal = () => {
+    return dispatch => dispatch({ type: OPEN_ORDER_MODAL });
 };
 
 export const closeModal = () => {

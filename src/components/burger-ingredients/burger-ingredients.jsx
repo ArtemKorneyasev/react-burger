@@ -1,17 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { showIngredientInfo } from '../../services/actions';
+import { showIngredientInfo, openIngredientModal } from '../../services/actions';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = () => {
     const [nearestTab, setNearestTab] = useState('buns');
     const dispatch = useDispatch();
-    const { ingredients, ingredientsError } = useSelector(state => ({
-        ingredients: state.app.ingredients,
-        ingredientsError: state.app.ingredientsError,
-    }));
+    const { ingredients, ingredientsError } = useSelector(state => state.ingredients);
 
     const scrollContainerRef = useRef(null);
     const bunsHeaderRef = useRef(null);
@@ -40,6 +37,7 @@ const BurgerIngredients = () => {
 
     const onIngredientCardClick = useCallback(data => {
         dispatch(showIngredientInfo(data));
+        dispatch(openIngredientModal());
     }, [dispatch]);
 
     if (ingredientsError) {

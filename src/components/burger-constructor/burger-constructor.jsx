@@ -3,17 +3,20 @@ import PropsTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getTotalPrice, getOrderDetails, deleteTopping, sortToppings } from '../../services/actions';
+import {
+    getTotalPrice,
+    getOrderDetails,
+    openOrderModal,
+    deleteTopping,
+    sortToppings,
+} from '../../services/actions';
 import MovableTopping from '../movable-topping/movable-topping';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = (props) => {
     const { onDropHandler } = props;
     const dispatch = useDispatch();
-    const { burgerData, totalPrice } = useSelector(state => ({
-        burgerData: state.app.burgerData,
-        totalPrice: state.app.totalPrice,
-    }));
+    const { burgerData, totalPrice } = useSelector(state => state.burger);
     const { bun, toppings } = burgerData;
 
     const [, dropIngredientCard] = useDrop({
@@ -45,6 +48,7 @@ const BurgerConstructor = (props) => {
 
     const onSubmit = () => {
         dispatch(getOrderDetails(burgerData));
+        dispatch(openOrderModal());
     };
 
     return (
