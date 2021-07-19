@@ -1,15 +1,11 @@
-import { useEffect, useCallback } from 'react';
 import PropsTypes from 'prop-types';
+import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import {
-    getTotalPrice,
-    getOrderDetails,
-    openOrderModal,
-    deleteTopping,
-    sortToppings,
-} from '../../services/actions';
+import { getTotalPrice, deleteTopping, sortToppings } from '../../services/actions/constructorActions';
+import { getOrderDetails } from '../../services/actions/orderActions';
+import { openOrderModal } from '../../services/actions/modalActions';
 import MovableTopping from '../movable-topping/movable-topping';
 import styles from './burger-constructor.module.css';
 
