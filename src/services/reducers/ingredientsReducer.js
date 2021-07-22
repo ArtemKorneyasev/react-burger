@@ -2,6 +2,7 @@ import {
     INGREDIENTS_FETCH,
 	INGREDIENTS_ERROR,
 	SHOW_INGREDIENT_INFO,
+	CLEAR_INGREDIENT_INFO,
 } from '../actions/ingredientsActions';
 
 const initialState = {
@@ -27,6 +28,11 @@ const ingredientsReducer = (state = initialState, action) => {
 				...state,
 				ingredientInfo: action.payload,
 			};
+		case CLEAR_INGREDIENT_INFO:
+			return {
+				...state,
+				ingredientInfo: {},
+			}
 		default:
 			return state;
 	}

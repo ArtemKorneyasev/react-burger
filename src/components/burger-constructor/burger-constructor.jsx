@@ -55,13 +55,15 @@ const BurgerConstructor = (props) => {
             >
                 {
                     bun._id && (
-                        <ConstructorElement
-                            type="top"
-                            isLocked={true}
-                            text={`${bun.name} (верх)`}
-                            price={bun.price}
-                            thumbnail={bun.image_mobile}
-                        />
+                        <div>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={`${bun.name} (верх)`}
+                                price={bun.price}
+                                thumbnail={bun.image_mobile}
+                            />
+                        </div>
                     )
                 }
                 <ul
@@ -70,26 +72,22 @@ const BurgerConstructor = (props) => {
                 >
                     {
                         toppings.map((topping, index) => (
-                            <li
+                            <MovableTopping
                                 key={`${topping._id}-${index}`}
-                                style={{ width: 568, marginRight: 18 }}
+                                toppingId={topping._id}
+                                toppingIndex={index}
+                                findTopping={findTopping}
+                                moveTopping={moveTopping}
                             >
-                                <MovableTopping 
-                                    toppingId={topping._id}
-                                    toppingIndex={index}
-                                    findTopping={findTopping}
-                                    moveTopping={moveTopping}
-                                >
-                                    <DragIcon type="primary" />
-                                    <ConstructorElement
-                                        isLocked={false}
-                                        text={topping.name}
-                                        price={topping.price}
-                                        thumbnail={topping.image_mobile}
-                                        handleClose={() => dispatch(deleteTopping(index))}
-                                    />
-                                </MovableTopping>
-                            </li>
+                                <DragIcon type="primary" />
+                                <ConstructorElement
+                                    isLocked={false}
+                                    text={topping.name}
+                                    price={topping.price}
+                                    thumbnail={topping.image_mobile}
+                                    handleClose={() => dispatch(deleteTopping(index))}
+                                />
+                            </MovableTopping>
                         ))
                     }
                 </ul>

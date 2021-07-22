@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { getIngredients } from '../../services/actions/ingredientsActions';
-import { addIngredient } from '../../services/actions/constructorActions';
+import { getIngredients, clearIngredientInfo } from '../../services/actions/ingredientsActions';
+import { addIngredient, clearBurgerConstructor } from '../../services/actions/constructorActions';
 import { closeModal } from '../../services/actions/modalActions';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -16,6 +16,7 @@ import styles from './app.module.css';
 const App = () => {
 	const dispatch = useDispatch();
 	const { ingredients } = useSelector(state => state.ingredients);
+	const { orderDetails } = useSelector(state => state.order);
 	const { modalIsOpen, modalMode } = useSelector (state => state.modal);
 
 	useEffect(() => {
@@ -44,7 +45,10 @@ const App = () => {
 				modalMode === 'ingredient-details' ? (
 					<Modal
 						title="Детали ингредиента"
-						onClose={() => dispatch(closeModal())}
+						onClose={() => {
+							dispatch(clearIngredientInfo());
+							dispatch(closeModal());
+						}}
 					>
 						<IngredientDetails />
 					</Modal>
@@ -53,7 +57,12 @@ const App = () => {
 			{
 				modalIsOpen &&
 				modalMode === 'order-details' ? (
-					<Modal onClose={() => dispatch(closeModal())}>
+					<Modal onClose={() => {
+						if (orderDetails.success) {
+							dispatch(clearBurgerConstructor());
+						}
+						dispatch(closeModal());
+					}}>
 						<OrderDetails />
 					</Modal>
 				) : null

@@ -3,6 +3,7 @@ import { getIngredientsRequest } from '../api';
 export const INGREDIENTS_FETCH = 'INGREDIENTS_FETCH';
 export const INGREDIENTS_ERROR = 'INGREDIENTS_ERROR';
 export const SHOW_INGREDIENT_INFO = 'SHOW_INGREDIENT_INFO';
+export const CLEAR_INGREDIENT_INFO = 'CLEAR_INGREDIENT_INFO';
 
 export const getIngredients = () => {
     return dispatch => {
@@ -29,4 +30,10 @@ export const showIngredientInfo = data => {
             payload: data,
         });
     };
+};
+
+export const clearIngredientInfo = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_INGREDIENT_INFO });
+    }
 };

@@ -4,18 +4,21 @@ import PropTypes from 'prop-types';
 const MovableTopping = (props) => {
     const { children, toppingId, toppingIndex, findTopping, moveTopping } = props;
 
-    const [, drag] = useDrag(() => ({
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: 'sort-toppings',
         item: { id: toppingId, toppingIndex },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
         end: (item, monitor) => {
             const { id: droppedId, toppingIndex } = item;
             const didDrop = monitor.didDrop();
-            const { index: droppedIndex } = findTopping(droppedId);
             if (!didDrop) {
+                const { index: droppedIndex } = findTopping(droppedId);
                 moveTopping(toppingIndex, droppedIndex);
             }
         },
-    }), [toppingId, toppingIndex, moveTopping]);
+    }), [toppingId, toppingIndex, findTopping, moveTopping]);
 
     const [, drop] = useDrop(() => ({
         accept: 'sort-toppings',
@@ -27,12 +30,17 @@ const MovableTopping = (props) => {
                 moveTopping(draggedIndex, overIndex);
             }
         },
-    }), []);
+    }), [findTopping, moveTopping]);
+
+    const opacity = isDragging ? 0 : 1;
 
     return (
-        <div ref={item => drag(drop(item))}>
+        <li
+            ref={item => drag(drop(item))}
+            style={{ width: 568, marginRight: 18, opacity }}
+        >
             {children}
-        </div>
+        </li>
     );
 };
 
