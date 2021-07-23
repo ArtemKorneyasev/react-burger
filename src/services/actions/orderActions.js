@@ -9,15 +9,15 @@ export const getOrderDetails = burgerData => {
     const { bun } = burgerData;
 
     return dispatch => {
-        if (bun._id) {
+        if (bun.uniqueId) {
             const requestData = {
                 ingredients: Object.keys(burgerData).flatMap(ingredientType => {
                     switch (ingredientType) {
                         case 'bun':
-                            return burgerData.bun._id;
+                            return burgerData.bun.data._id;
                         case 'toppings':
                             return burgerData[ingredientType].map(
-                                ingredient => ingredient._id,
+                                ingredient => ingredient.data._id,
                             );
                         default:
                             return [];

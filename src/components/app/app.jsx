@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { nanoid } from 'nanoid';
 import { getIngredients, clearIngredientInfo } from '../../services/actions/ingredientsActions';
 import { addIngredient, clearBurgerConstructor } from '../../services/actions/constructorActions';
 import { clearOrderDetails, clearOrderError } from '../../services/actions/orderActions';
@@ -25,11 +26,16 @@ const App = () => {
     }, [dispatch]);
 
 	const handleDrop = item => {
-		dispatch(addIngredient(
-			ingredients.filter(
-				ingredient => ingredient._id === item.id,
-			)[0],
-		));
+		const filteredIngredient = ingredients.filter(
+			ingredient => ingredient._id === item.id,
+		)[0];
+
+		const ingredientData = {
+			uniqueId: item.id = nanoid(),
+			data: filteredIngredient,
+		};
+
+		dispatch(addIngredient(ingredientData));
     };
 
 	return (

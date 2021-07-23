@@ -42,14 +42,14 @@ const BurgerConstructor = (props) => {
                 className={styles.ingredientsWrapper}
             >
                 {
-                    bun._id && (
+                    bun.uniqueId && (
                         <div>
                             <ConstructorElement
                                 type="top"
                                 isLocked={true}
-                                text={`${bun.name} (верх)`}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}
+                                text={`${bun.data.name} (верх)`}
+                                price={bun.data.price}
+                                thumbnail={bun.data.image_mobile}
                             />
                         </div>
                     )
@@ -58,17 +58,17 @@ const BurgerConstructor = (props) => {
                     {
                         toppings.map((topping, index) => (
                             <MovableTopping
-                                key={topping._id}
-                                toppingId={topping._id}
+                                key={topping.uniqueId}
+                                toppingId={topping.uniqueId}
                                 toppingIndex={index}
                                 moveTopping={moveTopping}
                             >
                                 <DragIcon type="primary" />
                                 <ConstructorElement
                                     isLocked={false}
-                                    text={topping.name}
-                                    price={topping.price}
-                                    thumbnail={topping.image_mobile}
+                                    text={topping.data.name}
+                                    price={topping.data.price}
+                                    thumbnail={topping.data.image_mobile}
                                     handleClose={() => dispatch(deleteTopping(index))}
                                 />
                             </MovableTopping>
@@ -76,14 +76,14 @@ const BurgerConstructor = (props) => {
                     }
                 </div>
                 {
-                    bun._id && (
+                    bun.uniqueId && (
                         <div className={styles.bottomBunWrapper}>
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text={`${bun.name} (низ)`}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}
+                                text={`${bun.data.name} (низ)`}
+                                price={bun.data.price}
+                                thumbnail={bun.data.image_mobile}
                             />
                         </div>
                     )
