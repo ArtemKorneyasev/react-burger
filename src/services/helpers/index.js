@@ -1,6 +1,8 @@
 export const moveInArray = (arr, from, to) => {
-    const item = arr.splice(from, 1);
-    arr.splice(to, 0, item[0]);
+    const item = arr[from];
+    const newArr = [...arr];
+    newArr.splice(from, 1);
+    newArr.splice(to, 0, item);
 
-    return arr;
+    return newArr;
 };

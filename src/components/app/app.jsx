@@ -23,10 +23,10 @@ const App = () => {
 		dispatch(getIngredients());
     }, [dispatch]);
 
-	const handleDrop = itemId => {
+	const handleDrop = item => {
 		dispatch(addIngredient(
 			ingredients.filter(
-				ingredient => ingredient._id === itemId.id,
+				ingredient => ingredient._id === item.id,
 			)[0],
 		));
     };

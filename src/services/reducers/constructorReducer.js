@@ -45,15 +45,15 @@ const constructorReducer = (state = initialState, action) => {
 				},
 			};
 		case SORT_TOPPINGS:
-			const { index, atIndex } = action.payload;
+			const { dragIndex, hoverIndex } = action.payload;
 			return {
 				...state,
 				burgerData: {
 					...state.burgerData,
 					toppings: moveInArray(
 						[...state.burgerData.toppings],
-						index,
-						atIndex,
+						dragIndex,
+						hoverIndex,
 					),
 				},
 			};

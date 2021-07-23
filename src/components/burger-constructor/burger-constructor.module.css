@@ -23,9 +23,6 @@
 }
 
 .toppings {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
     max-height: 560px;
     overflow: auto;
     display: flex;

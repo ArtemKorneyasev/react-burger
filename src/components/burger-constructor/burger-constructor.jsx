@@ -15,32 +15,20 @@ const BurgerConstructor = (props) => {
     const { burgerData, totalPrice } = useSelector(state => state.burger);
     const { bun, toppings } = burgerData;
 
-    const [, dropIngredientCard] = useDrop({
+    const [, dropRef] = useDrop({
         accept: 'ingredient-card',
-        drop(itemId) {
-            onDropHandler(itemId);
+        drop(item) {
+            onDropHandler(item);
         },
     });
-    const [, dropTopping] = useDrop({ accept: 'sort-toppings' });
+
+    const moveTopping = useCallback((dragIndex, hoverIndex) => {
+        dispatch(sortToppings(dragIndex, hoverIndex));
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getTotalPrice(burgerData));
     }, [dispatch, burgerData]);
-
-    const findTopping = useCallback((id) => {
-        const topping = toppings.filter(
-            topping => topping._id === id,
-        )[0];
-
-        return {
-            topping,
-            index: toppings.indexOf(topping),
-        };
-    }, [toppings]);
-
-    const moveTopping = useCallback((index, atIndex) => {
-        dispatch(sortToppings(index, atIndex));
-    }, [dispatch]);
 
     const onSubmit = () => {
         dispatch(getOrderDetails(burgerData));
@@ -50,7 +38,7 @@ const BurgerConstructor = (props) => {
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div
-                ref={dropIngredientCard}
+                ref={dropRef}
                 className={styles.ingredientsWrapper}
             >
                 {
@@ -66,17 +54,13 @@ const BurgerConstructor = (props) => {
                         </div>
                     )
                 }
-                <ul
-                    ref={dropTopping}
-                    className={styles.toppings}
-                >
+                <div className={styles.toppings}>
                     {
                         toppings.map((topping, index) => (
                             <MovableTopping
-                                key={`${topping._id}-${index}`}
+                                key={topping._id}
                                 toppingId={topping._id}
                                 toppingIndex={index}
-                                findTopping={findTopping}
                                 moveTopping={moveTopping}
                             >
                                 <DragIcon type="primary" />
@@ -90,7 +74,7 @@ const BurgerConstructor = (props) => {
                             </MovableTopping>
                         ))
                     }
-                </ul>
+                </div>
                 {
                     bun._id && (
                         <div className={styles.bottomBunWrapper}>

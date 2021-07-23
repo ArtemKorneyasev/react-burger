@@ -1,46 +1,61 @@
+import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import PropTypes from 'prop-types';
 
 const MovableTopping = (props) => {
-    const { children, toppingId, toppingIndex, findTopping, moveTopping } = props;
+    const { children, toppingId, toppingIndex, moveTopping } = props;
+    const ref = useRef(null);
 
-    const [{ isDragging }, drag] = useDrag(() => ({
+    const [{ isDragging }, drag] = useDrag({ 
         type: 'sort-toppings',
-        item: { id: toppingId, toppingIndex },
+        item: { id: toppingId, index: toppingIndex },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
-        end: (item, monitor) => {
-            const { id: droppedId, toppingIndex } = item;
-            const didDrop = monitor.didDrop();
-            if (!didDrop) {
-                const { index: droppedIndex } = findTopping(droppedId);
-                moveTopping(toppingIndex, droppedIndex);
-            }
-        },
-    }), [toppingId, toppingIndex, findTopping, moveTopping]);
+    });
 
-    const [, drop] = useDrop(() => ({
+    const [, drop] = useDrop({
         accept: 'sort-toppings',
-        canDrop: () => false,
-        hover({ id: draggedId }) {
-            if (draggedId !== toppingId) {
-                const { index: overIndex } = findTopping(toppingId);
-                const { index: draggedIndex } = findTopping(draggedId);
-                moveTopping(draggedIndex, overIndex);
+        hover: (item, monitor) => {
+            if (!ref.current) {
+                return;
             }
+
+            const dragIndex = item.index;
+            const hoverIndex = toppingIndex;
+
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 1.5;
+            const clientOffset = monitor.getClientOffset();
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+
+            moveTopping(dragIndex, hoverIndex);
+            item.index = hoverIndex;
         },
-    }), [findTopping, moveTopping]);
+    });
 
     const opacity = isDragging ? 0 : 1;
+    drag(drop(ref));
 
     return (
-        <li
-            ref={item => drag(drop(item))}
+        <div
+            ref={ref}
             style={{ width: 568, marginRight: 18, opacity }}
         >
             {children}
-        </li>
+        </div>
     );
 };
 
@@ -48,8 +63,7 @@ MovableTopping.propsTypes = {
     children: PropTypes.node.isRequired,
     toppingId: PropTypes.number.isRequired,
     toppingIndex: PropTypes.number.isRequired,
-    findTopping: PropTypes.func.isRequired,
-    moveTopping: PropTypes.func.isRequired,
+    moveTopping: PropTypes.func,
 };
 
 export default MovableTopping;

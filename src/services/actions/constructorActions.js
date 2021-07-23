@@ -30,11 +30,11 @@ export const deleteTopping = index => {
     };
 };
 
-export const sortToppings = (index, atIndex) => {
+export const sortToppings = (dragIndex, hoverIndex) => {
     return dispatch => {
         dispatch({
             type: SORT_TOPPINGS,
-            payload: { index, atIndex },
+            payload: { dragIndex, hoverIndex },
         });
     };
 };
