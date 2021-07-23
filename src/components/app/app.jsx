@@ -4,6 +4,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { getIngredients, clearIngredientInfo } from '../../services/actions/ingredientsActions';
 import { addIngredient, clearBurgerConstructor } from '../../services/actions/constructorActions';
+import { clearOrderDetails, clearOrderError } from '../../services/actions/orderActions';
 import { closeModal } from '../../services/actions/modalActions';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
@@ -60,7 +61,9 @@ const App = () => {
 					<Modal onClose={() => {
 						if (orderDetails.success) {
 							dispatch(clearBurgerConstructor());
+							dispatch(clearOrderDetails());
 						}
+						dispatch(clearOrderError());
 						dispatch(closeModal());
 					}}>
 						<OrderDetails />

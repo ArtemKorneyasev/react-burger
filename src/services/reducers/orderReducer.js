@@ -1,6 +1,7 @@
 import {
     MAKE_ORDER,
 	ORDER_ERROR,
+	CLEAR_ORDER_DETAILS,
 	CLEAR_ORDER_ERROR,
 } from '../actions/orderActions';
 
@@ -21,11 +22,16 @@ const orderReducer = (state = initialState, action) => {
 				...state,
 				orderError: action.payload,
 			};
+		case CLEAR_ORDER_DETAILS:
+			return {
+				...state,
+				orderDetails: {},
+			};
 		case CLEAR_ORDER_ERROR:
 			return {
 				...state,
 				orderError: '',
-			}
+			};
 		default:
 			return state;
 	}

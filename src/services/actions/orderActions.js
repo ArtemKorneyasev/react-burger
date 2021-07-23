@@ -2,14 +2,13 @@ import { getOrderDetailsRequest } from "../api";
 
 export const MAKE_ORDER = 'MAKE_ORDER';
 export const ORDER_ERROR = 'ORDER_ERROR';
+export const CLEAR_ORDER_DETAILS = 'CLEAR_ORDER_DETAILS';
 export const CLEAR_ORDER_ERROR = 'CLEAR_ORDER_ERROR';
 
 export const getOrderDetails = burgerData => {
     const { bun } = burgerData;
 
     return dispatch => {
-        dispatch({ type: CLEAR_ORDER_ERROR });
-
         if (bun._id) {
             const requestData = {
                 ingredients: Object.keys(burgerData).flatMap(ingredientType => {
@@ -42,5 +41,17 @@ export const getOrderDetails = burgerData => {
                 payload: 'Должна быть выбрана булка для бургера!',
             });
         }
+    };
+};
+
+export const clearOrderDetails = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_ORDER_DETAILS });
+    };
+};
+
+export const clearOrderError = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_ORDER_ERROR });
     };
 };
