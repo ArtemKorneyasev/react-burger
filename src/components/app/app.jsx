@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 import { getIngredients, clearIngredientInfo } from '../../services/actions/ingredientsActions';
 import { addIngredient, clearBurgerConstructor } from '../../services/actions/constructorActions';
@@ -13,6 +14,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredients-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
+import LoginPage from '../../pages/login-page/login-page';
 import styles from './app.module.css';
 
 const App = () => {
@@ -41,12 +43,21 @@ const App = () => {
 	return (
 		<>
 			<AppHeader />
-			<main className={styles.main}>
-				<DndProvider backend={HTML5Backend}>
-					<BurgerIngredients />
-					<BurgerConstructor onDropHandler={handleDrop} />
-				</DndProvider>
-			</main>
+			<Router>
+				<Switch>
+					<Route exact path="/">
+						<main className={styles.main}>
+							<DndProvider backend={HTML5Backend}>
+								<BurgerIngredients />
+								<BurgerConstructor onDropHandler={handleDrop} />
+							</DndProvider>
+						</main>
+					</Route>
+					<Route path="/login">
+						<LoginPage />
+					</Route>
+				</Switch>
+			</Router>
 			{
 				modalIsOpen &&
 				modalMode === 'ingredient-details' ? (
