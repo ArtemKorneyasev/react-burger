@@ -15,12 +15,17 @@ import IngredientDetails from '../ingredients-details/ingredient-details';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import LoginPage from '../../pages/login-page/login-page';
+import RegisterPage from '../../pages/register-page/register-page';
+import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
+import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
+import ProfilePage from '../../pages/profile-page/profile-page';
+import NotFound404 from '../../pages/not-found-404/not-found-404';
 import styles from './app.module.css';
 
 const App = () => {
 	const dispatch = useDispatch();
 	const { ingredients } = useSelector(state => state.ingredients);
-	const { orderDetails } = useSelector(state => state.order);
+	const { orderResult } = useSelector(state => state.order);
 	const { modalIsOpen, modalMode } = useSelector (state => state.modal);
 
 	useEffect(() => {
@@ -56,6 +61,21 @@ const App = () => {
 					<Route path="/login">
 						<LoginPage />
 					</Route>
+					<Route path="/register">
+						<RegisterPage />
+					</Route>
+					<Route path="/forgot-password">
+						<ForgotPasswordPage />
+					</Route>
+					<Route path="/reset-password">
+						<ResetPasswordPage />
+					</Route>
+					<Route path="/profile">
+						<ProfilePage />
+					</Route>
+					<Route>
+						<NotFound404 />
+					</Route>
 				</Switch>
 			</Router>
 			{
@@ -76,7 +96,7 @@ const App = () => {
 				modalIsOpen &&
 				modalMode === 'order-details' ? (
 					<Modal onClose={() => {
-						if (orderDetails.success) {
+						if (orderResult.success) {
 							dispatch(clearBurgerConstructor());
 							dispatch(clearOrderDetails());
 						}

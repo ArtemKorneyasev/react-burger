@@ -9,17 +9,10 @@ const LoginPage = () => {
         password: '',
     });
 
-    const onChangeEmail = event => {
+    const onChange = event => {
         setState({
             ...state,
-            email: event.target.value,
-        });
-    };
-
-    const onChangePassword = event => {
-        setState({
-            ...state,
-            password: event.target.value,
+            [event.target.name]: event.target.value,
         });
     };
 
@@ -30,16 +23,16 @@ const LoginPage = () => {
             </span>
             <div className={styles.input}>
                 <EmailInput
-                    onChange={onChangeEmail}
+                    onChange={onChange}
                     value={state.email}
-                    name={'email'}
+                    name="email"
                 />
             </div>
             <div className={styles.input}>
                 <PasswordInput
-                    onChange={onChangePassword}
+                    onChange={onChange}
                     value={state.password}
-                    name={'password'}
+                    name="password"
                 />
             </div>
             <div className={styles.btn}>

@@ -3,7 +3,7 @@ import doneIcon from '../../images/doneIcon.svg';
 import styles from './order-details.module.css';
 
 const OrderDetails = (props) => {
-    const { orderDetails, orderError } = useSelector(state => state.order);
+    const { orderResult, orderError } = useSelector(state => state.order);
 
     if (orderError) {
         return (
@@ -20,8 +20,8 @@ const OrderDetails = (props) => {
                 className={`text text_type_digits-large ${styles.orderId}`}
             >
                 {
-                    orderDetails.success ?
-                    orderDetails.order.number : null
+                    orderResult.success ?
+                    orderResult.order.number : null
                 }
             </span>
             <span className="text text_type_main-medium">

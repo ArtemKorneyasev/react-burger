@@ -1,3 +1,4 @@
+// import { Link } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -27,10 +28,12 @@ const AppHeader = () => (
                 <Logo />
             </div>
             <div className={`${styles.menuItem} pl-5 pt-4 pr-5 pb-4`}>
-                <ProfileIcon type="secondary" />
-                <span className="text text_type_main-default text_color_inactive ml-2">
-                    Личный кабинет
-                </span>
+                {/* <Link to="/profile"> */}
+                    <ProfileIcon type="secondary" />
+                    <span className="text text_type_main-default text_color_inactive ml-2">
+                        Личный кабинет
+                    </span>
+                {/* </Link> */}
             </div>
         </nav>
     </header>

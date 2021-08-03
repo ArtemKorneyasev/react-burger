@@ -6,7 +6,7 @@ import {
 } from '../actions/orderActions';
 
 const initialState = {
-    orderDetails: {},
+    orderResult: {},
 	orderError: '',
 };
 
@@ -15,7 +15,7 @@ const orderReducer = (state = initialState, action) => {
 		case MAKE_ORDER:
 			return {
 				...state,
-				orderDetails: action.payload,
+				orderResult: action.payload,
 			};
 		case ORDER_ERROR:
 			return {
@@ -25,7 +25,7 @@ const orderReducer = (state = initialState, action) => {
 		case CLEAR_ORDER_DETAILS:
 			return {
 				...state,
-				orderDetails: {},
+				orderResult: {},
 			};
 		case CLEAR_ORDER_ERROR:
 			return {
