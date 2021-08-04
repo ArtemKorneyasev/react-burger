@@ -6,10 +6,14 @@ import {
 
 export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
 export const USER_REGISTER_ERROR = 'USER_REGISTER_ERROR';
+
 export const USER_FORGOT_PASSWORD_REQUEST = 'USER_FORGOT_PASSWORD_REQUEST';
 export const USER_FORGOT_PASSWORD_ERROR = 'USER_FORGOT_PASSWORD_ERROR';
+export const CLEAR_FORGOT_PASSWORD_ERROR = 'CLEAR_FORGOT_PASSWORD_ERROR';
+
 export const USER_RESET_PASSWORD_REQUEST = 'USER_RESET_PASSWORD_REQUEST';
 export const USER_RESET_PASSWORD_ERROR = 'USER_RESET_PASSWORD_ERROR';
+export const CLEAR_RESET_PASSWORD_ERROR = 'CLEAR_RESET_PASSWORD_ERROR';
 
 export const getUserRegister = userData => {
     return dispatch => {
@@ -41,6 +45,12 @@ export const getUserForgotPassword = email => {
     };
 };
 
+export const clearForgotPasswordError = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_FORGOT_PASSWORD_ERROR });
+    };
+};
+
 export const getUserResetPassword = ({ password, token }) => {
     return dispatch => {
         userResetPasswordRequest({ password, token }).then(response => {
@@ -50,8 +60,14 @@ export const getUserResetPassword = ({ password, token }) => {
         }).catch(() => {
             dispatch({
                 type: USER_RESET_PASSWORD_ERROR,
-                payload: 'Ошибка восстановления пароля, попробуйте позже',
+                payload: 'Ошибка восстановления пароля, попробуйте восстановить пароль еще раз',
             });
         });
+    };
+};
+
+export const clearResetPasswordError = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_RESET_PASSWORD_ERROR });
     };
 };

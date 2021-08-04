@@ -1,10 +1,14 @@
 import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_ERROR,
+
     USER_FORGOT_PASSWORD_REQUEST,
     USER_FORGOT_PASSWORD_ERROR,
+    CLEAR_FORGOT_PASSWORD_ERROR,
+
     USER_RESET_PASSWORD_REQUEST,
     USER_RESET_PASSWORD_ERROR,
+    CLEAR_RESET_PASSWORD_ERROR,
 } from '../actions/userActions';
 import { setCookie } from '../helpers';
 
@@ -14,8 +18,10 @@ const initialState = {
         name: '',
     },
     registerError: '',
+
     forgotPasswordResult: {},
     forgotPasswordError: '',
+
     resetPasswordResult: {},
     resetPasswordError: '',
 };
@@ -45,6 +51,11 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 forgotPasswordError: action.payload,
             };
+        case CLEAR_FORGOT_PASSWORD_ERROR:
+            return {
+                ...state,
+                forgotPasswordError: '',
+            };
         case USER_RESET_PASSWORD_REQUEST:
             return {
                 ...state,
@@ -54,6 +65,11 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 resetPasswordError: action.payload,
+            };
+        case CLEAR_RESET_PASSWORD_ERROR:
+            return {
+                ...state,
+                resetPasswordError: '',
             };
         default:
             return state;

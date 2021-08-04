@@ -1,6 +1,8 @@
 import {
 	OPEN_INGREDIENT_MODAL,
 	OPEN_ORDER_MODAL,
+	OPEN_FORGOT_PASSWORD_MODAL,
+	OPEN_RESET_PASSWORD_MODAL,
 	CLOSE_MODAL,
 } from '../actions/modalActions';
 
@@ -19,6 +21,16 @@ const modalReducer = (state = initialState, action) => {
 		case OPEN_ORDER_MODAL:
 			return {
 				modalMode: 'order-details',
+				modalIsOpen: true,
+			}
+		case OPEN_FORGOT_PASSWORD_MODAL:
+			return {
+				modalMode: 'forgot-password',
+				modalIsOpen: true,
+			}
+		case OPEN_RESET_PASSWORD_MODAL:
+			return {
+				modalMode: 'reset-password',
 				modalIsOpen: true,
 			}
 		case CLOSE_MODAL:

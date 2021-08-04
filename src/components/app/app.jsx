@@ -79,8 +79,7 @@ const App = () => {
 				</Switch>
 			</Router>
 			{
-				modalIsOpen &&
-				modalMode === 'ingredient-details' ? (
+				modalIsOpen && modalMode === 'ingredient-details' ? (
 					<Modal
 						title="Детали ингредиента"
 						onClose={() => {
@@ -93,8 +92,7 @@ const App = () => {
 				) : null
 			}
 			{
-				modalIsOpen &&
-				modalMode === 'order-details' ? (
+				modalIsOpen && modalMode === 'order-details' ? (
 					<Modal onClose={() => {
 						if (orderResult.success) {
 							dispatch(clearBurgerConstructor());
