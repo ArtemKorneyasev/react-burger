@@ -47,8 +47,8 @@ const App = () => {
 
 	return (
 		<>
-			<AppHeader />
 			<Router>
+				<AppHeader />
 				<Switch>
 					<Route exact path="/">
 						<main className={styles.main}>

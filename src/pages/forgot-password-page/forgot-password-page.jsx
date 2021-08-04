@@ -56,12 +56,7 @@ const ForgotPasswordPage = () => {
                         Восстановить
                     </Button>
                 </div>
-                <div
-                    className={`
-                        text text_type_main-default text_color_inactive
-                        ${styles.linkContainer}
-                    `}
-                >
+                <div className={`text text_type_main-default text_color_inactive ${styles.linkContainer}`}>
                     <span>Вспомнили пароль?</span>
                     <Link className={styles.link} to="/login">
                         Войти

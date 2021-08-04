@@ -1,4 +1,4 @@
-// import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -11,30 +11,40 @@ const AppHeader = () => (
     <header className={styles.header}>
         <nav className={`${styles.headerContent} pt-4 pb-4`}>
             <div className={styles.itemsWrapper}>
-                <div className={`${styles.menuItem} mr-2 pl-5 pt-4 pr-5 pb-4`}>
-                    <BurgerIcon type="primary" />
+                <NavLink
+                    to="/"
+                    className={`${styles.link} mr-2 pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                    activeClassName={styles.activeTab}
+                >
+                    <BurgerIcon type="secondary" />
                     <span className="text text_type_main-default ml-2">
                         Конструктор
                     </span>
-                </div>
-                <div className={`${styles.menuItem} pl-5 pt-4 pr-5 pb-4`}>
+                </NavLink>
+                <NavLink
+                    to="/"
+                    className={`${styles.link} pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                    activeClassName={styles.activeTab}
+                >
                     <ListIcon type="secondary" />
-                    <span className="text text_type_main-default text_color_inactive ml-2">
+                    <span className="text text_type_main-default ml-2">
                         Лента заказов
                     </span>
-                </div>
+                </NavLink>
             </div>
             <div className={styles.logoItem}>
                 <Logo />
             </div>
-            <div className={`${styles.menuItem} pl-5 pt-4 pr-5 pb-4`}>
-                {/* <Link to="/profile"> */}
+                <NavLink
+                    to="/profile"
+                    className={`${styles.link} pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                    activeClassName={styles.activeTab}
+                >
                     <ProfileIcon type="secondary" />
-                    <span className="text text_type_main-default text_color_inactive ml-2">
+                    <span className="text text_type_main-default ml-2">
                         Личный кабинет
                     </span>
-                {/* </Link> */}
-            </div>
+                </NavLink>
         </nav>
     </header>
 );
