@@ -10,7 +10,7 @@ import styles from './forgot-password-page.module.css';
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
     const {
-        forgotPasswordResult,
+        forgotPasswordSuccess,
         forgotPasswordError,
     } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
@@ -28,7 +28,7 @@ const ForgotPasswordPage = () => {
         }
     }, [dispatch, forgotPasswordError]);
 
-    if (forgotPasswordResult.success) {
+    if (forgotPasswordSuccess) {
         return (
             <Redirect to={{ pathname: '/reset-password' }} />
         );

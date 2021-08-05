@@ -21,6 +21,18 @@
     padding: 17px 0;
 }
 
+.logoutBtn {
+    padding: 17px 0;
+    margin-bottom: 80px;
+    background: none;
+    border: none;
+    text-align: left;
+}
+
+.logoutBtn:hover {
+    cursor: pointer;
+}
+
 .activeTab {
     color: white;
 }

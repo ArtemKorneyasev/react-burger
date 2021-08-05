@@ -13,7 +13,7 @@ const ResetPasswordPage = () => {
         token: '',
     });
     const {
-        resetPasswordResult,
+        resetPasswordSuccess,
         resetPasswordError,
     } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
@@ -28,8 +28,7 @@ const ResetPasswordPage = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const resetPasswordHandler = useCallback(() => {
-        const { password, token } = state;
-        dispatch(getUserResetPassword({ password, token }));
+        dispatch(getUserResetPassword(state));
     }, [state, dispatch]);
 
     useEffect(() => {
@@ -38,7 +37,7 @@ const ResetPasswordPage = () => {
         }
     }, [dispatch, resetPasswordError]);
 
-    if (resetPasswordResult.success) {
+    if (resetPasswordSuccess) {
         return (
             <Redirect to={{ pathname: '/login' }} />
         );
@@ -88,7 +87,7 @@ const ResetPasswordPage = () => {
                         dispatch(closeModal())
                     }}>
                         <div className={`text text_type_main-default ${styles.retry} `}>
-                            <span>
+                            <span className="text text_type_main-medium">
                                 {resetPasswordError}
                             </span>
                             <Button

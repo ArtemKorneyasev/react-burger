@@ -1,6 +1,15 @@
 import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_ERROR,
+    CLEAR_REGISTER_ERROR,
+
+    USER_LOGIN_REQUEST,
+    USER_LOGIN_ERROR,
+    CLEAR_LOGIN_ERROR,
+
+    USER_LOGOUT_REQUEST,
+    USER_LOGOUT_ERROR,
+    CLEAR_LOGOUT_ERROR,
 
     USER_FORGOT_PASSWORD_REQUEST,
     USER_FORGOT_PASSWORD_ERROR,
@@ -10,19 +19,27 @@ import {
     USER_RESET_PASSWORD_ERROR,
     CLEAR_RESET_PASSWORD_ERROR,
 } from '../actions/userActions';
-import { setCookie } from '../helpers';
+import { setCookie, deleteCookie } from '../helpers';
 
 const initialState = {
     user: {
         email: '',
         name: '',
     },
+
+    registerSuccess: false,
     registerError: '',
 
-    forgotPasswordResult: {},
+    loginSuccess: false,
+    loginError: '',
+
+    logoutSuccess: false,
+    logoutError: '',
+
+    forgotPasswordSuccess: false,
     forgotPasswordError: '',
 
-    resetPasswordResult: {},
+    resetPasswordSuccess: false,
     resetPasswordError: '',
 };
 
@@ -34,17 +51,70 @@ const userReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                user: action.payload,
+                user: {
+                    email: action.payload.user.email,
+                    name: action.payload.user.name,
+                },
+                registerSuccess: action.payload.success,
             };
         case USER_REGISTER_ERROR:
             return {
                 ...state,
                 registerError: action.payload,
             };
+        case CLEAR_REGISTER_ERROR:
+            return {
+                ...state,
+                registerError: '',
+            };
+        case USER_LOGIN_REQUEST:
+            setCookie('accessToken', action.payload.accessToken);
+            localStorage.setItem('refreshToken', action.payload.refreshToken);
+
+            return {
+                ...state,
+                user: {
+                    email: action.payload.user.email,
+                    name: action.payload.user.name,
+                },
+                loginSuccess: action.payload.success,
+            };
+        case USER_LOGIN_ERROR:
+            return {
+                ...state,
+                loginError: action.payload,
+            };
+        case CLEAR_LOGIN_ERROR:
+            return {
+                ...state,
+                loginError: '',
+            };
+        case USER_LOGOUT_REQUEST:
+            deleteCookie('accessToken');
+            localStorage.removeItem('refreshToken');
+
+            return {
+                ...state,
+                user: {
+                    email: '',
+                    name: '',
+                },
+                logoutSuccess: action.payload.success,
+            };
+        case USER_LOGOUT_ERROR:
+            return {
+                ...state,
+                logoutError: action.payload,
+            };
+        case CLEAR_LOGOUT_ERROR:
+            return {
+                ...state,
+                logoutError: '',
+            };
         case USER_FORGOT_PASSWORD_REQUEST:
             return {
                 ...state,
-                forgotPasswordResult: action.payload,
+                forgotPasswordSuccess: action.payload.success,
             };
         case USER_FORGOT_PASSWORD_ERROR:
             return {
@@ -59,7 +129,7 @@ const userReducer = (state = initialState, action) => {
         case USER_RESET_PASSWORD_REQUEST:
             return {
                 ...state,
-                resetPasswordResult: action.payload,
+                resetPasswordSuccess: action.payload.success,
             };
         case USER_RESET_PASSWORD_ERROR:
             return {
