@@ -2,16 +2,16 @@ import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getUserForgotPassword, clearForgotPasswordError } from '../../services/actions/userActions';
-import { openForgotPasswordModal, closeModal } from '../../services/actions/modalActions';
+import { getUserForgotPassword, clearUserForgotPasswordError } from '../../services/actions/userActions';
+import { openUserForgotPasswordModal, closeModal } from '../../services/actions/modalActions';
 import Modal from '../../components/modal/modal';
 import styles from './forgot-password-page.module.css';
 
 const ForgotPasswordPage = () => {
     const [email, setEmail] = useState('');
     const {
-        forgotPasswordSuccess,
-        forgotPasswordError,
+        userForgotPasswordSuccess,
+        userForgotPasswordError,
     } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
 
@@ -23,12 +23,12 @@ const ForgotPasswordPage = () => {
     }, [email, dispatch]);
 
     useEffect(() => {
-        if (forgotPasswordError) {
-            dispatch(openForgotPasswordModal());
+        if (userForgotPasswordError) {
+            dispatch(openUserForgotPasswordModal());
         }
-    }, [dispatch, forgotPasswordError]);
+    }, [dispatch, userForgotPasswordError]);
 
-    if (forgotPasswordSuccess) {
+    if (userForgotPasswordSuccess) {
         return (
             <Redirect to={{ pathname: '/reset-password' }} />
         );
@@ -66,11 +66,11 @@ const ForgotPasswordPage = () => {
             {
                 modalIsOpen && modalMode === 'forgot-password' ? (
                     <Modal onClose={() => {
-                        dispatch(clearForgotPasswordError())
+                        dispatch(clearUserForgotPasswordError())
                         dispatch(closeModal())
                     }}>
                         <span className="text text_type_main-medium">
-                            {forgotPasswordError}
+                            {userForgotPasswordError}
                         </span>
                     </Modal>
                 ) : null

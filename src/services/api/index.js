@@ -1,4 +1,47 @@
+import { getCookie, setCookie } from "../helpers";
+
 const API_URL = 'https://norma.nomoreparties.space/api';
+
+export const checkResponse = (response) => {
+    return response.ok
+        ? response.json()
+        : response.json().then(error => Promise.reject(error));
+};
+
+const refreshToken = () => {
+    const request = new Request(
+        `${API_URL}/auth/token`,
+        {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
+        },
+    );
+
+    return fetch(request).then(checkResponse);
+};
+
+const fetchWithRefresh = async (url, options) => {
+    try {
+        const response = await fetch(url, options);
+        return await checkResponse(response);
+    } catch (error) {
+        if (error.message === 'jwt expired') {
+            const refreshData = refreshToken();
+
+            setCookie('accessToken', refreshData.accessToken);
+            localStorage.setItem('refreshToken', refreshData.refreshToken);
+            options.headers.authorization = refreshData.accessToken;
+
+            const response = await fetch(url, options);
+            return await checkResponse(response);
+        } else {
+            return Promise.reject(error);
+        }
+    }
+};
 
 const getIngredientsRequest = async () => {
     const request = new Request(`${API_URL}/ingredients`);
@@ -41,12 +84,7 @@ const userRegisterRequest = async ({ name, email, password }) => {
     );
 
     const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();
+    return await checkResponse(response);
 };
 
 const userLoginRequest = async ({ email, password }) => {
@@ -60,31 +98,23 @@ const userLoginRequest = async ({ email, password }) => {
     );
 
     const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();
+    return await checkResponse(response);
 };
 
-const userLogoutRequest = async (refreshToken) => {
+const userLogoutRequest = async () => {
     const request = new Request(
         `${API_URL}/auth/logout`,
         {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: refreshToken }),
+            body: JSON.stringify({
+                token: localStorage.getItem('refreshToken'),
+            }),
         },
     );
 
     const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();
+    return await checkResponse(response);
 };
 
 const userForgotPasswordRequest = async (email) => {
@@ -117,12 +147,34 @@ const userResetPasswordRequest = async ({ password, token }) => {
     );
 
     const response = await fetch(request);
+    return await checkResponse(response);
+};
 
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
+const userLoadDataRequest = async () => {
+    const url = `${API_URL}/auth/user`;
+    const options = {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': getCookie('accessToken'),
+        },
+    };
 
-    return await response.json();
+    return await fetchWithRefresh(url, options);
+};
+
+const userSaveDataRequest = async ({ name, email, password }) => {
+    const url = `${API_URL}/auth/user`;
+    const options = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'authorization': getCookie('accessToken'),
+        },
+        body: JSON.stringify({ name, email, password }),
+    };
+
+    return await fetchWithRefresh(url, options);
 };
 
 export {
@@ -133,4 +185,6 @@ export {
     userLogoutRequest,
     userForgotPasswordRequest,
     userResetPasswordRequest,
+    userLoadDataRequest,
+    userSaveDataRequest,
 };

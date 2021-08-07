@@ -2,8 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getUserResetPassword, clearResetPasswordError } from '../../services/actions/userActions';
-import { openResetPasswordModal, closeModal } from '../../services/actions/modalActions';
+import { getUserResetPassword, clearUserResetPasswordError } from '../../services/actions/userActions';
+import { openUserResetPasswordModal, closeModal } from '../../services/actions/modalActions';
 import Modal from '../../components/modal/modal';
 import styles from './reset-password-page.module.css';
 
@@ -13,8 +13,8 @@ const ResetPasswordPage = () => {
         token: '',
     });
     const {
-        resetPasswordSuccess,
-        resetPasswordError,
+        userResetPasswordSuccess,
+        userResetPasswordError,
     } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
 
@@ -32,12 +32,12 @@ const ResetPasswordPage = () => {
     }, [state, dispatch]);
 
     useEffect(() => {
-        if (resetPasswordError) {
-            dispatch(openResetPasswordModal());
+        if (userResetPasswordError) {
+            dispatch(openUserResetPasswordModal());
         }
-    }, [dispatch, resetPasswordError]);
+    }, [dispatch, userResetPasswordError]);
 
-    if (resetPasswordSuccess) {
+    if (userResetPasswordSuccess) {
         return (
             <Redirect to={{ pathname: '/login' }} />
         );
@@ -83,18 +83,18 @@ const ResetPasswordPage = () => {
             {
                 modalIsOpen && modalMode === 'reset-password' ? (
                     <Modal onClose={() => {
-                        dispatch(clearResetPasswordError())
+                        dispatch(clearUserResetPasswordError())
                         dispatch(closeModal())
                     }}>
                         <div className={`text text_type_main-default ${styles.retry} `}>
                             <span className="text text_type_main-medium">
-                                {resetPasswordError}
+                                {userResetPasswordError}
                             </span>
                             <Button
                                 type="primary"
                                 size="small"
                                 onClick={() => {
-                                    dispatch(clearResetPasswordError())
+                                    dispatch(clearUserResetPasswordError())
                                     dispatch(closeModal())
                                     history.replace({ pathname: '/forgot-password' });
                                 }}

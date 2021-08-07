@@ -12,6 +12,7 @@ const AppHeader = () => (
         <nav className={`${styles.headerContent} pt-4 pb-4`}>
             <div className={styles.itemsWrapper}>
                 <NavLink
+                    exact
                     to="/"
                     className={`${styles.link} mr-2 pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
                     activeClassName={styles.activeTab}
@@ -22,7 +23,7 @@ const AppHeader = () => (
                     </span>
                 </NavLink>
                 <NavLink
-                    to="/"
+                    to="/feed"
                     className={`${styles.link} pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
                     activeClassName={styles.activeTab}
                 >

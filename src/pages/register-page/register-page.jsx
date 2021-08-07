@@ -2,8 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getUserRegister, clearRegisterError } from '../../services/actions/userActions';
-import { openRegisterModal, closeModal } from '../../services/actions/modalActions';
+import { getUserRegister, clearUserRegisterError } from '../../services/actions/userActions';
+import { openUserRegisterModal, closeModal } from '../../services/actions/modalActions';
 import Modal from '../../components/modal/modal';
 import styles from './register-page.module.css';
 
@@ -13,7 +13,7 @@ const RegisterPage = () => {
         email: '',
         password: '',
     });
-    const { registerSuccess, registerError } = useSelector(state => state.user);
+    const { userRegisterSuccess, userRegisterError } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
 
     const onChange = event => {
@@ -29,12 +29,12 @@ const RegisterPage = () => {
     }, [state, dispatch]);
 
     useEffect(() => {
-        if (registerError) {
-            dispatch(openRegisterModal());
+        if (userRegisterError) {
+            dispatch(openUserRegisterModal());
         }
-    }, [registerError, dispatch]);
+    }, [userRegisterError, dispatch]);
 
-    if (registerSuccess) {
+    if (userRegisterSuccess) {
         return (
             <Redirect to={{ pathname: '/' }} />
         );
@@ -89,11 +89,11 @@ const RegisterPage = () => {
             {
                 modalIsOpen && modalMode === 'register' ? (
                     <Modal onClose={() => {
-                        dispatch(clearRegisterError());
+                        dispatch(clearUserRegisterError());
                         dispatch(closeModal())
                     }}>
                         <span className="text text_type_main-medium">
-                            {registerError}
+                            {userRegisterError}
                         </span>
                     </Modal>
                 ) : null

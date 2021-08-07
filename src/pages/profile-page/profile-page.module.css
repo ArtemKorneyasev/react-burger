@@ -50,3 +50,8 @@
 .input {
     composes: input from '../login-page/login-page.module.css';
 }
+
+.submit {
+    display: flex;
+    justify-content: flex-end;
+}

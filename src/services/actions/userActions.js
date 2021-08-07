@@ -4,27 +4,37 @@ import {
     userForgotPasswordRequest,
     userResetPasswordRequest,
     userLogoutRequest,
+    userLoadDataRequest,
+    userSaveDataRequest,
 } from "../api";
 
 export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
 export const USER_REGISTER_ERROR = 'USER_REGISTER_ERROR';
-export const CLEAR_REGISTER_ERROR = 'CLEAR_REGISTER_ERROR';
+export const CLEAR_USER_REGISTER_ERROR = 'CLEAR_USER_REGISTER_ERROR';
 
 export const USER_LOGIN_REQUEST = 'USER_LOGIN_REQUEST';
 export const USER_LOGIN_ERROR = 'USER_LOGIN_ERROR';
-export const CLEAR_LOGIN_ERROR = 'CLEAR_LOGIN_ERROR';
+export const CLEAR_USER_LOGIN_ERROR = 'CLEAR_USER_LOGIN_ERROR';
 
 export const USER_LOGOUT_REQUEST = 'USER_LOGOUT_REQUEST';
 export const USER_LOGOUT_ERROR = 'USER_LOGOUT_ERROR';
-export const CLEAR_LOGOUT_ERROR = 'CLEAR_LOGOUT_ERROR';
+export const CLEAR_USER_LOGOUT_ERROR = 'CLEAR_USER_LOGOUT_ERROR';
 
 export const USER_FORGOT_PASSWORD_REQUEST = 'USER_FORGOT_PASSWORD_REQUEST';
 export const USER_FORGOT_PASSWORD_ERROR = 'USER_FORGOT_PASSWORD_ERROR';
-export const CLEAR_FORGOT_PASSWORD_ERROR = 'CLEAR_FORGOT_PASSWORD_ERROR';
+export const CLEAR_USER_FORGOT_PASSWORD_ERROR = 'CLEAR_USER_FORGOT_PASSWORD_ERROR';
 
 export const USER_RESET_PASSWORD_REQUEST = 'USER_RESET_PASSWORD_REQUEST';
 export const USER_RESET_PASSWORD_ERROR = 'USER_RESET_PASSWORD_ERROR';
-export const CLEAR_RESET_PASSWORD_ERROR = 'CLEAR_RESET_PASSWORD_ERROR';
+export const CLEAR_USER_RESET_PASSWORD_ERROR = 'CLEAR_USER_RESET_PASSWORD_ERROR';
+
+export const USER_LOAD_DATA_REQUEST = 'USER_LOAD_DATA_REQUEST';
+export const USER_LOAD_DATA_ERROR = 'USER_LOAD_DATA_ERROR';
+export const CLEAR_USER_LOAD_DATA_ERROR = 'CLEAR_USER_LOAD_DATA_ERROR';
+
+export const USER_SAVE_DATA_REQUEST = 'USER_SAVE_DATA_REQUEST';
+export const USER_SAVE_DATA_ERROR = 'USER_SAVE_DATA_ERROR';
+export const CLEAR_USER_SAVE_DATA_ERROR = 'CLEAR_USER_SAVE_DATA_ERROR';
 
 export const getUserRegister = userData => {
     return dispatch => {
@@ -38,9 +48,9 @@ export const getUserRegister = userData => {
     };
 };
 
-export const clearRegisterError = () => {
+export const clearUserRegisterError = () => {
     return dispatch => {
-        dispatch({ type: CLEAR_REGISTER_ERROR });
+        dispatch({ type: CLEAR_USER_REGISTER_ERROR });
     };
 };
 
@@ -56,15 +66,15 @@ export const getUserLogin = userData => {
     };
 };
 
-export const clearLoginError = () => {
+export const clearUserLoginError = () => {
     return dispatch => {
-        dispatch({ type: CLEAR_LOGIN_ERROR });
+        dispatch({ type: CLEAR_USER_LOGIN_ERROR });
     };
 };
 
-export const getUserLogout = refreshToken => {
+export const getUserLogout = () => {
     return dispatch => {
-        userLogoutRequest(refreshToken).then(response => {
+        userLogoutRequest().then(response => {
             if (response && response.success) {
                 dispatch({ type: USER_LOGOUT_REQUEST, payload: response });
             }
@@ -74,9 +84,9 @@ export const getUserLogout = refreshToken => {
     };
 };
 
-export const clearLogoutError = () => {
+export const clearUserLogoutError = () => {
     return dispatch => {
-        dispatch({ type: CLEAR_LOGOUT_ERROR });
+        dispatch({ type: CLEAR_USER_LOGOUT_ERROR });
     };
 };
 
@@ -92,9 +102,9 @@ export const getUserForgotPassword = email => {
     };
 };
 
-export const clearForgotPasswordError = () => {
+export const clearUserForgotPasswordError = () => {
     return dispatch => {
-        dispatch({ type: CLEAR_FORGOT_PASSWORD_ERROR });
+        dispatch({ type: CLEAR_USER_FORGOT_PASSWORD_ERROR });
     };
 };
 
@@ -113,8 +123,44 @@ export const getUserResetPassword = ({ password, token }) => {
     };
 };
 
-export const clearResetPasswordError = () => {
+export const clearUserResetPasswordError = () => {
     return dispatch => {
-        dispatch({ type: CLEAR_RESET_PASSWORD_ERROR });
+        dispatch({ type: CLEAR_USER_RESET_PASSWORD_ERROR });
+    };
+};
+
+export const getUserLoadData = () => {
+    return async dispatch => {
+        await userLoadDataRequest().then(response => {
+            if (response && response.success) {
+                dispatch({ type: USER_LOAD_DATA_REQUEST, payload: response });
+            }
+        }).catch((error) => {
+            dispatch({ type: USER_LOAD_DATA_ERROR, payload: error.message });
+        });
+    };
+};
+
+export const clearUserLoadError = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_USER_LOAD_DATA_ERROR });
+    };
+};
+
+export const getUserSaveData = (userData) => {
+    return async dispatch => {
+        await userSaveDataRequest(userData).then(response => {
+            if (response && response.success) {
+                dispatch({ type: USER_SAVE_DATA_REQUEST, payload: response });
+            }
+        }).catch((error) => {
+            dispatch({ type: USER_SAVE_DATA_ERROR, payload: error.message });
+        });
+    };
+};
+
+export const clearUserSaveError = () => {
+    return dispatch => {
+        dispatch({ type: CLEAR_USER_SAVE_DATA_ERROR });
     };
 };

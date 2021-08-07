@@ -2,8 +2,8 @@ import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getUserLogin, clearLoginError } from '../../services/actions/userActions';
-import { openLoginModal, closeModal } from '../../services/actions/modalActions';
+import { getUserLogin, clearUserLoginError } from '../../services/actions/userActions';
+import { openUserLoginModal, closeModal } from '../../services/actions/modalActions';
 import Modal from '../../components/modal/modal';
 import styles from './login-page.module.css';
 
@@ -12,8 +12,8 @@ const LoginPage = () => {
         email: '',
         password: '',
     });
-    const { loginSuccess, loginError } = useSelector(state => state.user);
-    const { modalIsOpen, modalMode } = useSelector(state => state.user);
+    const { userLoginSuccess, userLoginError } = useSelector(state => state.user);
+    const { modalIsOpen, modalMode } = useSelector(state => state.modal);
 
     const onChange = event => {
         setState({
@@ -28,14 +28,14 @@ const LoginPage = () => {
     }, [state, dispatch]);
 
     useEffect(() => {
-        if (loginError) {
-            dispatch(openLoginModal());
+        if (userLoginError) {
+            dispatch(openUserLoginModal());
         }
-    }, [dispatch, loginError]);
+    }, [dispatch, userLoginError]);
 
-    if (loginSuccess) {
+    if (userLoginSuccess) {
         return (
-            <Redirect tp={{ pathname: '/' }} />
+            <Redirect to={{ pathname: '/' }} />
         );
     }
 
@@ -86,11 +86,11 @@ const LoginPage = () => {
             {
                 modalIsOpen && modalMode === 'login' ? (
                     <Modal onClose={() => {
-                        dispatch(clearLoginError())
+                        dispatch(clearUserLoginError())
                         dispatch(closeModal())
                     }}>
                         <span className="text text_type_main-medium">
-                            {loginError}
+                            {userLoginError}
                         </span>
                     </Modal>
                 ) : null

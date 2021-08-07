@@ -1,23 +1,31 @@
 import {
     USER_REGISTER_REQUEST,
     USER_REGISTER_ERROR,
-    CLEAR_REGISTER_ERROR,
+    CLEAR_USER_REGISTER_ERROR,
 
     USER_LOGIN_REQUEST,
     USER_LOGIN_ERROR,
-    CLEAR_LOGIN_ERROR,
+    CLEAR_USER_LOGIN_ERROR,
 
     USER_LOGOUT_REQUEST,
     USER_LOGOUT_ERROR,
-    CLEAR_LOGOUT_ERROR,
+    CLEAR_USER_LOGOUT_ERROR,
 
     USER_FORGOT_PASSWORD_REQUEST,
     USER_FORGOT_PASSWORD_ERROR,
-    CLEAR_FORGOT_PASSWORD_ERROR,
+    CLEAR_USER_FORGOT_PASSWORD_ERROR,
 
     USER_RESET_PASSWORD_REQUEST,
     USER_RESET_PASSWORD_ERROR,
-    CLEAR_RESET_PASSWORD_ERROR,
+    CLEAR_USER_RESET_PASSWORD_ERROR,
+
+    USER_LOAD_DATA_REQUEST,
+    USER_LOAD_DATA_ERROR,
+    CLEAR_USER_LOAD_DATA_ERROR,
+
+    USER_SAVE_DATA_REQUEST,
+    USER_SAVE_DATA_ERROR,
+    CLEAR_USER_SAVE_DATA_ERROR,
 } from '../actions/userActions';
 import { setCookie, deleteCookie } from '../helpers';
 
@@ -27,20 +35,26 @@ const initialState = {
         name: '',
     },
 
-    registerSuccess: false,
-    registerError: '',
+    userRegisterSuccess: false,
+    userRegisterError: '',
 
-    loginSuccess: false,
-    loginError: '',
+    userLoginSuccess: false,
+    userLoginError: '',
 
-    logoutSuccess: false,
-    logoutError: '',
+    userLogoutSuccess: false,
+    userLogoutError: '',
 
-    forgotPasswordSuccess: false,
-    forgotPasswordError: '',
+    userForgotPasswordSuccess: false,
+    userForgotPasswordError: '',
 
-    resetPasswordSuccess: false,
-    resetPasswordError: '',
+    userResetPasswordSuccess: false,
+    userResetPasswordError: '',
+
+    userLoadSuccess: false,
+    userLoadError: '',
+
+    userSaveSuccess: false,
+    userSaveError: '',
 };
 
 const userReducer = (state = initialState, action) => {
@@ -51,21 +65,18 @@ const userReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                user: {
-                    email: action.payload.user.email,
-                    name: action.payload.user.name,
-                },
-                registerSuccess: action.payload.success,
+                user: action.payload.user,
+                userRegisterSuccess: action.payload.success,
             };
         case USER_REGISTER_ERROR:
             return {
                 ...state,
-                registerError: action.payload,
+                userRegisterError: action.payload,
             };
-        case CLEAR_REGISTER_ERROR:
+        case CLEAR_USER_REGISTER_ERROR:
             return {
                 ...state,
-                registerError: '',
+                userRegisterError: '',
             };
         case USER_LOGIN_REQUEST:
             setCookie('accessToken', action.payload.accessToken);
@@ -73,21 +84,18 @@ const userReducer = (state = initialState, action) => {
 
             return {
                 ...state,
-                user: {
-                    email: action.payload.user.email,
-                    name: action.payload.user.name,
-                },
-                loginSuccess: action.payload.success,
+                user: action.payload.user,
+                userLoginSuccess: action.payload.success,
             };
         case USER_LOGIN_ERROR:
             return {
                 ...state,
-                loginError: action.payload,
+                userLoginError: action.payload,
             };
-        case CLEAR_LOGIN_ERROR:
+        case CLEAR_USER_LOGIN_ERROR:
             return {
                 ...state,
-                loginError: '',
+                userLoginError: '',
             };
         case USER_LOGOUT_REQUEST:
             deleteCookie('accessToken');
@@ -99,47 +107,79 @@ const userReducer = (state = initialState, action) => {
                     email: '',
                     name: '',
                 },
-                logoutSuccess: action.payload.success,
+                userLogoutSuccess: action.payload.success,
             };
         case USER_LOGOUT_ERROR:
             return {
                 ...state,
-                logoutError: action.payload,
+                userLogoutError: action.payload,
             };
-        case CLEAR_LOGOUT_ERROR:
+        case CLEAR_USER_LOGOUT_ERROR:
             return {
                 ...state,
-                logoutError: '',
+                userLogoutError: '',
             };
         case USER_FORGOT_PASSWORD_REQUEST:
             return {
                 ...state,
-                forgotPasswordSuccess: action.payload.success,
+                userForgotPasswordSuccess: action.payload.success,
             };
         case USER_FORGOT_PASSWORD_ERROR:
             return {
                 ...state,
-                forgotPasswordError: action.payload,
+                userForgotPasswordError: action.payload,
             };
-        case CLEAR_FORGOT_PASSWORD_ERROR:
+        case CLEAR_USER_FORGOT_PASSWORD_ERROR:
             return {
                 ...state,
-                forgotPasswordError: '',
+                userForgotPasswordError: '',
             };
         case USER_RESET_PASSWORD_REQUEST:
             return {
                 ...state,
-                resetPasswordSuccess: action.payload.success,
+                userResetPasswordSuccess: action.payload.success,
             };
         case USER_RESET_PASSWORD_ERROR:
             return {
                 ...state,
-                resetPasswordError: action.payload,
+                userResetPasswordError: action.payload,
             };
-        case CLEAR_RESET_PASSWORD_ERROR:
+        case CLEAR_USER_RESET_PASSWORD_ERROR:
             return {
                 ...state,
-                resetPasswordError: '',
+                userResetPasswordError: '',
+            };
+        case USER_LOAD_DATA_REQUEST:
+            return {
+                ...state,
+                user: action.payload.user,
+                userLoadSuccess: action.payload.success,
+            };
+        case USER_LOAD_DATA_ERROR:
+            return {
+                ...state,
+                userLoadError: action.payload,
+            };
+        case CLEAR_USER_LOAD_DATA_ERROR:
+            return {
+                ...state,
+                userLoadError: '',
+            };
+        case USER_SAVE_DATA_REQUEST:
+            return {
+                ...state,
+                user: action.payload.user,
+                userSaveSuccess: action.payload.success,
+            };
+        case USER_SAVE_DATA_ERROR:
+            return {
+                ...state,
+                userSaveError: action.payload,
+            };
+        case CLEAR_USER_SAVE_DATA_ERROR:
+            return {
+                ...state,
+                userSaveError: '',
             };
         default:
             return state;
