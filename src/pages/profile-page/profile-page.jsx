@@ -70,26 +70,20 @@ const ProfilePage = () => {
             email: state.email,
             password: state.password,
         }));
+    }, [dispatch, state.name, state.email, state.password]);
 
+    useEffect(() => {
         if (userSaveSuccess) {
             setState(prevState => {
                 return {
                     ...prevState,
                     name: user.name,
                     email: user.email,
-                    showSubmit: !prevState.showSubmit,
+                    showSubmit: false,
                 };
             });
         }
-    }, [
-        dispatch,
-        userSaveSuccess,
-        state.name,
-        state.email,
-        state.password,
-        user.name,
-        user.email,
-    ]);
+    }, [userSaveSuccess, user.name, user.email]);
 
     useEffect(() => {
         dispatch(getUserLoadData());

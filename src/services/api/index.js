@@ -8,7 +8,7 @@ export const checkResponse = (response) => {
         : response.json().then(error => Promise.reject(error));
 };
 
-const refreshToken = () => {
+const refreshToken = async () => {
     const request = new Request(
         `${API_URL}/auth/token`,
         {
@@ -20,7 +20,7 @@ const refreshToken = () => {
         },
     );
 
-    return fetch(request).then(checkResponse);
+    return await fetch(request).then(checkResponse);
 };
 
 const fetchWithRefresh = async (url, options) => {

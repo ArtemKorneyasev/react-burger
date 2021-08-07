@@ -67,6 +67,8 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 user: action.payload.user,
                 userRegisterSuccess: action.payload.success,
+                userLoginSuccess: true,
+                userLogoutSuccess: false,
             };
         case USER_REGISTER_ERROR:
             return {
@@ -86,6 +88,7 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 user: action.payload.user,
                 userLoginSuccess: action.payload.success,
+                userLogoutSuccess: false,
             };
         case USER_LOGIN_ERROR:
             return {
@@ -107,7 +110,13 @@ const userReducer = (state = initialState, action) => {
                     email: '',
                     name: '',
                 },
+                userRegisterSuccess: false,
+                userLoginSuccess: false,
                 userLogoutSuccess: action.payload.success,
+                userForgotPasswordSuccess: false,
+                userResetPasswordSuccess: false,
+                userLoadSuccess: false,
+                userSaveSuccess: false,
             };
         case USER_LOGOUT_ERROR:
             return {

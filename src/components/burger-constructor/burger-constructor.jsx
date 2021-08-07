@@ -1,6 +1,7 @@
 import PropsTypes from 'prop-types';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getTotalPrice, deleteTopping, sortToppings } from '../../services/actions/constructorActions';
@@ -11,9 +12,12 @@ import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = (props) => {
     const { onDropHandler } = props;
-    const dispatch = useDispatch();
     const { burgerData, totalPrice } = useSelector(state => state.burger);
+    const { userLoginSuccess } = useSelector(state => state.user);
     const { bun, toppings } = burgerData;
+
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     const [, dropRef] = useDrop({
         accept: 'ingredient-card',
@@ -31,8 +35,12 @@ const BurgerConstructor = (props) => {
     }, [dispatch, burgerData]);
 
     const onSubmit = () => {
-        dispatch(getOrderDetails(burgerData));
-        dispatch(openOrderModal());
+        if (userLoginSuccess) {
+            dispatch(getOrderDetails(burgerData));
+            dispatch(openOrderModal());
+        } else {
+            history.replace({ pathname: '/login' });
+        }
     };
 
     return (
