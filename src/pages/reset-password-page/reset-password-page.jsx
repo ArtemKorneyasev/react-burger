@@ -4,6 +4,7 @@ import { Link, Redirect, useHistory } from 'react-router-dom';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getUserResetPassword, clearUserResetPasswordError } from '../../services/actions/userActions';
 import { openUserResetPasswordModal, closeModal } from '../../services/actions/modalActions';
+import { isUserAuth } from '../../services/helpers';
 import Modal from '../../components/modal/modal';
 import styles from './reset-password-page.module.css';
 
@@ -15,8 +16,10 @@ const ResetPasswordPage = () => {
     const {
         userResetPasswordSuccess,
         userResetPasswordError,
+        userForgotPasswordSuccess,
     } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
+    const isAuth = isUserAuth();
 
     const onChange = event => {
         setState({
@@ -25,9 +28,11 @@ const ResetPasswordPage = () => {
         });
     };
 
-    const history = useHistory();
     const dispatch = useDispatch();
-    const resetPasswordHandler = useCallback(() => {
+    const history = useHistory();
+
+    const resetPasswordHandler = useCallback((event) => {
+        event.preventDefault();
         dispatch(getUserResetPassword(state));
     }, [state, dispatch]);
 
@@ -37,10 +42,14 @@ const ResetPasswordPage = () => {
         }
     }, [dispatch, userResetPasswordError]);
 
-    if (userResetPasswordSuccess) {
+    if (!userForgotPasswordSuccess || userResetPasswordSuccess) {
         return (
             <Redirect to={{ pathname: '/login' }} />
         );
+    }
+
+    if (isAuth) {
+        history.replace({ pathname: '/' });
     }
 
     return (
@@ -49,30 +58,31 @@ const ResetPasswordPage = () => {
                 <span className="text text_type_main-medium">
                     Восстановление пароля
                 </span>
-                <div className={styles.input}>
-                    <PasswordInput
-                        onChange={onChange}
-                        value={state.password}
-                        name="password"
-                    />
-                </div>
-                <div className={styles.input}>
-                    <Input
-                        placeholder="Введите код из письма"
-                        onChange={onChange}
-                        value={state.token}
-                        name="token"
-                    />
-                </div>
-                <div className={styles.btn}>
-                    <Button
-                        type="primary"
-                        size="medium"
-                        onClick={resetPasswordHandler}
-                    >
-                        Сохранить
-                    </Button>
-                </div>
+                <form
+                    className={styles.form}
+                    onSubmit={resetPasswordHandler}
+                >
+                    <div className={styles.input}>
+                        <PasswordInput
+                            onChange={onChange}
+                            value={state.password}
+                            name="password"
+                        />
+                    </div>
+                    <div className={styles.input}>
+                        <Input
+                            placeholder="Введите код из письма"
+                            onChange={onChange}
+                            value={state.token}
+                            name="token"
+                        />
+                    </div>
+                    <div className={styles.btn}>
+                        <Button type="primary" size="medium">
+                            Сохранить
+                        </Button>
+                    </div>
+                </form>
                 <div className={`text text_type_main-default text_color_inactive ${styles.linkContainer}`}>
                     <span>Вспомнили пароль?</span>
                     <Link className={styles.link} to="/login">

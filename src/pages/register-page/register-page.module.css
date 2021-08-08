@@ -2,6 +2,10 @@
     composes: root from '../login-page/login-page.module.css';
 }
 
+.form {
+    composes: form from '../login-page/login-page.module.css';
+}
+
 .input {
     composes: input from '../login-page/login-page.module.css';
 }

@@ -64,7 +64,8 @@ const ProfilePage = () => {
         dispatch(getUserLogout());
     }, [dispatch]);
 
-    const saveHandler = useCallback(() => {
+    const saveHandler = useCallback((event) => {
+        event.preventDefault();
         dispatch(getUserSaveData({
             name: state.name,
             email: state.email,
@@ -154,7 +155,7 @@ const ProfilePage = () => {
                             В этом разделе вы можете <br/> изменить свои персональные данные
                         </span>
                     </div>
-                    <div className={styles.form}>
+                    <form className={styles.form} onSubmit={saveHandler}>
                         <div className={styles.input}>
                             <Input
                                 placeholder="Имя"
@@ -187,17 +188,13 @@ const ProfilePage = () => {
                                     >
                                         Отмена
                                     </Button>
-                                    <Button
-                                        type="primary"
-                                        size="medium"
-                                        onClick={saveHandler}
-                                    >
+                                    <Button type="primary" size="medium">
                                         Сохранить
                                     </Button>
                                 </div>
                             ) : null
                         }
-                    </div>
+                    </form>
                 </div>
             </main>
             {

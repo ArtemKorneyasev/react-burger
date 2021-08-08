@@ -6,6 +6,13 @@
     margin-top: 180px;
 }
 
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
 .input {
     width: 480px;
 }

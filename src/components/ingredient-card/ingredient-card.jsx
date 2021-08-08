@@ -19,15 +19,17 @@ const IngredientCard = (props) => {
         const { bun, toppings } = burgerData;
 
         if (data.type === 'bun') {
-            setCount(
-                Object.values(bun).filter(
-                    value => value === data._id,
-                ).length * 2
-            );
+            if (bun.data) {
+                setCount(
+                    Object.values(bun.data).filter(
+                        value => value === data._id,
+                    ).length * 2
+                );
+            }
         } else {
             setCount(
                 toppings.filter(
-                    topping => topping._id === data._id,
+                    topping => topping.data._id === data._id,
                 ).length
             );
         }

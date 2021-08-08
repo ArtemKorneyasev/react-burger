@@ -44,3 +44,5 @@ export const setCookie = (name, value, props) => {
 };
 
 export const deleteCookie = name => setCookie(name, null, { expires: -1 });
+
+export const isUserAuth = () => getCookie('accessToken');

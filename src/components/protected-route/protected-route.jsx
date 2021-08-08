@@ -1,15 +1,15 @@
 import { Redirect, Route } from 'react-router-dom';
-import { getCookie } from '../../services/helpers';
+import { isUserAuth } from '../../services/helpers';
 
 const ProtectedRoute = (props) => {
     const { children, ...otherProps } = props;
-    const hasToken = getCookie('accessToken');
+    const isAuth = isUserAuth();
 
     return (
         <Route
             {...otherProps}
             render={({ location }) => 
-                hasToken && hasToken !== 'undefined' ? children : (
+                isAuth ? children : (
                     <Redirect
                         to={{
                             pathname: '/login',

@@ -14,6 +14,7 @@ import {
     USER_FORGOT_PASSWORD_REQUEST,
     USER_FORGOT_PASSWORD_ERROR,
     CLEAR_USER_FORGOT_PASSWORD_ERROR,
+    CLEAR_FORGOT_PASSWORD_RESULT,
 
     USER_RESET_PASSWORD_REQUEST,
     USER_RESET_PASSWORD_ERROR,
@@ -157,6 +158,11 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 userResetPasswordError: '',
+            };
+        case CLEAR_FORGOT_PASSWORD_RESULT:
+            return {
+                ...state,
+                userForgotPasswordSuccess: false,
             };
         case USER_LOAD_DATA_REQUEST:
             return {

@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getUserLogin, clearUserLoginError } from '../../services/actions/userActions';
 import { openUserLoginModal, closeModal } from '../../services/actions/modalActions';
+import { isUserAuth } from '../../services/helpers';
 import Modal from '../../components/modal/modal';
 import styles from './login-page.module.css';
 
@@ -14,6 +15,7 @@ const LoginPage = () => {
     });
     const { userLoginSuccess, userLoginError } = useSelector(state => state.user);
     const { modalIsOpen, modalMode } = useSelector(state => state.modal);
+    const isAuth = isUserAuth();
 
     const onChange = event => {
         setState({
@@ -23,7 +25,8 @@ const LoginPage = () => {
     };
 
     const dispatch = useDispatch();
-    const loginHandler = useCallback(() => {
+    const loginHandler = useCallback((event) => {
+        event.preventDefault();
         dispatch(getUserLogin(state));
     }, [state, dispatch]);
 
@@ -33,7 +36,7 @@ const LoginPage = () => {
         }
     }, [dispatch, userLoginError]);
 
-    if (userLoginSuccess) {
+    if (userLoginSuccess || isAuth) {
         return (
             <Redirect to={{ pathname: '/' }} />
         );
@@ -45,29 +48,30 @@ const LoginPage = () => {
                 <span className="text text_type_main-medium">
                     Вход
                 </span>
-                <div className={styles.input}>
-                    <EmailInput
-                        onChange={onChange}
-                        value={state.email}
-                        name="email"
-                    />
-                </div>
-                <div className={styles.input}>
-                    <PasswordInput
-                        onChange={onChange}
-                        value={state.password}
-                        name="password"
-                    />
-                </div>
-                <div className={styles.btn}>
-                    <Button
-                        type="primary"
-                        size="medium"
-                        onClick={loginHandler}
-                    >
-                        Войти
-                    </Button>
-                </div>
+                <form
+                    className={styles.form}
+                    onSubmit={loginHandler}
+                >
+                    <div className={styles.input}>
+                        <EmailInput
+                            onChange={onChange}
+                            value={state.email}
+                            name="email"
+                        />
+                    </div>
+                    <div className={styles.input}>
+                        <PasswordInput
+                            onChange={onChange}
+                            value={state.password}
+                            name="password"
+                        />
+                    </div>
+                    <div className={styles.btn}>
+                        <Button type="primary" size="medium">
+                            Войти
+                        </Button>
+                    </div>
+                </form>
                 <div className={`text text_type_main-default text_color_inactive ${styles.linksWrapper}`}>
                     <div className={styles.linkContainer}>
                         <span>Вы — новый пользователь?</span>

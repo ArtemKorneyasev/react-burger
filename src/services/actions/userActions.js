@@ -23,6 +23,7 @@ export const CLEAR_USER_LOGOUT_ERROR = 'CLEAR_USER_LOGOUT_ERROR';
 export const USER_FORGOT_PASSWORD_REQUEST = 'USER_FORGOT_PASSWORD_REQUEST';
 export const USER_FORGOT_PASSWORD_ERROR = 'USER_FORGOT_PASSWORD_ERROR';
 export const CLEAR_USER_FORGOT_PASSWORD_ERROR = 'CLEAR_USER_FORGOT_PASSWORD_ERROR';
+export const CLEAR_FORGOT_PASSWORD_RESULT = 'CLEAR_FORGOT_PASSWORD_RESULT';
 
 export const USER_RESET_PASSWORD_REQUEST = 'USER_RESET_PASSWORD_REQUEST';
 export const USER_RESET_PASSWORD_ERROR = 'USER_RESET_PASSWORD_ERROR';
@@ -113,6 +114,7 @@ export const getUserResetPassword = ({ password, token }) => {
         userResetPasswordRequest({ password, token }).then(response => {
             if (response && response.success) {
                 dispatch({ type: USER_RESET_PASSWORD_REQUEST, payload: response });
+                dispatch({ type: CLEAR_FORGOT_PASSWORD_RESULT });
             }
         }).catch(() => {
             dispatch({

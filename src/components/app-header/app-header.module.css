@@ -6,6 +6,10 @@
     display: flex;
 }
 
+.logoItem:hover {
+    cursor: pointer;
+}
+
 .header {
     justify-content: center;
     background: #1C1C21;
