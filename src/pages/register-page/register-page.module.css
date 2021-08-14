@@ -1,0 +1,23 @@
+.root {
+    composes: root from '../login-page/login-page.module.css';
+}
+
+.form {
+    composes: form from '../login-page/login-page.module.css';
+}
+
+.input {
+    composes: input from '../login-page/login-page.module.css';
+}
+
+.btn {
+    composes: btn from '../login-page/login-page.module.css';
+}
+
+.linkContainer {
+    composes: linkContainer from '../login-page/login-page.module.css';
+}
+
+.link {
+    composes: link from '../login-page/login-page.module.css';
+}

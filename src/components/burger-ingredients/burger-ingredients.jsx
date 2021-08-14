@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import { showIngredientInfo } from '../../services/actions/ingredientsActions';
 import { openIngredientModal } from '../../services/actions/modalActions';
@@ -8,8 +9,11 @@ import styles from './burger-ingredients.module.css';
 
 const BurgerIngredients = () => {
     const [nearestTab, setNearestTab] = useState('buns');
-    const dispatch = useDispatch();
     const { ingredients, ingredientsError } = useSelector(state => state.ingredients);
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const location = useLocation();
 
     const scrollContainerRef = useRef(null);
     const bunsHeaderRef = useRef(null);
@@ -39,7 +43,11 @@ const BurgerIngredients = () => {
     const onIngredientCardClick = useCallback(data => {
         dispatch(showIngredientInfo(data));
         dispatch(openIngredientModal());
-    }, [dispatch]);
+        history.push({
+            pathname: `/ingredients/${data._id}`,
+            state: { background: location} ,
+        });
+    }, [dispatch, history, location]);
 
     if (ingredientsError) {
         return (

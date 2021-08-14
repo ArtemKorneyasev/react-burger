@@ -1,3 +1,4 @@
+import { NavLink, useHistory } from 'react-router-dom';
 import {
     Logo,
     BurgerIcon,
@@ -6,34 +7,54 @@ import {
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 
-const AppHeader = () => (
-    <header className={styles.header}>
-        <nav className={`${styles.headerContent} pt-4 pb-4`}>
-            <div className={styles.itemsWrapper}>
-                <div className={`${styles.menuItem} mr-2 pl-5 pt-4 pr-5 pb-4`}>
-                    <BurgerIcon type="primary" />
+const AppHeader = () => {
+    const history = useHistory();
+
+    return (
+        <header className={styles.header}>
+            <nav className={`${styles.headerContent} pt-4 pb-4`}>
+                <div className={styles.itemsWrapper}>
+                    <NavLink
+                        exact
+                        to="/"
+                        className={`${styles.link} mr-2 pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                        activeClassName={styles.activeTab}
+                    >
+                        <BurgerIcon type="secondary" />
+                        <span className="text text_type_main-default ml-2">
+                            Конструктор
+                        </span>
+                    </NavLink>
+                    <NavLink
+                        to="/feed"
+                        className={`${styles.link} pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                        activeClassName={styles.activeTab}
+                    >
+                        <ListIcon type="secondary" />
+                        <span className="text text_type_main-default ml-2">
+                            Лента заказов
+                        </span>
+                    </NavLink>
+                </div>
+                <div
+                    className={styles.logoItem}
+                    onClick={() => history.replace({ pathname: '/' })}
+                >
+                    <Logo />
+                </div>
+                <NavLink
+                    to="/profile"
+                    className={`${styles.link} pl-5 pt-4 pr-5 pb-4 text_color_inactive`}
+                    activeClassName={styles.activeTab}
+                >
+                    <ProfileIcon type="secondary" />
                     <span className="text text_type_main-default ml-2">
-                        Конструктор
+                        Личный кабинет
                     </span>
-                </div>
-                <div className={`${styles.menuItem} pl-5 pt-4 pr-5 pb-4`}>
-                    <ListIcon type="secondary" />
-                    <span className="text text_type_main-default text_color_inactive ml-2">
-                        Лента заказов
-                    </span>
-                </div>
-            </div>
-            <div className={styles.logoItem}>
-                <Logo />
-            </div>
-            <div className={`${styles.menuItem} pl-5 pt-4 pr-5 pb-4`}>
-                <ProfileIcon type="secondary" />
-                <span className="text text_type_main-default text_color_inactive ml-2">
-                    Личный кабинет
-                </span>
-            </div>
-        </nav>
-    </header>
-);
+                </NavLink>
+            </nav>
+        </header>
+    );
+};
 
 export default AppHeader;

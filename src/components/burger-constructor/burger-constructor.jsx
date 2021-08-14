@@ -1,6 +1,7 @@
 import PropsTypes from 'prop-types';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { getTotalPrice, deleteTopping, sortToppings } from '../../services/actions/constructorActions';
@@ -11,97 +12,86 @@ import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = (props) => {
     const { onDropHandler } = props;
-    const dispatch = useDispatch();
     const { burgerData, totalPrice } = useSelector(state => state.burger);
+    const { userLoginSuccess } = useSelector(state => state.user);
     const { bun, toppings } = burgerData;
 
-    const [, dropIngredientCard] = useDrop({
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const [, dropRef] = useDrop({
         accept: 'ingredient-card',
-        drop(itemId) {
-            onDropHandler(itemId);
+        drop(item) {
+            onDropHandler(item);
         },
     });
-    const [, dropTopping] = useDrop({ accept: 'sort-toppings' });
+
+    const moveTopping = useCallback((dragIndex, hoverIndex) => {
+        dispatch(sortToppings(dragIndex, hoverIndex));
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(getTotalPrice(burgerData));
     }, [dispatch, burgerData]);
 
-    const findTopping = useCallback((id) => {
-        const topping = toppings.filter(
-            topping => topping._id === id,
-        )[0];
-
-        return {
-            topping,
-            index: toppings.indexOf(topping),
-        };
-    }, [toppings]);
-
-    const moveTopping = useCallback((index, atIndex) => {
-        dispatch(sortToppings(index, atIndex));
-    }, [dispatch]);
-
     const onSubmit = () => {
-        dispatch(getOrderDetails(burgerData));
-        dispatch(openOrderModal());
+        if (userLoginSuccess) {
+            dispatch(getOrderDetails(burgerData));
+            dispatch(openOrderModal());
+        } else {
+            history.replace({ pathname: '/login' });
+        }
     };
 
     return (
         <section style={{ width: 600, overflow: 'hidden' }}>
             <div
-                ref={dropIngredientCard}
+                ref={dropRef}
                 className={styles.ingredientsWrapper}
             >
                 {
-                    bun._id && (
-                        <ConstructorElement
-                            type="top"
-                            isLocked={true}
-                            text={`${bun.name} (верх)`}
-                            price={bun.price}
-                            thumbnail={bun.image_mobile}
-                        />
+                    bun.uniqueId && (
+                        <div>
+                            <ConstructorElement
+                                type="top"
+                                isLocked={true}
+                                text={`${bun.data.name} (верх)`}
+                                price={bun.data.price}
+                                thumbnail={bun.data.image_mobile}
+                            />
+                        </div>
                     )
                 }
-                <ul
-                    ref={dropTopping}
-                    className={styles.toppings}
-                >
+                <div className={styles.toppings}>
                     {
                         toppings.map((topping, index) => (
-                            <li
-                                key={`${topping._id}-${index}`}
-                                style={{ width: 568, marginRight: 18 }}
+                            <MovableTopping
+                                key={topping.uniqueId}
+                                toppingId={topping.uniqueId}
+                                toppingIndex={index}
+                                moveTopping={moveTopping}
                             >
-                                <MovableTopping 
-                                    toppingId={topping._id}
-                                    toppingIndex={index}
-                                    findTopping={findTopping}
-                                    moveTopping={moveTopping}
-                                >
-                                    <DragIcon type="primary" />
-                                    <ConstructorElement
-                                        isLocked={false}
-                                        text={topping.name}
-                                        price={topping.price}
-                                        thumbnail={topping.image_mobile}
-                                        handleClose={() => dispatch(deleteTopping(index))}
-                                    />
-                                </MovableTopping>
-                            </li>
+                                <DragIcon type="primary" />
+                                <ConstructorElement
+                                    isLocked={false}
+                                    text={topping.data.name}
+                                    price={topping.data.price}
+                                    thumbnail={topping.data.image_mobile}
+                                    handleClose={() => dispatch(deleteTopping(index))}
+                                />
+                            </MovableTopping>
                         ))
                     }
-                </ul>
+                </div>
                 {
-                    bun._id && (
+                    bun.uniqueId && (
                         <div className={styles.bottomBunWrapper}>
                             <ConstructorElement
                                 type="bottom"
                                 isLocked={true}
-                                text={`${bun.name} (низ)`}
-                                price={bun.price}
-                                thumbnail={bun.image_mobile}
+                                text={`${bun.data.name} (низ)`}
+                                price={bun.data.price}
+                                thumbnail={bun.data.image_mobile}
                             />
                         </div>
                     )

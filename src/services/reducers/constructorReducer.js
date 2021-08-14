@@ -3,6 +3,7 @@ import {
 	ADD_TOPPING,
 	DELETE_TOPPING,
 	SORT_TOPPINGS,
+	CLEAR_BURGER_CONSTRUCTOR,
 	CALC_TOTAL_PRICE,
 } from '../actions/constructorActions';
 import { moveInArray } from '../helpers';
@@ -44,16 +45,24 @@ const constructorReducer = (state = initialState, action) => {
 				},
 			};
 		case SORT_TOPPINGS:
-			const { index, atIndex } = action.payload;
+			const { dragIndex, hoverIndex } = action.payload;
 			return {
 				...state,
 				burgerData: {
 					...state.burgerData,
 					toppings: moveInArray(
 						[...state.burgerData.toppings],
-						index,
-						atIndex,
+						dragIndex,
+						hoverIndex,
 					),
+				},
+			};
+		case CLEAR_BURGER_CONSTRUCTOR:
+			return {
+				...state,
+				burgerData: {
+					bun: {},
+					toppings: [],
 				},
 			};
 		case CALC_TOTAL_PRICE:

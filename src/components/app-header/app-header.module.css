@@ -1,9 +1,13 @@
 .header,
 .headerContent,
 .itemsWrapper,
-.menuItem,
+.link,
 .logoItem {
     display: flex;
+}
+
+.logoItem:hover {
+    cursor: pointer;
 }
 
 .header {
@@ -16,7 +20,12 @@
     align-items: center;
 }
 
-.menuItem:nth-child(3) {
+.link {
+    display: flex;
+    text-decoration: none;
+}
+
+.link:nth-child(3) {
     flex-grow: 1;
     justify-content: flex-end;
 }
@@ -24,4 +33,8 @@
 .logoItem {
     flex-grow: 1;
     justify-content: center;
+}
+
+.activeTab {
+    color: white;
 }
