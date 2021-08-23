@@ -6,7 +6,7 @@ import {
     userLogoutRequest,
     userLoadDataRequest,
     userSaveDataRequest,
-} from "../api";
+} from "../../api";
 
 export const USER_REGISTER_REQUEST = 'USER_REGISTER_REQUEST';
 export const USER_REGISTER_ERROR = 'USER_REGISTER_ERROR';

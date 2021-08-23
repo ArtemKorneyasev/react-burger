@@ -1,0 +1,33 @@
+.feedSection {
+    width: 584px;
+}
+
+.feedSectionLarge {
+    width: 844px;
+}
+
+.title {
+    composes: title from '../burger-ingredients/burger-ingredients.module.css';
+}
+
+.ordersWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 768px;
+    overflow: auto;
+}
+
+.ordersWrapper::-webkit-scrollbar {
+	width: 12px;
+}
+
+.ordersWrapper::-webkit-scrollbar-track {
+	background: #2F2F37;
+}
+
+.ordersWrapper::-webkit-scrollbar-thumb {
+	background: #8585AD;
+	border: 3px solid #2F2F37;
+	border-radius: 6px;
+}

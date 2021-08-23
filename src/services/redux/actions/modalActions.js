@@ -1,5 +1,6 @@
 export const OPEN_INGREDIENT_MODAL = 'OPEN_INGREDIENT_MODAL';
-export const OPEN_ORDER_MODAL = 'OPEN_ORDER_MODAL';
+export const OPEN_ORDER_RESULT_MODAL = 'OPEN_ORDER_RESULT_MODAL';
+export const OPEN_ORDER_DETAILS_MODAL = 'OPEN_ORDER_DETAILS_MODAL';
 export const OPEN_USER_REGISTER_MODAL = 'OPEN_USER_REGISTER_MODAL';
 export const OPEN_USER_LOGIN_MODAL = 'OPEN_USER_LOGIN_MODAL';
 export const OPEN_USER_LOGOUT_MODAL = 'OPEN_USER_LOGOUT_MODAL';
@@ -12,10 +13,14 @@ export const CLOSE_MODAL = 'CLOSE_MODAL';
 
 export const openIngredientModal = () => {
     return dispatch => dispatch({ type: OPEN_INGREDIENT_MODAL });
-}
+};
 
-export const openOrderModal = () => {
-    return dispatch => dispatch({ type: OPEN_ORDER_MODAL });
+export const openOrderResultModal = () => {
+    return dispatch => dispatch({ type: OPEN_ORDER_RESULT_MODAL });
+};
+
+export const openOrderDetailsModal = () => {
+    return dispatch => dispatch({ type: OPEN_ORDER_DETAILS_MODAL });
 };
 
 export const openUserRegisterModal = () => {

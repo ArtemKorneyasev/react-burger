@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, Redirect } from 'react-router-dom';
+import { NavLink, Redirect, Switch, Route } from 'react-router-dom';
 import {
     EmailInput,
     PasswordInput,
@@ -14,13 +14,14 @@ import {
     clearUserSaveError,
     getUserLogout,
     clearUserLogoutError,
-} from '../../services/actions/userActions';
+} from '../../services/redux/actions/userActions';
 import {
     openUserLoadModal,
     openUserSaveModal,
     openUserLogoutModal,
     closeModal,
-} from '../../services/actions/modalActions';
+} from '../../services/redux/actions/modalActions';
+import OrdersList from '../../components/orders-list/orders-list';
 import Modal from '../../components/modal/modal';
 import styles from './profile-page.module.css';
 
@@ -132,6 +133,7 @@ const ProfilePage = () => {
                 <div className={styles.root}>
                     <div className={`text text_type_main-medium ${styles.tabs}`}>
                         <NavLink
+                            exact
                             to="/profile"
                             className={`${styles.link} text_color_inactive`}
                             activeClassName={styles.activeTab}
@@ -139,7 +141,7 @@ const ProfilePage = () => {
                             Профиль
                         </NavLink>
                         <NavLink
-                            to="/feed"
+                            to="/profile/orders"
                             className={`${styles.link} text_color_inactive`}
                             activeClassName={styles.activeTab}
                         >
@@ -155,46 +157,53 @@ const ProfilePage = () => {
                             В этом разделе вы можете <br/> изменить свои персональные данные
                         </span>
                     </div>
-                    <form className={styles.form} onSubmit={saveHandler}>
-                        <div className={styles.input}>
-                            <Input
-                                placeholder="Имя"
-                                onChange={onChange}
-                                value={state.name}
-                                name="name"
-                            />
-                        </div>
-                        <div className={styles.input}>
-                            <EmailInput
-                                onChange={onChange}
-                                value={state.email}
-                                name="email"
-                            />
-                        </div>
-                        <div className={styles.input}>
-                            <PasswordInput
-                                onChange={onChange}
-                                value={state.password}
-                                name="password"
-                            />
-                        </div>
-                        {
-                            state.showSubmit ? (
-                                <div className={styles.submit}>
-                                    <Button
-                                        type="secondary"
-                                        size="medium"
-                                        onClick={declineHandler}
-                                    >
-                                        Отмена
-                                    </Button>
-                                    <Button type="primary" size="medium">
-                                        Сохранить
-                                    </Button>
+                    <Switch>
+                        <Route exact path="/profile">
+                            <form className={styles.form} onSubmit={saveHandler}>
+                                <div className={styles.input}>
+                                    <Input
+                                        placeholder="Имя"
+                                        onChange={onChange}
+                                        value={state.name}
+                                        name="name"
+                                    />
                                 </div>
-                            ) : null
-                        }
-                    </form>
+                                <div className={styles.input}>
+                                    <EmailInput
+                                        onChange={onChange}
+                                        value={state.email}
+                                        name="email"
+                                    />
+                                </div>
+                                <div className={styles.input}>
+                                    <PasswordInput
+                                        onChange={onChange}
+                                        value={state.password}
+                                        name="password"
+                                    />
+                                </div>
+                                {
+                                    state.showSubmit ? (
+                                        <div className={styles.submit}>
+                                            <Button
+                                                type="secondary"
+                                                size="medium"
+                                                onClick={declineHandler}
+                                            >
+                                                Отмена
+                                            </Button>
+                                            <Button type="primary" size="medium">
+                                                Сохранить
+                                            </Button>
+                                        </div>
+                                    ) : null
+                                }
+                            </form>
+                        </Route>
+                        <Route path="/profile/orders">
+                            <OrdersList mode="profile" />
+                        </Route>
+                    </Switch>
                 </div>
             </main>
             {

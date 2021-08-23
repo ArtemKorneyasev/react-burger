@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getTotalPrice, deleteTopping, sortToppings } from '../../services/actions/constructorActions';
-import { getOrderDetails } from '../../services/actions/orderActions';
-import { openOrderModal } from '../../services/actions/modalActions';
+import { getTotalPrice, deleteTopping, sortToppings } from '../../services/redux/actions/constructorActions';
+import { getOrderResult } from '../../services/redux/actions/orderActions';
+import { openOrderResultModal } from '../../services/redux/actions/modalActions';
 import MovableTopping from '../movable-topping/movable-topping';
 import styles from './burger-constructor.module.css';
 
@@ -36,8 +36,8 @@ const BurgerConstructor = (props) => {
 
     const onSubmit = () => {
         if (userLoginSuccess) {
-            dispatch(getOrderDetails(burgerData));
-            dispatch(openOrderModal());
+            dispatch(getOrderResult(burgerData));
+            dispatch(openOrderResultModal());
         } else {
             history.replace({ pathname: '/login' });
         }

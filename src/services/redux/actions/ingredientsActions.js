@@ -1,4 +1,4 @@
-import { getIngredientsRequest } from '../api';
+import { getIngredientsRequest } from '../../api';
 
 export const INGREDIENTS_FETCH = 'INGREDIENTS_FETCH';
 export const INGREDIENTS_ERROR = 'INGREDIENTS_ERROR';
