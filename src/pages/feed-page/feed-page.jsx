@@ -3,7 +3,7 @@ import OrdersList from '../../components/orders-list/orders-list';
 import styles from './feed-page.module.css';
 
 const FeedPage = () => {
-    const { orders, ordersTotal, ordersTotalToday } = useSelector(state => state.order);
+    const { allOrders, ordersTotal, ordersTotalToday } = useSelector(state => state.wsAllOrders);
 
     return (
         <main className={styles.main}>
@@ -19,7 +19,7 @@ const FeedPage = () => {
                         </div>
                         <div className={styles.orderList}>
                             {
-                                orders.filter(
+                                allOrders.filter(
                                     order => order.status === 'done',
                                 ).slice(0, 10).map(order => (
                                     <span
@@ -42,7 +42,7 @@ const FeedPage = () => {
                         </div>
                         <div className={styles.orderList}>
                             {
-                                orders.filter(
+                                allOrders.filter(
                                     order => order.status === 'pending',
                                 ).slice(0, 10).map(order => (
                                     <span

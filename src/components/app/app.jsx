@@ -7,7 +7,9 @@ import { nanoid } from 'nanoid';
 
 import { getIngredients, clearIngredientInfo } from '../../services/redux/actions/ingredientsActions';
 import { addIngredient, clearBurgerConstructor } from '../../services/redux/actions/constructorActions';
-import { clearOrderResult, clearOrderError, clearOrderDetails, getOrders } from '../../services/redux/actions/orderActions';
+import { wsAllOrdersConnectionStart } from '../../services/redux/actions/wsAllOrdersActions';
+import { wsClearOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
+import { clearOrderResult, clearOrderError } from '../../services/redux/actions/orderActions';
 import { closeModal } from '../../services/redux/actions/modalActions';
 
 import AppHeader from '../app-header/app-header';
@@ -33,7 +35,8 @@ import styles from './app.module.css';
 
 const App = () => {
 	const { ingredients, ingredientInfo } = useSelector(state => state.ingredients);
-	const { orderResult, orderDetails } = useSelector(state => state.order);
+	const { orderResult } = useSelector(state => state.order);
+	const { orderDetails } = useSelector(state => state.wsAllOrders);
 	const { modalIsOpen, modalMode } = useSelector (state => state.modal);
 
 	const history = useHistory();
@@ -43,7 +46,7 @@ const App = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getIngredients());
-		dispatch(getOrders());
+		dispatch(wsAllOrdersConnectionStart());
     }, [dispatch]);
 
 	const handleDrop = item => {
@@ -123,7 +126,7 @@ const App = () => {
 					<Route path='/feed/:id'>
 						<Modal
 							onClose={() => {
-								dispatch(clearOrderDetails());
+								dispatch(wsClearOrderDetails());
 								dispatch(closeModal());
 								history.goBack();
 							}}

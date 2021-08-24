@@ -81,17 +81,6 @@ const getOrderRequest = async (orderData) => {
     return await response.json();
 }
 
-const getOrdersAllRequest = async () => {
-    const request = new Request(`${API_URL}/orders/all`);
-    const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();;
-};
-
 const userRegisterRequest = async ({ name, email, password }) => {
     const request = new Request(
         `${API_URL}/auth/register`,
@@ -199,7 +188,6 @@ const userSaveDataRequest = async ({ name, email, password }) => {
 export {
     getIngredientsRequest,
     getOrderRequest,
-    getOrdersAllRequest,
     userRegisterRequest,
     userLoginRequest,
     userLogoutRequest,

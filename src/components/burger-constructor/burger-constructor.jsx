@@ -7,13 +7,13 @@ import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktiku
 import { getTotalPrice, deleteTopping, sortToppings } from '../../services/redux/actions/constructorActions';
 import { getOrderResult } from '../../services/redux/actions/orderActions';
 import { openOrderResultModal } from '../../services/redux/actions/modalActions';
+import { isUserAuth } from '../../services/helpers';
 import MovableTopping from '../movable-topping/movable-topping';
 import styles from './burger-constructor.module.css';
 
 const BurgerConstructor = (props) => {
     const { onDropHandler } = props;
     const { burgerData, totalPrice } = useSelector(state => state.burger);
-    const { userLoginSuccess } = useSelector(state => state.user);
     const { bun, toppings } = burgerData;
 
     const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const BurgerConstructor = (props) => {
     }, [dispatch, burgerData]);
 
     const onSubmit = () => {
-        if (userLoginSuccess) {
+        if (isUserAuth) {
             dispatch(getOrderResult(burgerData));
             dispatch(openOrderResultModal());
         } else {

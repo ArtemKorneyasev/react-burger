@@ -4,12 +4,12 @@ import OrderDetails from '../../components/order-details/order-details';
 import styles from './feed-order-page.module.css';
 
 const FeedOrderPage = () => {
-    const { orders } = useSelector(state => state.order);
+    const { allOrders } = useSelector(state => state.wsAllOrders);
     const { id } = useParams();
     let orderDetails = null;
 
-    if (orders.length) {
-        orderDetails = orders.find(item => item._id === id);
+    if (allOrders.length) {
+        orderDetails = allOrders.find(item => item._id === id);
     }
 
     return (

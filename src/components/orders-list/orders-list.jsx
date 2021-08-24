@@ -1,30 +1,22 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { showOrderDetails } from '../../services/redux/actions/orderActions';
+import { wsShowOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
 import { openOrderDetailsModal } from '../../services/redux/actions/modalActions';
-import { wsConnectionStart } from '../../services/redux/actions/wsActions';
 import OrderCard from "../order-card/order-card";
 import styles from './orders-list.module.css';
 
 const OrdersList = (props) => {
     const { mode } = props;
-    const { orders } = useSelector(state => state.order);
-    const { user } = useSelector(state => state.user);
+    const { allOrders } = useSelector(state => state.wsAllOrders);
 
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
 
-    useEffect(() => {
-        if (user.email) {
-            dispatch(wsConnectionStart());
-        }
-    }, [user, dispatch]);
-
     const onOrderCardClick = useCallback(orderData => {
-        dispatch(showOrderDetails(orderData));
+        dispatch(wsShowOrderDetails(orderData));
         dispatch(openOrderDetailsModal());
         history.push({
             pathname: `/feed/${orderData._id}`,
@@ -45,7 +37,7 @@ const OrdersList = (props) => {
             }
             <div className={styles.ordersWrapper}>
                 {
-                    orders.map(order => (
+                    allOrders.map(order => (
                         <OrderCard
                             key={order._id}
                             mode={mode}
