@@ -19,27 +19,27 @@ const initialState = {
 const wsAllOrdersReducer = (state = initialState, action) => {
     switch (action.type) {
         case WS_ALL_ORDERS_CONNECTION_SUCCESS:
-          return {
-            ...state,
-            wsAllOrdersConnected: true,
-          };
+			return {
+				...state,
+				wsAllOrdersConnected: true,
+			};
         case WS_ALL_ORDERS_CONNECTION_ERROR:
-          return {
-            ...state,
-            wsAllOrdersConnected: false,
-          };
+			return {
+				...state,
+				wsAllOrdersConnected: false,
+			};
         case WS_ALL_ORDERS_CONNECTION_CLOSED:
-          return {
-            ...state,
-            wsAllOrdersConnected: false,
-          };
+			return {
+				...state,
+				wsAllOrdersConnected: false,
+			};
         case WS_GET_ALL_ORDERS:
-          return {
-            ...state,
-            allOrders: action.payload.orders,
-			ordersTotal: action.payload.total,
-			ordersTotalToday: action.payload.totalToday,
-          };
+			return {
+				...state,
+				allOrders: action.payload.orders,
+				ordersTotal: action.payload.total,
+				ordersTotalToday: action.payload.totalToday,
+			};
 		case WS_SHOW_ORDERS_DETAILS:
 			return {
 				...state,
@@ -51,7 +51,7 @@ const wsAllOrdersReducer = (state = initialState, action) => {
 				orderDetails: {},
 			};
         default:
-          return state;
+			return state;
     }
 };
 

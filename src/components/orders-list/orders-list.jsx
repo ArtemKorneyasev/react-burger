@@ -10,6 +10,7 @@ import styles from './orders-list.module.css';
 const OrdersList = (props) => {
     const { mode } = props;
     const { allOrders } = useSelector(state => state.wsAllOrders);
+    const { userOrders } = useSelector(state => state.wsUserOrders);
 
     const dispatch = useDispatch();
     const history = useHistory();
@@ -18,11 +19,12 @@ const OrdersList = (props) => {
     const onOrderCardClick = useCallback(orderData => {
         dispatch(wsShowOrderDetails(orderData));
         dispatch(openOrderDetailsModal());
-        history.push({
-            pathname: `/feed/${orderData._id}`,
-            state: { background: location} ,
-        });
-    }, [dispatch, history, location]);
+
+        const pathname = mode === 'feed'
+            ? `/feed/${orderData._id}`
+            : `/profile/orders/${orderData._id}`
+        history.push({ pathname, state: { background: location} });
+    }, [dispatch, mode, history, location]);
 
     return (
         <section
@@ -35,18 +37,35 @@ const OrdersList = (props) => {
                     </h1>
                 ) : null
             }
-            <div className={styles.ordersWrapper}>
-                {
-                    allOrders.map(order => (
-                        <OrderCard
-                            key={order._id}
-                            mode={mode}
-                            orderData={order}
-                            onClick={onOrderCardClick}
-                        />
-                    ))
-                }
-            </div>
+            {
+                mode === 'feed' ? (
+                    <div className={styles.ordersWrapper}>
+                        {
+                            allOrders.map(order => (
+                                <OrderCard
+                                    key={order._id}
+                                    mode={mode}
+                                    orderData={order}
+                                    onClick={onOrderCardClick}
+                                />
+                            ))
+                        }
+                    </div>
+                ) : (
+                    <div className={styles.ordersWrapper}>
+                        {
+                            userOrders.map(order => (
+                                <OrderCard
+                                    key={order._id}
+                                    mode={mode}
+                                    orderData={order}
+                                    onClick={onOrderCardClick}
+                                />
+                            ))
+                        }
+                    </div>
+                )
+            }
         </section>
     );
 };

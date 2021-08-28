@@ -1,3 +1,6 @@
+import 'moment/locale/ru';
+import moment from 'moment-timezone';
+
 export const moveInArray = (arr, from, to) => {
     const item = arr[from];
     const newArr = [...arr];
@@ -44,5 +47,35 @@ export const setCookie = (name, value, props) => {
 };
 
 export const deleteCookie = name => setCookie(name, null, { expires: -1 });
-
 export const isUserAuth = () => getCookie('accessToken');
+export const getFormattedDate = date => `${moment.tz(date, 'Europe/Moscow').calendar()} i-GMT+3`;
+
+export const getOrderStatus = status => {
+    switch (status) {
+        case 'created':
+            return 'Создан';
+        case 'pending':
+            return 'Готовится';
+        case 'done':
+            return 'Выполнен';
+        default:
+            return 'Статус неизвестен';
+    }
+};
+
+export const getTotalPrice = (ingredients, orderDetails) => {
+    return ingredients.filter((ingredient) => {
+        let found = false;
+        if (orderDetails.ingredients) {
+            found = orderDetails.ingredients.includes(ingredient._id);
+        }
+        return found;
+    }).reduce((total, current) => {
+        if (current.type === 'bun') {
+            total += (current.price * 2);
+        } else {
+            total += current.price
+        }
+        return total;
+    }, 0);
+};

@@ -5,11 +5,13 @@ import styles from './feed-order-page.module.css';
 
 const FeedOrderPage = () => {
     const { allOrders } = useSelector(state => state.wsAllOrders);
+    const { userOrders } = useSelector(state => state.wsUserOrders);
+    const mergedOrders = Array.from(new Set([...allOrders, ...userOrders]));
     const { id } = useParams();
     let orderDetails = null;
 
-    if (allOrders.length) {
-        orderDetails = allOrders.find(item => item._id === id);
+    if (mergedOrders.length) {
+        orderDetails = mergedOrders.find(item => item._id === id);
     }
 
     return (

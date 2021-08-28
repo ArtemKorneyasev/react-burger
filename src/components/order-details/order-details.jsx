@@ -1,41 +1,13 @@
 import PropTypes from 'prop-types';
-import format from 'date-fns/format';
-import ruLocale from 'date-fns/locale/ru';
-import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getFormattedDate, getOrderStatus, getTotalPrice } from '../../services/helpers';
 import styles from './order-details.module.css';
 
 const OrderDetails = (props) => {
     const { orderDetails } = props;
     const { ingredients } = useSelector(state => state.ingredients);
     const orderIngredientsUnique = Array.from(new Set(orderDetails.ingredients));
-
-    const getTotalPrice = useCallback(() => {
-        return ingredients.filter(ingredient =>
-            orderDetails.ingredients.includes(ingredient._id),
-        ).reduce((total, current) => {
-            if (current.type === 'bun') {
-                total += (current.price * 2);
-            } else {
-                total += current.price
-            }
-            return total;
-        }, 0);
-    }, [orderDetails, ingredients]);
-
-    const getOrderStatus = () => {
-        switch (orderDetails.status) {
-            case 'created':
-                return 'Создан';
-            case 'pending':
-                return 'Готовится';
-            case 'done':
-                return 'Выполнен';
-            default:
-                return 'Статус неизвестен';
-        }
-    };
 
     return (
         <div>
@@ -53,7 +25,7 @@ const OrderDetails = (props) => {
                 className={'text text_type_main-default'}
             >
                <span className={orderDetails.status === 'done' ? styles.doneStatus : null}>
-                   {getOrderStatus()}
+                   {getOrderStatus(orderDetails.status)}
                </span>
            </div>
             <div
@@ -101,14 +73,10 @@ const OrderDetails = (props) => {
             </div>
             <div className={styles.timestamp}>
                 <span className="text text_type_main-default text_color_inactive">
-                    {format(
-                        new Date(orderDetails.createdAt),
-                        'cccc, HH:mm OOO',
-                        { locale: ruLocale },
-                    )}
+                    {getFormattedDate(orderDetails.createdAt)}
                 </span>
                 <span className="text text_type_digits-medium">
-                    {getTotalPrice()}
+                    {getTotalPrice(ingredients, orderDetails)}
                     &nbsp;
                     <CurrencyIcon type="primary" />
                 </span>
@@ -117,6 +85,7 @@ const OrderDetails = (props) => {
     );
 };
 
+OrderDetails.defaultProps = { orderDetails: {} };
 OrderDetails.propTypes = {
     orderDetails: PropTypes.shape({
         createdAt: PropTypes.string,

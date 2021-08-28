@@ -1,4 +1,4 @@
-export const socketAllOrdersMiddleware = (wsAllOrdersUrl, wsAllOrdersActions) => {
+export const socketAllOrdersMiddleware = (wsUrl, wsAllOrdersActions) => {
     return store => {
 		let socket = null;
 
@@ -14,7 +14,7 @@ export const socketAllOrdersMiddleware = (wsAllOrdersUrl, wsAllOrdersActions) =>
 			} = wsAllOrdersActions;
 
 			if (type === wsAllOrdersInit) {
-				socket = new WebSocket(wsAllOrdersUrl);
+				socket = new WebSocket(`${wsUrl}/all`);
 			}
 
 			if (socket) {
@@ -37,9 +37,9 @@ export const socketAllOrdersMiddleware = (wsAllOrdersUrl, wsAllOrdersActions) =>
 
 					dispatch({ type: getAllOrders, payload: restParsedData });
 				};
-
-				next(action);
 			}
+
+			next(action);
 		};
 	};
 };

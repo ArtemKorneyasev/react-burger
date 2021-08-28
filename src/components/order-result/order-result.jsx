@@ -1,3 +1,4 @@
+import Loader from "react-loader-spinner";
 import { useSelector } from 'react-redux';
 import doneIcon from '../../images/doneIcon.svg';
 import styles from './order-result.module.css';
@@ -16,10 +17,21 @@ const OrderResult = (props) => {
     return (
         <>
             <span className={`text text_type_digits-large ${styles.orderId}`}>
-                {orderResult.success ? orderResult.order.number : null}
+                {
+                    orderResult.success ? orderResult.order.number : (
+                        <Loader
+                            type="Puff"
+                            color="#00BFFF"
+                            height={100}
+                            width={100}
+                        />
+                    )
+                }
             </span>
             <span className="text text_type_main-medium">
-                идентификатор заказа
+                {
+                    orderResult.success ? "идентификатор заказа" : "регистрируем заказ"
+                }
             </span>
             <div className={styles.doneIcon}>
                 <img src={doneIcon} alt="done-icon" />

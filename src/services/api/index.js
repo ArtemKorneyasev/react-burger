@@ -29,7 +29,7 @@ const fetchWithRefresh = async (url, options) => {
         return await checkResponse(response);
     } catch (error) {
         if (error.message === 'jwt expired') {
-            const refreshData = refreshToken();
+            const refreshData = await refreshToken();
 
             if (refreshData.accessToken.indexOf('Bearer') === 0) {
                 setCookie(
@@ -60,25 +60,17 @@ const getIngredientsRequest = async () => {
 };
 
 const getOrderRequest = async (orderData) => {
-    const request = new Request(
-        `${API_URL}/orders`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + getCookie('accessToken'),
-            },
-            body: JSON.stringify(orderData),
+    const url = `${API_URL}/orders`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('accessToken'),
         },
-    );
+        body: JSON.stringify(orderData),
+    };
 
-    const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();
+    return await fetchWithRefresh(url, options);
 }
 
 const userRegisterRequest = async ({ name, email, password }) => {

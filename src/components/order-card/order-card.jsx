@@ -1,28 +1,13 @@
 import PropTypes from 'prop-types';
-import format from 'date-fns/format';
-import ruLocale from 'date-fns/locale/ru';
-import { useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getFormattedDate, getOrderStatus, getTotalPrice } from '../../services/helpers';
 import styles from './order-card.module.css';
 
 const OrderCard = (props) => {
     const { mode, orderData, onClick } = props;
     const { ingredients } = useSelector(state => state.ingredients);
     const orderIngredientsUnique = Array.from(new Set(orderData.ingredients));
-
-    const getTotalPrice = useCallback(() => {
-        return ingredients.filter(ingredient =>
-            orderData.ingredients.includes(ingredient._id),
-        ).reduce((total, current) => {
-            if (current.type === 'bun') {
-                total += (current.price * 2);
-            } else {
-                total += current.price
-            }
-            return total;
-        }, 0);
-    }, [orderData, ingredients]);
 
     return (
         <div
@@ -34,11 +19,7 @@ const OrderCard = (props) => {
                     {`#${orderData.number}`}
                 </span>
                 <span className={`text text_type_main-default text_color_inactive ${styles.timestamp}`}>
-                    {format(
-                        new Date(orderData.createdAt),
-                        'cccc, HH:mm OOO',
-                        { locale: ruLocale },
-                    )}
+                    {getFormattedDate(orderData.createdAt)}
                 </span>
             </header>
             <span className="text text_type_main-medium">
@@ -46,9 +27,13 @@ const OrderCard = (props) => {
             </span>
             {
                 mode === 'profile' ? (
-                    <span className="text text_type_main-default">
-                        {orderData.status}
-                    </span>
+                    <div className="text text_type_main-default">
+                        <span
+                            className={orderData.status === 'done' ? styles.doneStatus : null}
+                        >
+                            {getOrderStatus(orderData.status)}
+                        </span>
+                    </div>
                 ) : null
             }
             <div className={styles.ingredientsContainer}>
@@ -88,7 +73,7 @@ const OrderCard = (props) => {
                     }
                 </div>
                 <span className="text text_type_digits-medium">
-                    {getTotalPrice()}
+                    {getTotalPrice(ingredients, orderData)}
                     &nbsp;
                     <CurrencyIcon type="primary" />
                 </span>

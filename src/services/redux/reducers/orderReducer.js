@@ -13,6 +13,7 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case MAKE_ORDER:
+			console.log('order result:', action.payload);
 			return {
 				...state,
 				orderResult: action.payload,
