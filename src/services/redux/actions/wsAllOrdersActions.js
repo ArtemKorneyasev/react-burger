@@ -8,19 +8,19 @@ export const WS_SHOW_ORDERS_DETAILS = 'WS_SHOW_ORDERS_DETAILS';
 export const WS_CLEAR_ORDERS_DETAILS = 'WS_CLEAR_ORDERS_DETAILS';
 
 export const wsAllOrdersConnectionStart = () => {
-    return dispatch => dispatch({ type: WS_ALL_ORDERS_CONNECTION_START });
+    return { type: WS_ALL_ORDERS_CONNECTION_START };
 };
 
 export const wsAllOrdersConnectionSuccess = () => {
-    return dispatch => dispatch({ type: WS_ALL_ORDERS_CONNECTION_SUCCESS });
+    return { type: WS_ALL_ORDERS_CONNECTION_SUCCESS };
 };
 
 export const wsAllOrdersConnectionError = () => {
-    return dispatch => dispatch({ type: WS_ALL_ORDERS_CONNECTION_ERROR });
+    return { type: WS_ALL_ORDERS_CONNECTION_ERROR };
 };
 
 export const wsAllOrdersConnectionClosed = () => {
-    return dispatch => dispatch({ type: WS_ALL_ORDERS_CONNECTION_CLOSED });
+    return { type: WS_ALL_ORDERS_CONNECTION_CLOSED };
 };
 
 export const wsGetAllOrders = orders => {
@@ -31,16 +31,12 @@ export const wsGetAllOrders = orders => {
 };
 
 export const wsShowOrderDetails = data => {
-    return dispatch => {
-        dispatch({
-            type: WS_SHOW_ORDERS_DETAILS,
-            payload: data,
-        });
+    return {
+        type: WS_SHOW_ORDERS_DETAILS,
+        payload: data,
     };
 };
 
 export const wsClearOrderDetails = () => {
-    return dispatch => {
-        dispatch({ type: WS_CLEAR_ORDERS_DETAILS });
-    };
+    return { type: WS_CLEAR_ORDERS_DETAILS };
 };

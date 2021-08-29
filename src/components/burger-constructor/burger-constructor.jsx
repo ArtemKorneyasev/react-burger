@@ -35,7 +35,7 @@ const BurgerConstructor = (props) => {
     }, [dispatch, burgerData]);
 
     const onSubmit = () => {
-        if (isUserAuth) {
+        if (isUserAuth()) {
             dispatch(getOrderResult(burgerData));
             dispatch(openOrderResultModal());
         } else {

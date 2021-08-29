@@ -1,9 +1,35 @@
-import { useSelector } from 'react-redux';
+import Loader from 'react-loader-spinner';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { wsAllOrdersConnectionStart } from '../../services/redux/actions/wsAllOrdersActions';
 import OrdersList from '../../components/orders-list/orders-list';
 import styles from './feed-page.module.css';
 
 const FeedPage = () => {
-    const { allOrders, ordersTotal, ordersTotalToday } = useSelector(state => state.wsAllOrders);
+    const {
+        wsAllOrdersConnected,
+        allOrders,
+        ordersTotal,
+        ordersTotalToday,
+    } = useSelector(state => state.wsAllOrders);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(wsAllOrdersConnectionStart());
+    }, [dispatch]);
+
+    if (!wsAllOrdersConnected) {
+        return (
+            <div className={styles.loading}>
+                <Loader
+                    type="Puff"
+                    color="#8585ad"
+                    height={100}
+                    width={100}
+                />
+            </div>
+        );
+    }
 
     return (
         <main className={styles.main}>

@@ -5,19 +5,19 @@ export const WS_USER_ORDERS_CONNECTION_CLOSED = 'WS_USER_ORDERS_CONNECTION_CLOSE
 export const WS_GET_USER_ORDERS = 'WS_GET_USER_ORDERS';
 
 export const wsUserOrdersConnectionStart = () => {
-    return dispatch => dispatch({ type: WS_USER_ORDERS_CONNECTION_START });
+    return { type: WS_USER_ORDERS_CONNECTION_START };
 };
 
 export const wsUserOrdersConnectionSuccess = () => {
-    return dispatch => dispatch({ type: WS_USER_ORDERS_CONNECTION_SUCCESS });
+    return { type: WS_USER_ORDERS_CONNECTION_SUCCESS };
 };
 
 export const wsUserOrdersConnectionError = () => {
-    return dispatch => dispatch({ type: WS_USER_ORDERS_CONNECTION_ERROR });
+    return { type: WS_USER_ORDERS_CONNECTION_ERROR };
 };
 
 export const wsUserOrdersConnectionClosed = () => {
-    return dispatch => dispatch({ type: WS_USER_ORDERS_CONNECTION_CLOSED });
+    return { type: WS_USER_ORDERS_CONNECTION_CLOSED };
 };
 
 export const wsGetUserOrders = orders => {

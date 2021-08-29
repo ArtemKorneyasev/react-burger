@@ -24,16 +24,12 @@ export const getIngredients = () => {
 };
 
 export const showIngredientInfo = data => {
-    return dispatch => {
-        dispatch({
-            type: SHOW_INGREDIENT_INFO,
-            payload: data,
-        });
+    return {
+        type: SHOW_INGREDIENT_INFO,
+        payload: data,
     };
 };
 
 export const clearIngredientInfo = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_INGREDIENT_INFO });
-    }
+    return { type: CLEAR_INGREDIENT_INFO };
 };
