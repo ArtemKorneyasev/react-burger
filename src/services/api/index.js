@@ -8,7 +8,7 @@ export const checkResponse = (response) => {
         : response.json().then(error => Promise.reject(error));
 };
 
-const refreshToken = async () => {
+const refreshToken = () => {
     const request = new Request(
         `${API_URL}/auth/token`,
         {
@@ -20,7 +20,7 @@ const refreshToken = async () => {
         },
     );
 
-    return await fetch(request).then(checkResponse);
+    return fetch(request).then(checkResponse);
 };
 
 const fetchWithRefresh = async (url, options) => {
@@ -29,9 +29,14 @@ const fetchWithRefresh = async (url, options) => {
         return await checkResponse(response);
     } catch (error) {
         if (error.message === 'jwt expired') {
-            const refreshData = refreshToken();
+            const refreshData = await refreshToken();
 
-            setCookie('accessToken', refreshData.accessToken);
+            if (refreshData.accessToken.indexOf('Bearer') === 0) {
+                setCookie(
+                    'accessToken',
+                    refreshData.accessToken.split('Bearer ')[1],
+                );
+            }
             localStorage.setItem('refreshToken', refreshData.refreshToken);
             options.headers.authorization = refreshData.accessToken;
 
@@ -54,23 +59,18 @@ const getIngredientsRequest = async () => {
     return await response.json();
 };
 
-const getOrderDetailsRequest = async (orderData) => {
-    const request = new Request(
-        `${API_URL}/orders`,
-        {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(orderData),
+const getOrderRequest = async (orderData) => {
+    const url = `${API_URL}/orders`;
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('accessToken'),
         },
-    );
+        body: JSON.stringify(orderData),
+    };
 
-    const response = await fetch(request);
-
-    if (!response.ok) {
-        throw new Error(`Response error, status: ${response.status}`);
-    }
-
-    return await response.json();
+    return await fetchWithRefresh(url, options);
 }
 
 const userRegisterRequest = async ({ name, email, password }) => {
@@ -156,7 +156,7 @@ const userLoadDataRequest = async () => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'authorization': getCookie('accessToken'),
+            'Authorization': 'Bearer ' + getCookie('accessToken'),
         },
     };
 
@@ -169,7 +169,7 @@ const userSaveDataRequest = async ({ name, email, password }) => {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
-            'authorization': getCookie('accessToken'),
+            'Authorization': 'Bearer ' + getCookie('accessToken'),
         },
         body: JSON.stringify({ name, email, password }),
     };
@@ -179,7 +179,7 @@ const userSaveDataRequest = async ({ name, email, password }) => {
 
 export {
     getIngredientsRequest,
-    getOrderDetailsRequest,
+    getOrderRequest,
     userRegisterRequest,
     userLoginRequest,
     userLogoutRequest,

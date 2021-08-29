@@ -11,6 +11,10 @@
     margin: 0 10px;
 }
 
+.ingredientCard:hover {
+    cursor: pointer;
+}
+
 .ingredientImg {
     margin: 0 16px;
 }

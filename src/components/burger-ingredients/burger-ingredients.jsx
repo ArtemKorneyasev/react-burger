@@ -2,8 +2,8 @@ import { useState, useRef, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { showIngredientInfo } from '../../services/actions/ingredientsActions';
-import { openIngredientModal } from '../../services/actions/modalActions';
+import { showIngredientInfo } from '../../services/redux/actions/ingredientsActions';
+import { openIngredientModal } from '../../services/redux/actions/modalActions';
 import IngredientCard from '../ingredient-card/ingredient-card';
 import styles from './burger-ingredients.module.css';
 

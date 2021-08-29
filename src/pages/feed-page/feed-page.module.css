@@ -1,0 +1,41 @@
+.main {
+    composes: main from '../../components/app/app.module.css';
+    gap: 60px;
+}
+
+.loading {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.detailsSection {
+    width: 584px;
+    margin-top: 60px;
+}
+
+.ordersStatus {
+    display: flex;
+    gap: 36px;
+    margin-bottom: 60px;
+}
+
+.column{
+    width: 280px;
+}
+
+.subtitle {
+    height: 30px;
+}
+
+.orderList {
+    height: 152px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.count {
+    width: 580px;
+    height: 120px;
+}

@@ -1,7 +1,7 @@
 import {
     MAKE_ORDER,
 	ORDER_ERROR,
-	CLEAR_ORDER_DETAILS,
+	CLEAR_ORDER_RESULT,
 	CLEAR_ORDER_ERROR,
 } from '../actions/orderActions';
 
@@ -13,6 +13,7 @@ const initialState = {
 const orderReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case MAKE_ORDER:
+			console.log('order result:', action.payload);
 			return {
 				...state,
 				orderResult: action.payload,
@@ -22,7 +23,7 @@ const orderReducer = (state = initialState, action) => {
 				...state,
 				orderError: action.payload,
 			};
-		case CLEAR_ORDER_DETAILS:
+		case CLEAR_ORDER_RESULT:
 			return {
 				...state,
 				orderResult: {},

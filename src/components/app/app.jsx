@@ -4,29 +4,38 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import { getIngredients, clearIngredientInfo } from '../../services/actions/ingredientsActions';
-import { addIngredient, clearBurgerConstructor } from '../../services/actions/constructorActions';
-import { clearOrderDetails, clearOrderError } from '../../services/actions/orderActions';
-import { closeModal } from '../../services/actions/modalActions';
+
+import { getIngredients, clearIngredientInfo } from '../../services/redux/actions/ingredientsActions';
+import { addIngredient, clearBurgerConstructor } from '../../services/redux/actions/constructorActions';
+import { wsClearOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
+import { clearOrderResult, clearOrderError } from '../../services/redux/actions/orderActions';
+import { closeModal } from '../../services/redux/actions/modalActions';
+
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import IngredientDetails from '../ingredients-details/ingredient-details';
+import OrderResult from '../order-result/order-result';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
+import ProtectedRoute from '../protected-route/protected-route';
+
 import LoginPage from '../../pages/login-page/login-page';
 import RegisterPage from '../../pages/register-page/register-page';
 import ForgotPasswordPage from '../../pages/forgot-password-page/forgot-password-page';
 import ResetPasswordPage from '../../pages/reset-password-page/reset-password-page';
 import ProfilePage from '../../pages/profile-page/profile-page';
+import FeedPage from '../../pages/feed-page/feed-page';
+import FeedOrderPage from '../../pages/feed-order-page/feed-order-page';
 import IngredientPage from '../../pages/ingredient-page/ingredient-page';
 import NotFound404 from '../../pages/not-found-404/not-found-404';
-import ProtectedRoute from '../protected-route/protected-route';
+
 import styles from './app.module.css';
 
 const App = () => {
 	const { ingredients, ingredientInfo } = useSelector(state => state.ingredients);
 	const { orderResult } = useSelector(state => state.order);
+	const { orderDetails } = useSelector(state => state.wsAllOrders);
 	const { modalIsOpen, modalMode } = useSelector (state => state.modal);
 
 	const history = useHistory();
@@ -75,9 +84,21 @@ const App = () => {
 				<Route path="/reset-password">
 					<ResetPasswordPage />
 				</Route>
-				<ProtectedRoute path="/profile">
+				<ProtectedRoute exact path="/profile">
 					<ProfilePage />
 				</ProtectedRoute>
+				<ProtectedRoute exact path="/profile/orders">
+					<ProfilePage />
+				</ProtectedRoute>
+				<ProtectedRoute path="/profile/orders/:id">
+					<FeedOrderPage />
+				</ProtectedRoute>
+				<Route exact path="/feed">
+					<FeedPage />
+				</Route>
+				<Route path='/feed/:id'>
+					<FeedOrderPage />
+				</Route>
 				<Route path='/ingredients/:id'>
 					<IngredientPage />
 				</Route>
@@ -86,7 +107,7 @@ const App = () => {
 				</Route>
 			</Switch>
 			{
-				background ? (
+				background && modalMode === 'ingredient-details' ? (
 					<Route path='/ingredients/:id'>
 						<Modal
 							title="Детали ингредиента"
@@ -102,16 +123,31 @@ const App = () => {
 				) : null
 			}
 			{
-				modalIsOpen && modalMode === 'order-details' ? (
+				background && modalMode === 'order-details' ? (
+					<Route path={["/feed/:id", "/profile/orders/:id"]}>
+						<Modal
+							onClose={() => {
+								dispatch(wsClearOrderDetails());
+								dispatch(closeModal());
+								history.goBack();
+							}}
+						>
+							<OrderDetails orderDetails={orderDetails} />
+						</Modal>
+					</Route>
+				) : null
+			}
+			{
+				modalIsOpen && modalMode === 'order-result' ? (
 					<Modal onClose={() => {
 						if (orderResult.success) {
 							dispatch(clearBurgerConstructor());
-							dispatch(clearOrderDetails());
+							dispatch(clearOrderResult());
 						}
 						dispatch(clearOrderError());
 						dispatch(closeModal());
 					}}>
-						<OrderDetails />
+						<OrderResult />
 					</Modal>
 				) : null
 			}

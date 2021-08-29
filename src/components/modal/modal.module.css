@@ -1,4 +1,5 @@
 .modal {
+    width: 640px;
     background: #1C1C21;
     padding: 40px 40px 60px 40px;
     border-radius: 40px;
@@ -9,7 +10,6 @@
 
 .withTitle,
 .withoutTitle {
-    width: 640px;
     height: 64px;
     display: flex;
     align-items: center;

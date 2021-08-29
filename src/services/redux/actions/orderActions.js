@@ -1,11 +1,11 @@
-import { getOrderDetailsRequest } from "../api";
+import { getOrderRequest } from "../../api";
 
 export const MAKE_ORDER = 'MAKE_ORDER';
 export const ORDER_ERROR = 'ORDER_ERROR';
-export const CLEAR_ORDER_DETAILS = 'CLEAR_ORDER_DETAILS';
+export const CLEAR_ORDER_RESULT = 'CLEAR_ORDER_RESULT';
 export const CLEAR_ORDER_ERROR = 'CLEAR_ORDER_ERROR';
 
-export const getOrderDetails = burgerData => {
+export const getOrderResult = burgerData => {
     const { bun } = burgerData;
 
     return dispatch => {
@@ -25,7 +25,7 @@ export const getOrderDetails = burgerData => {
                 }),
             };
 
-            getOrderDetailsRequest(requestData).then(response => {
+            getOrderRequest(requestData).then(response => {
                 if (response && response.success) {
                     dispatch({ type: MAKE_ORDER, payload: response });
                 }
@@ -44,14 +44,10 @@ export const getOrderDetails = burgerData => {
     };
 };
 
-export const clearOrderDetails = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_ORDER_DETAILS });
-    };
+export const clearOrderResult = () => {
+    return { type: CLEAR_ORDER_RESULT };
 };
 
 export const clearOrderError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_ORDER_ERROR });
-    };
+    return { type: CLEAR_ORDER_ERROR };
 };

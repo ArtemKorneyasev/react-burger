@@ -28,7 +28,7 @@ import {
     USER_SAVE_DATA_ERROR,
     CLEAR_USER_SAVE_DATA_ERROR,
 } from '../actions/userActions';
-import { setCookie, deleteCookie } from '../helpers';
+import { setCookie, deleteCookie } from '../../helpers';
 
 const initialState = {
     user: {
@@ -61,7 +61,12 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
         case USER_REGISTER_REQUEST:
-            setCookie('accessToken', action.payload.accessToken);
+            if (action.payload.accessToken.indexOf('Bearer') === 0) {
+                setCookie(
+                    'accessToken',
+                    action.payload.accessToken.split('Bearer ')[1],
+                );
+            }
             localStorage.setItem('refreshToken', action.payload.refreshToken);
 
             return {
@@ -82,7 +87,12 @@ const userReducer = (state = initialState, action) => {
                 userRegisterError: '',
             };
         case USER_LOGIN_REQUEST:
-            setCookie('accessToken', action.payload.accessToken);
+            if (action.payload.accessToken.indexOf('Bearer') === 0) {
+                setCookie(
+                    'accessToken',
+                    action.payload.accessToken.split('Bearer ')[1],
+                );
+            }
             localStorage.setItem('refreshToken', action.payload.refreshToken);
 
             return {

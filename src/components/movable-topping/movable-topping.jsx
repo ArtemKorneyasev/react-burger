@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
 
 const MovableTopping = (props) => {
     const { children, toppingId, toppingIndex, moveTopping } = props;

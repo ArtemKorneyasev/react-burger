@@ -6,7 +6,7 @@ import {
 	CLEAR_BURGER_CONSTRUCTOR,
 	CALC_TOTAL_PRICE,
 } from '../actions/constructorActions';
-import { moveInArray } from '../helpers';
+import { moveInArray } from '../../helpers';
 
 const initialState = {
     burgerData: {

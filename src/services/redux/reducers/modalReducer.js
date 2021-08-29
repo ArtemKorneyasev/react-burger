@@ -1,6 +1,7 @@
 import {
 	OPEN_INGREDIENT_MODAL,
-	OPEN_ORDER_MODAL,
+	OPEN_ORDER_RESULT_MODAL,
+	OPEN_ORDER_DETAILS_MODAL,
 	OPEN_USER_REGISTER_MODAL,
 	OPEN_USER_LOGIN_MODAL,
 	OPEN_USER_LOGOUT_MODAL,
@@ -23,7 +24,12 @@ const modalReducer = (state = initialState, action) => {
 				modalMode: 'ingredient-details',
 				modalIsOpen: true,
 			};
-		case OPEN_ORDER_MODAL:
+		case OPEN_ORDER_RESULT_MODAL:
+			return {
+				modalMode: 'order-result',
+				modalIsOpen: true,
+			};
+		case OPEN_ORDER_DETAILS_MODAL:
 			return {
 				modalMode: 'order-details',
 				modalIsOpen: true,
