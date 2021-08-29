@@ -59,7 +59,7 @@ export const getUserRegister = userData => {
 };
 
 export const clearUserRegisterError = () => {
-    return { type: CLEAR_USER_REGISTER_ERROR };
+    return { type: CLEAR_USER_REGISTER_REQUEST_FAILED };
 };
 
 export const getUserLogin = userData => {
@@ -76,7 +76,7 @@ export const getUserLogin = userData => {
 };
 
 export const clearUserLoginError = () => {
-    return { type: CLEAR_USER_LOGIN_ERROR };
+    return { type: CLEAR_USER_LOGIN_REQUEST_FAILED };
 };
 
 export const getUserLogout = () => {
@@ -93,7 +93,7 @@ export const getUserLogout = () => {
 };
 
 export const clearUserLogoutError = () => {
-    return { type: CLEAR_USER_LOGOUT_ERROR };
+    return { type: CLEAR_USER_LOGOUT_REQUEST_FAILED };
 };
 
 export const getUserForgotPassword = email => {
@@ -110,7 +110,7 @@ export const getUserForgotPassword = email => {
 };
 
 export const clearUserForgotPasswordError = () => {
-    return { type: CLEAR_USER_FORGOT_PASSWORD_ERROR };
+    return { type: CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED };
 };
 
 export const getUserResetPassword = ({ password, token }) => {
@@ -131,7 +131,7 @@ export const getUserResetPassword = ({ password, token }) => {
 };
 
 export const clearUserResetPasswordError = () => {
-    return { type: CLEAR_USER_RESET_PASSWORD_ERROR };
+    return { type: CLEAR_USER_RESET_PASSWORD_REQUEST_FAILED };
 };
 
 export const getUserLoadData = () => {
@@ -148,7 +148,7 @@ export const getUserLoadData = () => {
 };
 
 export const clearUserLoadError = () => {
-    return { type: CLEAR_USER_LOAD_DATA_ERROR };
+    return { type: CLEAR_USER_LOAD_DATA_REQUEST_FAILED };
 };
 
 export const getUserSaveData = (userData) => {
@@ -165,5 +165,5 @@ export const getUserSaveData = (userData) => {
 };
 
 export const clearUserSaveError = () => {
-    return { type: CLEAR_USER_SAVE_DATA_ERROR };
+    return { type: CLEAR_USER_SAVE_DATA_REQUEST_FAILED };
 };
