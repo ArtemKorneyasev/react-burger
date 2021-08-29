@@ -160,3 +160,50 @@ export const orderResultMock = {
         price: 1759,
     },
 };
+
+export const userRegisterResultMock = {
+    success: true,
+    user: {
+        email: 'artemkorneyasev@gmail.com',
+        name: 'Artem Korneyasev',
+    },
+    // eslint-disable-next-line
+    accessToken: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMDZkMGUyOWQ5NTJmMDAxYjgyMjBkMSIsImlhdCI6MTYzMDI0MTA2NiwiZXhwIjoxNjMwMjQyMjY2fQ.wJe9Qa1fx_oi15zYQ6z3da5sE047uNzhA4-6VsRZyPQ',
+    // eslint-disable-next-line
+    refreshToken: '761cf72da04cb06e4903612a150c8ecfe1a2ccf387e5327ae392682c23ba5904fc73da7aaf039635',
+};
+
+export const wsOrdersResultMock = {
+    orders: [
+        {
+            _id: '612bb4a315024d001b9d1110',
+            ingredients: [
+                '60d3b41abdacab0026a733c7',
+                '60d3b41abdacab0026a733c7',
+                '60d3b41abdacab0026a733cd',
+            ],
+            status: 'done',
+            name: 'Space флюоресцентный бургер',
+            createdAt: '2021-08-29T16:24:03.534Z',
+            updatedAt: '2021-08-29T16:24:03.600Z',
+            number: 2373,
+        },
+        {
+            _id: '612bb45315024d001b9d110f',
+            ingredients: [
+                '60d3b41abdacab0026a733c7',
+                '60d3b41abdacab0026a733c7',
+                '60d3b41abdacab0026a733cf',
+                '60d3b41abdacab0026a733cd',
+                '60d3b41abdacab0026a733c9',
+            ],
+            status: 'done',
+            name: 'Бессмертный space флюоресцентный антарианский бургер',
+            createdAt: '2021-08-29T16:22:43.291Z',
+            updatedAt: '2021-08-29T16:22:43.378Z',
+            number: 2372,
+        },
+    ],
+    total: 2372,
+    totalToday: 26,
+};

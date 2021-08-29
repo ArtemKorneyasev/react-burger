@@ -49,4 +49,22 @@ describe('ORDER REDUCER', () => {
             orderError: 'Ошибка получения данных...',
         });
     });
+
+    it('should handle CLEAR_ORDER_RESULT', () => {
+        expect(orderReducer({
+            ...initialState,
+            orderResult: orderResultMock,
+        }, {
+            type: types.CLEAR_ORDER_RESULT,
+        })).toEqual(initialState);
+    });
+
+    it('should handle CLEAR_ORDER_ERROR', () => {
+        expect(orderReducer({
+            ...initialState,
+            orderError: 'Ошибка получения данных...',
+        }, {
+            type: types.CLEAR_ORDER_ERROR,
+        })).toEqual(initialState);
+    });
 });
