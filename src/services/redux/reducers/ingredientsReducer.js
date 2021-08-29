@@ -1,11 +1,13 @@
 import {
-    INGREDIENTS_FETCH,
-	INGREDIENTS_ERROR,
+    INGREDIENTS_REQUEST,
+	INGREDIENTS_REQUEST_SUCCESS,
+	INGREDIENTS_REQUSET_FAILED,
 	SHOW_INGREDIENT_INFO,
 	CLEAR_INGREDIENT_INFO,
 } from '../actions/ingredientsActions';
 
 const initialState = {
+	inProgress: false,
     ingredients: [],
 	ingredientsError: '',
 	ingredientInfo: {},
@@ -13,14 +15,21 @@ const initialState = {
 
 const ingredientsReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case INGREDIENTS_FETCH:
+		case INGREDIENTS_REQUEST:
+			return {
+				...state,
+				inProgress: true,
+			};
+		case INGREDIENTS_REQUEST_SUCCESS:
 			return {
                 ...state,
+				inProgress: false,
                 ingredients: action.payload,
             };
-		case INGREDIENTS_ERROR:
+		case INGREDIENTS_REQUSET_FAILED:
 			return {
                 ...state,
+				inProgress: false,
                 ingredientsError: action.payload,
             };
 		case SHOW_INGREDIENT_INFO:
@@ -32,7 +41,7 @@ const ingredientsReducer = (state = initialState, action) => {
 			return {
 				...state,
 				ingredientInfo: {},
-			}
+			};
 		default:
 			return state;
 	}

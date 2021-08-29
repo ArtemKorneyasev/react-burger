@@ -1,12 +1,18 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import { nanoid } from 'nanoid';
 
-import { getIngredients, clearIngredientInfo } from '../../services/redux/actions/ingredientsActions';
-import { addIngredient, clearBurgerConstructor } from '../../services/redux/actions/constructorActions';
+import {
+	getIngredients,
+	clearIngredientInfo,
+} from '../../services/redux/actions/ingredientsActions';
+import {
+	addIngredient,
+	clearBurgerConstructor,
+} from '../../services/redux/actions/constructorActions';
 import { wsAllOrdersConnectionStart } from '../../services/redux/actions/wsAllOrdersActions';
 import { wsUserOrdersConnectionStart } from '../../services/redux/actions/wsUserOrdersActions';
 import { wsClearOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
@@ -128,7 +134,7 @@ const App = () => {
 			}
 			{
 				background && modalMode === 'order-details' ? (
-					<Route path={["/feed/:id", "/profile/orders/:id"]}>
+					<Route path={['/feed/:id', '/profile/orders/:id']}>
 						<Modal
 							onClose={() => {
 								dispatch(wsClearOrderDetails());

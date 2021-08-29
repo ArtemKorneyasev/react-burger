@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import { isUserAuth } from '../../services/helpers';
 
@@ -20,6 +21,10 @@ const ProtectedRoute = (props) => {
             }
         />
     );
+};
+
+ProtectedRoute.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default ProtectedRoute;

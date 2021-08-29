@@ -20,13 +20,13 @@ const ModalOverlay = (props) => {
     }, [onClose]);
 
     useEffect(() => {
-        document.addEventListener("keydown", onEscapeClose);
-        document.addEventListener("click", onOverlayClose);
+        document.addEventListener('keydown', onEscapeClose);
+        document.addEventListener('click', onOverlayClose);
 
         return () => {
-            document.removeEventListener("keydown", onEscapeClose);
-            document.removeEventListener("click", onOverlayClose);
-        }
+            document.removeEventListener('keydown', onEscapeClose);
+            document.removeEventListener('click', onOverlayClose);
+        };
     });
 
     return (

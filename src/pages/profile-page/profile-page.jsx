@@ -6,7 +6,7 @@ import {
     PasswordInput,
     Input,
     Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import {
     getUserLoadData,
     clearUserLoadError,
@@ -148,12 +148,18 @@ const ProfilePage = () => {
                             История заказов
                         </NavLink>
                         <button
-                            className={`text text_type_main-medium text_color_inactive ${styles.logoutBtn}`}
+                            className={
+                                `text text_type_main-medium text_color_inactive ${styles.logoutBtn}`
+                            }
                             onClick={logoutHandler}
                         >
                             Выход
                         </button>
-                        <span className={`text text_type_main-small text_color_inactive ${styles.note}`}>
+                        <span
+                            className={
+                                `text text_type_main-small text_color_inactive ${styles.note}`
+                            }
+                        >
                             В этом разделе вы можете <br/> изменить свои персональные данные
                         </span>
                     </div>
@@ -209,8 +215,8 @@ const ProfilePage = () => {
             {
                 modalIsOpen && modalMode === 'user-load' ? (
                     <Modal onClose={() => {
-                        dispatch(clearUserLoadError())
-                        dispatch(closeModal())
+                        dispatch(clearUserLoadError());
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userLoadError}
@@ -221,8 +227,8 @@ const ProfilePage = () => {
             {
                 modalIsOpen && modalMode === 'user-save' ? (
                     <Modal onClose={() => {
-                        dispatch(clearUserSaveError())
-                        dispatch(closeModal())
+                        dispatch(clearUserSaveError());
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userSaveError}
@@ -233,8 +239,8 @@ const ProfilePage = () => {
             {
                 modalIsOpen && modalMode === 'logout' ? (
                     <Modal onClose={() => {
-                        dispatch(clearUserLogoutError())
-                        dispatch(closeModal())
+                        dispatch(clearUserLogoutError());
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userLogoutError}

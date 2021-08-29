@@ -38,7 +38,7 @@ Modal.propTypes = {
 };
 
 Modal.defaultProps = {
-    title: "",
+    title: '',
 };
 
 export default Modal;

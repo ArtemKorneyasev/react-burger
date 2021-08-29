@@ -1,9 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { EmailInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { getUserForgotPassword, clearUserForgotPasswordError } from '../../services/redux/actions/userActions';
-import { openUserForgotPasswordModal, closeModal } from '../../services/redux/actions/modalActions';
+import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+    getUserForgotPassword,
+    clearUserForgotPasswordError,
+} from '../../services/redux/actions/userActions';
+import {
+    openUserForgotPasswordModal,
+    closeModal,
+} from '../../services/redux/actions/modalActions';
 import { isUserAuth } from '../../services/helpers';
 import Modal from '../../components/modal/modal';
 import styles from './forgot-password-page.module.css';
@@ -64,7 +70,11 @@ const ForgotPasswordPage = () => {
                         </Button>
                     </div>
                 </form>
-                <div className={`text text_type_main-default text_color_inactive ${styles.linkContainer}`}>
+                <div
+                    className={
+                        `text text_type_main-default text_color_inactive ${styles.linkContainer}`
+                    }
+                >
                     <span>Вспомнили пароль?</span>
                     <Link className={styles.link} to="/login">
                         Войти
@@ -74,8 +84,8 @@ const ForgotPasswordPage = () => {
             {
                 modalIsOpen && modalMode === 'forgot-password' ? (
                     <Modal onClose={() => {
-                        dispatch(clearUserForgotPasswordError())
-                        dispatch(closeModal())
+                        dispatch(clearUserForgotPasswordError());
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userForgotPasswordError}
