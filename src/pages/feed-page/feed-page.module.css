@@ -3,6 +3,11 @@
     gap: 60px;
 }
 
+.loading {
+    text-align: center;
+    margin-top: 100px;
+}
+
 .detailsSection {
     width: 584px;
     margin-top: 60px;

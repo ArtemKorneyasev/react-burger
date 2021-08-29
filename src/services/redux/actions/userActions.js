@@ -26,8 +26,8 @@ export const CLEAR_USER_LOGOUT_REQUEST_FAILED = 'CLEAR_USER_LOGOUT_REQUEST_FAILE
 export const USER_FORGOT_PASSWORD_REQUEST = 'USER_FORGOT_PASSWORD_REQUEST';
 export const USER_FORGOT_PASSWORD_REQUEST_SUCCESS = 'USER_FORGOT_PASSWORD_REQUEST_SUCCESS';
 export const USER_FORGOT_PASSWORD_REQUEST_FAILED = 'USER_FORGOT_PASSWORD_REQUEST_FAILED';
-export const CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED =
-    'CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED';
+// eslint-disable-next-line
+export const CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED = 'CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED';
 export const CLEAR_FORGOT_PASSWORD_RESULT = 'CLEAR_FORGOT_PASSWORD_RESULT';
 
 export const USER_RESET_PASSWORD_REQUEST = 'USER_RESET_PASSWORD_REQUEST';
@@ -59,9 +59,7 @@ export const getUserRegister = userData => {
 };
 
 export const clearUserRegisterError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_REGISTER_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_REGISTER_ERROR };
 };
 
 export const getUserLogin = userData => {
@@ -78,9 +76,7 @@ export const getUserLogin = userData => {
 };
 
 export const clearUserLoginError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_LOGIN_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_LOGIN_ERROR };
 };
 
 export const getUserLogout = () => {
@@ -97,9 +93,7 @@ export const getUserLogout = () => {
 };
 
 export const clearUserLogoutError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_LOGOUT_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_LOGOUT_ERROR };
 };
 
 export const getUserForgotPassword = email => {
@@ -116,9 +110,7 @@ export const getUserForgotPassword = email => {
 };
 
 export const clearUserForgotPasswordError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_FORGOT_PASSWORD_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_FORGOT_PASSWORD_ERROR };
 };
 
 export const getUserResetPassword = ({ password, token }) => {
@@ -139,9 +131,7 @@ export const getUserResetPassword = ({ password, token }) => {
 };
 
 export const clearUserResetPasswordError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_RESET_PASSWORD_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_RESET_PASSWORD_ERROR };
 };
 
 export const getUserLoadData = () => {
@@ -158,9 +148,7 @@ export const getUserLoadData = () => {
 };
 
 export const clearUserLoadError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_LOAD_DATA_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_LOAD_DATA_ERROR };
 };
 
 export const getUserSaveData = (userData) => {
@@ -177,7 +165,5 @@ export const getUserSaveData = (userData) => {
 };
 
 export const clearUserSaveError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_USER_SAVE_DATA_REQUEST_FAILED });
-    };
+    return { type: CLEAR_USER_SAVE_DATA_ERROR };
 };

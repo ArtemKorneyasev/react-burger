@@ -21,6 +21,7 @@ import {
     openUserLogoutModal,
     closeModal,
 } from '../../services/redux/actions/modalActions';
+import { wsUserOrdersConnectionStart } from '../../services/redux/actions/wsUserOrdersActions';
 import OrdersList from '../../components/orders-list/orders-list';
 import Modal from '../../components/modal/modal';
 import styles from './profile-page.module.css';
@@ -93,6 +94,7 @@ const ProfilePage = () => {
 
     useEffect(() => {
         if (userLoadSuccess) {
+            dispatch(wsUserOrdersConnectionStart());
             setState(prevState => {
                 return {
                     ...prevState,
@@ -101,7 +103,7 @@ const ProfilePage = () => {
                 };
             });
         }
-    }, [userLoadSuccess, user.name, user.email]);
+    }, [dispatch, userLoadSuccess, user.name, user.email]);
 
     useEffect(() => {
         if (userLoadError) {

@@ -21,7 +21,7 @@ const OrderResult = () => {
                     orderResult.success ? orderResult.order.number : (
                         <Loader
                             type="Puff"
-                            color="#00BFFF"
+                            color="#8585ad"
                             height={100}
                             width={100}
                         />

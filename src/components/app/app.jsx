@@ -13,8 +13,6 @@ import {
 	addIngredient,
 	clearBurgerConstructor,
 } from '../../services/redux/actions/constructorActions';
-import { wsAllOrdersConnectionStart } from '../../services/redux/actions/wsAllOrdersActions';
-import { wsUserOrdersConnectionStart } from '../../services/redux/actions/wsUserOrdersActions';
 import { wsClearOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
 import { clearOrderResult, clearOrderError } from '../../services/redux/actions/orderActions';
 import { closeModal } from '../../services/redux/actions/modalActions';
@@ -53,8 +51,6 @@ const App = () => {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		dispatch(getIngredients());
-		dispatch(wsAllOrdersConnectionStart());
-		dispatch(wsUserOrdersConnectionStart());
     }, [dispatch]);
 
 	const handleDrop = item => {

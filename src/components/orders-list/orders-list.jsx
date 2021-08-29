@@ -41,7 +41,7 @@ const OrdersList = (props) => {
                 mode === 'feed' ? (
                     <div className={styles.ordersWrapper}>
                         {
-                            allOrders.map(order => (
+                            allOrders.length && allOrders.map(order => (
                                 <OrderCard
                                     key={order._id}
                                     mode={mode}
@@ -54,7 +54,7 @@ const OrdersList = (props) => {
                 ) : (
                     <div className={styles.ordersWrapper}>
                         {
-                            userOrders.map(order => (
+                            userOrders.length && userOrders.map(order => (
                                 <OrderCard
                                     key={order._id}
                                     mode={mode}

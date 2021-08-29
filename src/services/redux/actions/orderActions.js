@@ -51,13 +51,9 @@ export const getOrderResult = burgerData => {
 };
 
 export const clearOrderResult = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_ORDER_RESULT });
-    };
+    return { type: CLEAR_ORDER_RESULT };
 };
 
 export const clearOrderError = () => {
-    return dispatch => {
-        dispatch({ type: CLEAR_ORDER_ERROR });
-    };
+    return { type: CLEAR_ORDER_ERROR };
 };
