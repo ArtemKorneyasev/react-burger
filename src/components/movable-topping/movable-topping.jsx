@@ -59,7 +59,7 @@ const MovableTopping = (props) => {
     );
 };
 
-MovableTopping.propsTypes = {
+MovableTopping.propTypes = {
     children: PropTypes.node.isRequired,
     toppingId: PropTypes.number.isRequired,
     toppingIndex: PropTypes.number.isRequired,

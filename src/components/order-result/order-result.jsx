@@ -1,9 +1,9 @@
-import Loader from "react-loader-spinner";
+import Loader from 'react-loader-spinner';
 import { useSelector } from 'react-redux';
 import doneIcon from '../../images/doneIcon.svg';
 import styles from './order-result.module.css';
 
-const OrderResult = (props) => {
+const OrderResult = () => {
     const { orderResult, orderError } = useSelector(state => state.order);
 
     if (orderError) {
@@ -30,7 +30,7 @@ const OrderResult = (props) => {
             </span>
             <span className="text text_type_main-medium">
                 {
-                    orderResult.success ? "идентификатор заказа" : "регистрируем заказ"
+                    orderResult.success ? 'идентификатор заказа' : 'регистрируем заказ'
                 }
             </span>
             <div className={styles.doneIcon}>

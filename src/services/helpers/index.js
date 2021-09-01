@@ -74,7 +74,7 @@ export const getTotalPrice = (ingredients, orderDetails) => {
         if (current.type === 'bun') {
             total += (current.price * 2);
         } else {
-            total += current.price
+            total += current.price;
         }
         return total;
     }, 0);

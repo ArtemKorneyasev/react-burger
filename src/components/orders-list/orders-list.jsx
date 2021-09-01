@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { wsShowOrderDetails } from '../../services/redux/actions/wsAllOrdersActions';
 import { openOrderDetailsModal } from '../../services/redux/actions/modalActions';
-import OrderCard from "../order-card/order-card";
+import OrderCard from '../order-card/order-card';
 import styles from './orders-list.module.css';
 
 const OrdersList = (props) => {
@@ -22,7 +22,7 @@ const OrdersList = (props) => {
 
         const pathname = mode === 'feed'
             ? `/feed/${orderData._id}`
-            : `/profile/orders/${orderData._id}`
+            : `/profile/orders/${orderData._id}`;
         history.push({ pathname, state: { background: location} });
     }, [dispatch, mode, history, location]);
 

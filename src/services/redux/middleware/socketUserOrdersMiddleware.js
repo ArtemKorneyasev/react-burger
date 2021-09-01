@@ -1,4 +1,4 @@
-import { getCookie } from "../../helpers";
+import { getCookie } from '../../helpers';
 
 export const socketUserOrdersMiddleware = (wsUrl, wsUserOrdersActions) => {
     return store => {

@@ -65,13 +65,13 @@ const BurgerIngredients = () => {
                 Соберите бургер
             </h1>
             <div className={styles.tabs}>
-                <Tab value="buns" active={nearestTab === 'buns'} onClick={() => {}}>
+                <Tab value="buns" active={nearestTab === 'buns'} onClick={() => undefined}>
                     Булки
                 </Tab>
-                <Tab value="sauces" active={nearestTab === 'sauces'} onClick={() => {}}>
+                <Tab value="sauces" active={nearestTab === 'sauces'} onClick={() => undefined}>
                     Соусы
                 </Tab>
-                <Tab value="mains" active={nearestTab === 'mains'} onClick={() => {}}>
+                <Tab value="mains" active={nearestTab === 'mains'} onClick={() => undefined}>
                     Начинки
                 </Tab>
             </div>

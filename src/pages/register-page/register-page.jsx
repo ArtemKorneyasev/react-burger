@@ -1,7 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+    Input,
+    EmailInput,
+    PasswordInput,
+    Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import { getUserRegister, clearUserRegisterError } from '../../services/redux/actions/userActions';
 import { openUserRegisterModal, closeModal } from '../../services/redux/actions/modalActions';
 import { isUserAuth } from '../../services/helpers';
@@ -82,7 +87,9 @@ const RegisterPage = () => {
                     </div>
                 </form>
                 <div
-                    className={`text text_type_main-default text_color_inactive ${styles.linkContainer}`}
+                    className={
+                        `text text_type_main-default text_color_inactive ${styles.linkContainer}`
+                    }
                 >
                     <span>Уже зарегистрированы?</span>
                     <Link className={styles.link} to="/login">
@@ -94,7 +101,7 @@ const RegisterPage = () => {
                 modalIsOpen && modalMode === 'register' ? (
                     <Modal onClose={() => {
                         dispatch(clearUserRegisterError());
-                        dispatch(closeModal())
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userRegisterError}

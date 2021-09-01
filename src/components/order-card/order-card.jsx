@@ -18,7 +18,11 @@ const OrderCard = (props) => {
                 <span className={`text text_type_digits-default ${styles.orderId}`}>
                     {`#${orderData.number}`}
                 </span>
-                <span className={`text text_type_main-default text_color_inactive ${styles.timestamp}`}>
+                <span
+                    className={
+                        `text text_type_main-default text_color_inactive ${styles.timestamp}`
+                    }
+                >
                     {getFormattedDate(orderData.createdAt)}
                 </span>
             </header>

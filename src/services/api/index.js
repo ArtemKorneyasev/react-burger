@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "../helpers";
+import { getCookie, setCookie } from '../helpers';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
 
@@ -71,7 +71,7 @@ const getOrderRequest = async (orderData) => {
     };
 
     return await fetchWithRefresh(url, options);
-}
+};
 
 const userRegisterRequest = async ({ name, email, password }) => {
     const request = new Request(

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useDrag } from "react-dnd";
+import { useDrag } from 'react-dnd';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-card.module.css';
 
@@ -11,7 +11,7 @@ const IngredientCard = (props) => {
     const { burgerData } = useSelector(state => state.burger);
 
     const [, dragIngredientCard] = useDrag({
-        type: "ingredient-card",
+        type: 'ingredient-card',
         item: { id: data._id },
     });
 

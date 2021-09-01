@@ -1,7 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import {
+    EmailInput,
+    PasswordInput,
+    Button,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 import { getUserLogin, clearUserLoginError } from '../../services/redux/actions/userActions';
 import { openUserLoginModal, closeModal } from '../../services/redux/actions/modalActions';
 import { isUserAuth } from '../../services/helpers';
@@ -72,9 +76,13 @@ const LoginPage = () => {
                         </Button>
                     </div>
                 </form>
-                <div className={`text text_type_main-default text_color_inactive ${styles.linksWrapper}`}>
+                <div
+                    className={
+                        `text text_type_main-default text_color_inactive ${styles.linksWrapper}`
+                    }
+                >
                     <div className={styles.linkContainer}>
-                        <span>Вы — новый пользователь?</span>
+                        <span>Вы — новый пользователь?</span>
                         <Link className={styles.link} to="/register">
                             Зарегистрироваться
                         </Link>
@@ -90,8 +98,8 @@ const LoginPage = () => {
             {
                 modalIsOpen && modalMode === 'login' ? (
                     <Modal onClose={() => {
-                        dispatch(clearUserLoginError())
-                        dispatch(closeModal())
+                        dispatch(clearUserLoginError());
+                        dispatch(closeModal());
                     }}>
                         <span className="text text_type_main-medium">
                             {userLoginError}
