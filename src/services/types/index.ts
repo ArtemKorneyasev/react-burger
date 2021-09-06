@@ -83,3 +83,9 @@ export interface IUserResponseDataWithTokens extends IUserResponseData {
     accessToken: string;
     readonly refreshToken: string;
 }
+
+export type TRequestOptions = {
+    method: string,
+    headers: { [key: string]: string },
+    body?: string,
+};

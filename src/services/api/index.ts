@@ -4,17 +4,23 @@ import {
     TUserFormData,
     IUserResponseDataWithTokens,
     TMakeOrderResult,
+    TRequestOptions,
+    TUSer,
 } from '../types';
 
 const API_URL = 'https://norma.nomoreparties.space/api';
 
-export const checkResponse = (response: any): any => {
+export const checkResponse = (response: any): Promise<any> => {
     return response.ok
         ? response.json()
         : response.json().then((error: string) => Promise.reject(error));
 };
 
-const refreshToken = () => {
+const refreshToken = (): Promise<{
+    success: boolean,
+    accessToken: string,
+    refreshToken: string,
+}> => {
     const request = new Request(
         `${API_URL}/auth/token`,
         {
@@ -29,21 +35,12 @@ const refreshToken = () => {
     return fetch(request).then(checkResponse);
 };
 
-type TOptions = {
-    method: string,
-    headers: {
-        'Content-Type': string,
-        'Authorization'?: string,
-    },
-    body?: string,
-};
-
-const fetchWithRefresh = async (url: string, options: TOptions) => {
+const fetchWithRefresh = async (url: string, options: TRequestOptions): Promise<any> => {
     try {
         const response = await fetch(url, options);
         return await checkResponse(response);
     } catch (error) {
-        if (error.message === 'jwt expired') {
+        if ((error as { success: boolean, message: string}).message === 'jwt expired') {
             const refreshData = await refreshToken();
 
             if (refreshData.accessToken.indexOf('Bearer') === 0) {
@@ -96,7 +93,7 @@ const getOrderRequest = async (
 };
 
 const userRegisterRequest = async ({
-     name, email, password,
+    name, email, password,
 }: TUserFormData): Promise<IUserResponseDataWithTokens> => {
     const request = new Request(
         `${API_URL}/auth/register`,
@@ -128,7 +125,10 @@ const userLoginRequest = async ({ email, password }: {
     return await checkResponse(response);
 };
 
-const userLogoutRequest = async () => {
+const userLogoutRequest = async (): Promise<{
+    success: boolean,
+    message: string,
+}> => {
     const request = new Request(
         `${API_URL}/auth/logout`,
         {
@@ -144,7 +144,10 @@ const userLogoutRequest = async () => {
     return await checkResponse(response);
 };
 
-const userForgotPasswordRequest = async (email: string) => {
+const userForgotPasswordRequest = async (email: string): Promise<{
+    success: boolean,
+    message: string,
+}> => {
     const request = new Request(
         `${API_URL}/password-reset`,
         {
@@ -166,7 +169,7 @@ const userForgotPasswordRequest = async (email: string) => {
 const userResetPasswordRequest = async ({ password, token }: {
     password: string,
     token: string,
-}) => {
+}): Promise<{ success: boolean, message: string }> => {
     const request = new Request(
         `${API_URL}/password-reset/reset`,
         {
@@ -180,7 +183,10 @@ const userResetPasswordRequest = async ({ password, token }: {
     return await checkResponse(response);
 };
 
-const userLoadDataRequest = async () => {
+const userLoadDataRequest = async (): Promise<{
+    success: boolean,
+    user: TUSer,
+}> => {
     const url = `${API_URL}/auth/user`;
     const options = {
         method: 'GET',
@@ -193,7 +199,9 @@ const userLoadDataRequest = async () => {
     return await fetchWithRefresh(url, options);
 };
 
-const userSaveDataRequest = async ({ name, email, password }: TUserFormData) => {
+const userSaveDataRequest = async (
+    { name, email, password }: TUserFormData
+): Promise<{ success: boolean, user: TUSer }> => {
     const url = `${API_URL}/auth/user`;
     const options = {
         method: 'PATCH',
